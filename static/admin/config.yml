@@ -1,7 +1,7 @@
 backend:
   name: git-gateway
-  repo: dottacunha/dottacunha.pt
-  branch: main
+  repo: dottacunha/www.dottacunha.pt
+  branch: staging
 
 local_backend: true
 media_folder: static/assets
