@@ -1,0 +1,22 @@
+.container {
+
+}
+
+.title {
+  /* margin-top: rem(80px);
+  margin-bottom: rem(80px); */
+  /* color: var(--mantine-color-white);
+  text-transform: uppercase; */
+  
+  font-size: rem(48px);
+  /* font-weight: 300; */
+  /* line-height: 3.3em; */
+
+  @media (min-width: $mantine-breakpoint-xs) {
+    /* margin-top: rem(164px);
+    margin-bottom: rem(80px); */
+    font-size: rem(80px);
+    /* font-weight: 300; */
+    /* line-height: 6.875em; */
+  }
+}

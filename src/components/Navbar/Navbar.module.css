@@ -1,0 +1,26 @@
+.wrapper {
+  left: 0;
+  right: 0;
+  width: 100%;
+  position: absolute;
+  /* background-color: red; */
+  z-index: 9999;
+}
+
+.container {
+  padding: em(16) em(12);
+
+  @media (min-width: $mantine-breakpoint-xs) {
+    padding: em(40) em(80);
+  }
+}
+
+.navbar {
+  padding: em(12);
+  align-items: center;
+  justify-content: space-between;
+
+  @media (min-width: $mantine-breakpoint-xs) {
+    backdrop-filter: blur(16px);
+  }
+}

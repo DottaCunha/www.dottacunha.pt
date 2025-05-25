@@ -1,0 +1,79 @@
+backend:
+  name: git-gateway
+  repo: dottacunha/dottacunha.pt
+  branch: main
+
+local_backend: true
+media_folder: static/assets
+public_folder: /assets
+site_url: https://dottacunha.pt
+
+collections:
+  - name: pages
+    label: Pages
+    files:
+      - name: home
+        label: Home page
+        file: content/pages/home.md
+        fields:
+          - { name: slug, widget: hidden, default: / }
+          - { name: templateKey, widget: hidden, default: home }
+          - { name: title, label: Title, widget: string }
+          - name: sections
+            label: Sections
+            widget: list
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: body, label: Text, widget: text }
+              - name: images
+                label: Images
+                widget: list
+                field: { name: src, label: Image, widget: image }
+              
+      - name: contact
+        label: Contact page
+        file: content/pages/contact.md
+        fields:
+          - { name: slug, widget: hidden, default: /contact }
+          - { name: templateKey, widget: hidden, default: contact }
+          - { name: email, label: Email, widget: string }
+          - { name: phone, label: Phone, widget: string }
+          - label: Links
+            name: links
+            widget: list
+            fields:
+              - { name: name, label: Name, widget: string }
+              - { name: url, label: URL, widget: string }
+          - { name: location, label: Location, widget: string }
+  - name: cases
+    label: Cases
+    folder: content/cases
+    create: true
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: year, label: Year, widget: number, value_type: int, min: 2000, max: 2050 }
+      - name: description
+        label: Description
+        widget: markdown
+        modes: [rich_text]
+        buttons: [bold, italic]
+        editor_components: []
+      - name: services
+        label: Services
+        widget: list
+        field: { name: text, label: Text, widget: string }
+      - name: images
+        label: Images
+        widget: list
+        field: { name: src, label: Image, widget: image }
+  - name: settings
+    label: Settings
+    files:
+      - name: footer
+        label: Footer
+        file: content/settings/footer.yml
+        fields:
+          - { name: templateKey, widget: hidden, default: footer }
+          - { label: Title, name: title, widget: string }
+          - { label: Email, name: email, widget: string }
+  
