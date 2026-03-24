@@ -1,0 +1,76 @@
+---
+import type { Lang } from '../i18n/translations';
+import { t, localizedPath } from '../i18n/utils';
+import Logo from './Logo.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="bg-dark-950 text-white">
+  <div class="container-main section-padding flex flex-col gap-20 !pb-10">
+    <div class="flex flex-col md:flex-row justify-between gap-12">
+      <div>
+        <div class="mb-3">
+          <Logo size="lg" color="white" />
+        </div>
+        <span class="font-display font-semibold text-display-xs tracking-tight uppercase text-white block">Dotta & Cunha, Lda</span>
+        <p class="text-dark-400 text-sm leading-relaxed mt-3 max-w-sm font-light">
+          {t('footer.description', lang)}
+        </p>
+      </div>
+      <div class="flex flex-col items-start lg:items-end justify-end">
+        <a href={localizedPath('/contact', lang)} class="btn-outline-light w-full lg:width-auto">{t('footer.startConversation', lang)}</a>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-10">
+      <div>
+        <h4 class="footer-heading">{t('footer.navigation', lang)}</h4>
+        <ul class="space-y-3">
+          <li><a href={localizedPath('/', lang)} class="footer-link">{t('nav.home', lang)}</a></li>
+          <li><a href={localizedPath('/about', lang)} class="footer-link">{t('nav.about', lang)}</a></li>
+          <li><a href={localizedPath('/projects', lang)} class="footer-link">{t('nav.projects', lang)}</a></li>
+          <li><a href={localizedPath('/services', lang)} class="footer-link">{t('nav.services', lang)}</a></li>
+          <li><a href={localizedPath('/contact', lang)} class="footer-link">{t('nav.contact', lang)}</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-heading">{t('footer.services', lang)}</h4>
+        <ul class="space-y-3">
+          <li><a href={localizedPath('/services', lang)} class="footer-link">{t('footer.development', lang)}</a></li>
+          <li><a href={localizedPath('/services', lang)} class="footer-link">{t('footer.architecture', lang)}</a></li>
+          <li><a href={localizedPath('/services', lang)} class="footer-link">{t('footer.projectManagement', lang)}</a></li>
+          <li><a href={localizedPath('/services', lang)} class="footer-link">{t('footer.investmentAdvisory', lang)}</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-heading">{t('footer.contact', lang)}</h4>
+        <ul class="space-y-3">
+          <li class="footer-text">info@dottacunha.com</li>
+          <!-- <li class="footer-text">+351 XXX XXX XXX</li> -->
+          <li class="footer-text">Lisbon, Portugal</li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-heading">{t('footer.social', lang)}</h4>
+        <ul class="space-y-3">
+          <li><a href="#" class="footer-link">LinkedIn</a></li>
+          <li><a href="#" class="footer-link">Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-dark-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+      <p class="text-footnote">&copy; {currentYear} Dotta & Cunha. {t('footer.rights', lang)}</p>
+      <div class="flex gap-8">
+        <a href="#" class="text-footnote hover:text-dark-300 transition-colors">{t('footer.privacy', lang)}</a>
+        <a href="#" class="text-footnote hover:text-dark-300 transition-colors">{t('footer.terms', lang)}</a>
+      </div>
+    </div>
+  </div>
+</footer>

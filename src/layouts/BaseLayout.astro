@@ -1,0 +1,46 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+import type { Lang } from '../i18n/translations';
+
+interface Props {
+  title: string;
+  description?: string;
+  darkHeader?: boolean;
+  lang: Lang;
+}
+
+const {
+  title,
+  description = 'Dotta & Cunha — Residential real estate development in Portugal.',
+  darkHeader = false,
+  lang = 'pt',
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang={lang}>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <title>{title} | Dotta & Cunha</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="alternate" hreflang="pt" href={`/pt${Astro.url.pathname.replace(/^\/(en|pt)/, '')}`} />
+  <link rel="alternate" hreflang="en" href={`/en${Astro.url.pathname.replace(/^\/(en|pt)/, '')}`} />
+</head>
+<body class="min-h-screen flex flex-col">
+  <Header darkHeader={darkHeader} lang={lang} />
+  <main class="flex-1">
+    <slot />
+  </main>
+  <Footer lang={lang} />
+  <script is:inline define:vars={{ lang }}>
+    try { localStorage.setItem('dc-lang', lang); } catch (e) {}
+  </script>
+</body>
+</html>

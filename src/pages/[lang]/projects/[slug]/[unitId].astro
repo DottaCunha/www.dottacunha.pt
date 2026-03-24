@@ -1,0 +1,207 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import { t, localizedPath } from '../../../../i18n/utils';
+import type { Lang } from '../../../../i18n/translations';
+import { getCollection } from 'astro:content';
+import { getProjectSlug, getStatusLabel } from '../../../../lib/projects';
+import { supportedLangs } from '../../../../i18n/translations';
+
+export async function getStaticPaths() {
+  const allProjects = await getCollection('projects');
+  const paths = [];
+
+  for (const lang of supportedLangs) {
+    const langProjects = allProjects.filter((p) => p.id.startsWith(`${lang}/`));
+    for (const project of langProjects) {
+      const slug = getProjectSlug(project.id);
+      const units = project.data.units ?? [];
+      for (const unit of units) {
+        paths.push({
+          params: { lang, slug, unitId: unit.id },
+          props: { project, unit },
+        });
+      }
+    }
+  }
+
+  return paths;
+}
+
+const { lang, slug, unitId } = Astro.params as { lang: Lang; slug: string; unitId: string };
+const { project, unit } = Astro.props;
+const d = project.data;
+const photos = unit.photos ?? [];
+const features = unit.features ?? [];
+---
+
+<BaseLayout title={`${unit.typology} — ${d.title}`} lang={lang}>
+  <!-- Breadcrumb -->
+  <section class="pt-32 pb-6 px-6 md:px-8 bg-white">
+    <div class="container-main">
+      <a href={localizedPath(`/projects/${slug}`, lang)} class="inline-flex items-center gap-2 text-link text-dark-400 hover:text-dark-900 mb-10">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16l-4-4m0 0l4-4m-4 4h18"/></svg>
+        {d.title}
+      </a>
+
+      <div class="">
+        <h1 class="font-display text-3xl md:text-4xl xl:text-5xl font-extrabold text-dark-950 tracking-tight uppercase mb-2">{unit.typology}</h1>
+        <p class="text-body-sm">{d.title} — {d.location}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Full-width carousel -->
+  {photos.length > 0 && (
+    <section class="px-6 md:px-8 bg-white">
+      <div class="container-main">
+        <div class="relative" id="carousel">
+          <div class="overflow-hidden aspect-[16/9]">
+            <div class="flex transition-transform duration-500 ease-out h-full" id="carousel-track">
+              {photos.map((photo: string, i: number) => (
+                <div class="w-full flex-shrink-0 h-full">
+                  <img src={photo} alt={`${unit.typology} — ${i + 1}`} class="w-full h-full object-cover" loading={i === 0 ? 'eager' : 'lazy'} />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {photos.length > 1 && (
+            <>
+              <button id="carousel-prev" class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white flex items-center justify-center transition-colors" aria-label="Previous">
+                <svg class="w-5 h-5 text-dark-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"/></svg>
+              </button>
+              <button id="carousel-next" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white flex items-center justify-center transition-colors" aria-label="Next">
+                <svg class="w-5 h-5 text-dark-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"/></svg>
+              </button>
+              <div class="absolute bottom-3 right-3 bg-dark-950/80 px-3 py-1.5">
+                <span class="text-xxs text-white font-medium tabular-nums" id="carousel-counter">1 / {photos.length}</span>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Details: Specs left, Description + Features right -->
+  <section class="pb-24 md:pb-32 px-6 md:px-8 bg-white">
+    <div class="container-main pt-10 md:pt-14">
+      <!-- Title -->
+      <!-- <div class="mb-10">
+        <h1 class="font-display text-3xl md:text-4xl xl:text-5xl font-extrabold text-dark-950 tracking-tight uppercase mb-2">{unit.typology}</h1>
+        <p class="text-body-sm">{d.title} — {d.location}</p>
+      </div> -->
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+        <!-- Left: Specs card -->
+        <div class="lg:col-span-4">
+          <div class="border border-dark-100">
+            <div class="p-6 space-y-0">
+              <div class="flex items-center justify-between py-4 border-b border-dark-50">
+                <span class="text-meta text-xs">{t('projectDetail.area', lang)}</span>
+                <span class="text-stat text-base">{unit.area}</span>
+              </div>
+              <div class="flex items-center justify-between py-4 border-b border-dark-50">
+                <span class="text-meta text-xs">{t('unitDetail.bedrooms', lang)}</span>
+                <span class="text-spec">{unit.bedrooms}</span>
+              </div>
+              <div class="flex items-center justify-between py-4 border-b border-dark-50">
+                <span class="text-meta text-xs">{t('unitDetail.bathrooms', lang)}</span>
+                <span class="text-spec">{unit.bathrooms}</span>
+              </div>
+              <div class="flex items-center justify-between py-4 border-b border-dark-50">
+                <span class="text-meta text-xs">{t('unitDetail.floor', lang)}</span>
+                <span class="text-spec">{unit.floor}</span>
+              </div>
+              {unit.orientation && (
+                <div class="flex items-center justify-between py-4 border-b border-dark-50">
+                  <span class="text-meta text-xs">{t('unitDetail.orientation', lang)}</span>
+                  <span class="text-spec">{unit.orientation}</span>
+                </div>
+              )}
+            </div>
+            <div class="p-6 pt-0">
+              <a href={localizedPath('/contact', lang)} class="btn-primary w-full text-center mt-2">
+                {t('unitDetail.inquire', lang)}
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Description + Features + Floor Plan -->
+        <div class="lg:col-span-8">
+          {unit.description && (
+            <p class="text-body text-dark-500 text-prose mb-10">{unit.description}</p>
+          )}
+
+          {features.length > 0 && (
+            <div class="mb-10">
+              <span class="section-label">{t('unitDetail.features', lang)}</span>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
+                {features.map((feature: string) => (
+                  <div class="flex items-center gap-3 text-body-sm text-dark-600">
+                    <span class="w-1.5 h-1.5 bg-dark-900 shrink-0"></span>
+                    {feature}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {unit.floorPlan && (
+            <div>
+              <span class="section-label">{t('unitDetail.floorPlan', lang)}</span>
+              <div class="border border-dark-100 p-4">
+                <img src={unit.floorPlan} alt={`${t('unitDetail.floorPlan', lang)} — ${unit.typology}`} class="w-full" loading="lazy" />
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section-padding bg-dark-950">
+    <div class="container-main text-center">
+      <h2 class="section-heading-light mb-5">{t('projectsPage.ctaHeading', lang)}</h2>
+      <p class="text-body max-w-md mx-auto mb-10">{t('projectsPage.ctaDesc', lang)}</p>
+      <a href={localizedPath(`/projects/${slug}`, lang)} class="btn-outline-light">
+        {t('unitDetail.back', lang)}
+      </a>
+    </div>
+  </section>
+</BaseLayout>
+
+{/* Carousel script */}
+<script is:inline>
+  (function () {
+    var track = document.getElementById('carousel-track');
+    var counter = document.getElementById('carousel-counter');
+    var prev = document.getElementById('carousel-prev');
+    var next = document.getElementById('carousel-next');
+    if (!track || !prev || !next) return;
+
+    var slides = track.children.length;
+    var current = 0;
+
+    function go(index) {
+      if (index < 0) index = slides - 1;
+      if (index >= slides) index = 0;
+      current = index;
+      track.style.transform = 'translateX(-' + (current * 100) + '%)';
+      if (counter) counter.textContent = (current + 1) + ' / ' + slides;
+    }
+
+    prev.addEventListener('click', function () { go(current - 1); });
+    next.addEventListener('click', function () { go(current + 1); });
+
+    // Swipe support
+    var startX = 0;
+    track.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; }, { passive: true });
+    track.addEventListener('touchend', function (e) {
+      var diff = startX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) go(current + (diff > 0 ? 1 : -1));
+    }, { passive: true });
+  })();
+</script>

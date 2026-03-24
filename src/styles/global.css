@@ -1,0 +1,160 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply font-sans text-dark-900 antialiased bg-white;
+  }
+  ::selection {
+    @apply bg-dark-900 text-white;
+  }
+}
+
+@layer components {
+  /* Buttons */
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-8 py-3.5 bg-dark-950 text-white text-mid font-medium
+           hover:bg-dark-800 transition-all duration-300 tracking-wide uppercase;
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center px-8 py-3.5 border border-dark-900 text-dark-900 text-mid font-medium
+           hover:bg-dark-950 hover:text-white transition-all duration-300 tracking-wide uppercase;
+  }
+  .btn-outline-light {
+    @apply inline-flex items-center justify-center px-8 py-3.5 border border-white/30 text-white text-mid font-medium
+           hover:bg-white hover:text-dark-950 transition-all duration-300 tracking-wide uppercase;
+  }
+
+  /* ──────────────────────────────
+     Typography – Labels & Body
+     ────────────────────────────── */
+
+  /* Section label — eyebrow text above headings */
+  .section-label {
+    @apply text-sm font-medium uppercase tracking-label text-dark-400 mb-6 block;
+  }
+
+  /* Body text sizes — the default prose styles */
+  .text-body {
+    @apply text-md text-dark-400 leading-relaxed font-light;
+  }
+  .text-body-sm {
+    @apply text-sm text-dark-400 leading-relaxed font-light;
+  }
+  .text-body-xs {
+    @apply text-mid text-dark-400 font-light;
+  }
+
+  /* Meta — tiny labels under stats, spec tables */
+  .text-meta {
+    @apply text-2xs text-dark-400 uppercase tracking-label;
+  }
+
+  /* Index — numbered list markers (01, 02…) */
+  .text-index {
+    @apply text-mid text-dark-200 font-medium tabular-nums;
+  }
+
+  /* Link — navigation-style small caps links */
+  .text-link {
+    @apply text-xs font-medium uppercase tracking-[0.15em] transition-colors;
+  }
+
+  /* Footnote — copyright, bottom-bar fine print */
+  .text-footnote {
+    @apply text-xxs text-dark-600;
+  }
+
+  /* Badge — status tags on project cards */
+  .badge {
+    @apply px-3 py-1.5 text-2xs font-medium uppercase tracking-wider;
+  }
+
+  /* Stat — bold display values in spec tables and stat grids */
+  .text-stat {
+    @apply font-display font-bold text-dark-900 tracking-tight;
+  }
+
+  /* Spec value — lighter values in unit detail spec rows */
+  .text-spec {
+    @apply text-md text-dark-700 font-medium;
+  }
+
+  /* ──────────────────────────────
+     Typography – Headings
+     ────────────────────────────── */
+
+  /* Hero heading — full-bleed page heroes */
+  .heading-hero {
+    @apply font-display font-extrabold text-white leading-[0.95] tracking-tight uppercase;
+  }
+
+  /* Section heading — main dark section titles */
+  .section-heading {
+    @apply font-display text-3xl md:text-5xl font-bold text-dark-950 tracking-tight leading-[1.1] uppercase;
+  }
+
+  /* Section heading light — CTA / dark-bg section titles */
+  .section-heading-light {
+    @apply font-display text-3xl md:text-5xl font-extrabold text-white tracking-tight uppercase;
+  }
+
+  /* Card heading — service rows, value cards (md size) */
+  .heading-card {
+    @apply font-display text-xl md:text-2xl font-bold text-dark-950 uppercase tracking-tight;
+  }
+
+  /* Card heading sm — project cards, unit rows (sm size) */
+  .heading-card-sm {
+    @apply font-display text-lg font-bold text-dark-900 uppercase tracking-tight;
+  }
+
+  /* ──────────────────────────────
+     Forms
+     ────────────────────────────── */
+
+  /* Form label — field labels */
+  .form-label {
+    @apply block text-xxs font-medium text-dark-500 uppercase tracking-label mb-3;
+  }
+
+  /* Form input — underline-style fields */
+  .form-input {
+    @apply w-full px-0 py-3 border-0 border-b border-dark-200 text-sm text-dark-900 placeholder-dark-300
+           focus:outline-none focus:border-dark-900 transition-colors bg-transparent font-light;
+  }
+
+  /* Form input dark — dark background fields */
+  .form-input-dark {
+    @apply w-full px-4 py-3.5 bg-white/5 border border-white/10 text-white placeholder-dark-500
+           text-mid font-light focus:outline-none focus:border-white/30 transition-colors;
+  }
+
+  /* ──────────────────────────────
+     Footer
+     ────────────────────────────── */
+
+  .footer-heading {
+    @apply text-meta text-dark-500 text-xxs mb-5;
+  }
+  .footer-link {
+    @apply text-mid text-dark-300 hover:text-white transition-colors font-light;
+  }
+  .footer-text {
+    @apply text-mid text-dark-300 font-light;
+  }
+
+  /* ──────────────────────────────
+     Layout
+     ────────────────────────────── */
+  .section-padding {
+    @apply py-24 md:py-32 px-6 md:px-8;
+  }
+  .container-main {
+    @apply max-w-[1200px] mx-auto;
+  }
+}

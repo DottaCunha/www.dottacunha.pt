@@ -1,0 +1,131 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { t, localizedPath, getI18nPaths } from '../../i18n/utils';
+import type { Lang } from '../../i18n/translations';
+
+export function getStaticPaths() { return getI18nPaths(); }
+
+const { lang } = Astro.params as { lang: Lang };
+
+const serviceKeys = ['development', 'architecture', 'projectManagement', 'investment', 'rehabilitation', 'sustainability'];
+const services = serviceKeys.map(key => ({
+  key,
+  title: t(`svc.${key}`, lang),
+  description: t(`svc.${key}.desc`, lang),
+  features: [
+    t(`svc.${key}.f1`, lang),
+    t(`svc.${key}.f2`, lang),
+    t(`svc.${key}.f3`, lang),
+    t(`svc.${key}.f4`, lang),
+  ],
+}));
+
+const process = [
+  { step: '01', title: t('servicesPage.step1', lang), description: t('servicesPage.step1.desc', lang) },
+  { step: '02', title: t('servicesPage.step2', lang), description: t('servicesPage.step2.desc', lang) },
+  { step: '03', title: t('servicesPage.step3', lang), description: t('servicesPage.step3.desc', lang) },
+  { step: '04', title: t('servicesPage.step4', lang), description: t('servicesPage.step4.desc', lang) },
+];
+---
+
+<BaseLayout title={t('nav.services', lang)} lang={lang}>
+  <section class="pt-32 pb-16 px-6 md:px-8 bg-white">
+    <div class="container-main">
+      <span class="section-label">{t('servicesPage.label', lang)}</span>
+      <h1 class="section-heading">{t('servicesPage.heading', lang)}</h1>
+      <p class="text-body max-w-lg mt-6">{t('servicesPage.description', lang)}</p>
+    </div>
+  </section>
+
+  <section class="pb-24 md:pb-32 px-6 md:px-8 bg-white">
+    <div class="container-main">
+      <div class="border-t border-dark-100">
+        {services.map((service, index) => (
+          <div id={service.key} class="border-b border-dark-100 py-10 md:py-14 scroll-mt-24">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+              <div class="lg:col-span-1">
+                <span class="text-index">0{index + 1}</span>
+              </div>
+              <div class="lg:col-span-4">
+                <h3 class="heading-card">{service.title}</h3>
+              </div>
+              <div class="lg:col-span-4">
+                <p class="text-body-sm">{service.description}</p>
+              </div>
+              <div class="lg:col-span-3">
+                <ul class="space-y-2">
+                  {service.features.map(feature => (
+                    <li class="flex items-center gap-3 text-body-xs text-dark-500">
+                      <span class="w-1 h-1 bg-dark-300 rounded-full shrink-0"></span>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-padding bg-dark-50">
+    <div class="container-main">
+      <div class="mb-20">
+        <span class="section-label">{t('servicesPage.processLabel', lang)}</span>
+        <h2 class="section-heading">{t('servicesPage.processHeading', lang)}</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        {process.map((item) => (
+          <div>
+            <div class="font-display text-6xl font-extrabold text-dark-100 tracking-tight mb-4">{item.step}</div>
+            <h3 class="heading-card-sm text-dark-950 mb-3">{item.title}</h3>
+            <p class="text-body-xs leading-relaxed">{item.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-padding bg-dark-950">
+    <div class="container-main">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+        <div>
+          <span class="section-label !text-dark-500">{t('servicesPage.ctaLabel', lang)}</span>
+          <h2 class="section-heading-light leading-[1] mb-6">{t('servicesPage.ctaHeading', lang)}</h2>
+          <p class="text-body mb-10 max-w-md">{t('servicesPage.ctaDesc', lang)}</p>
+          <ul class="space-y-4">
+            <li class="flex items-center gap-3 text-body-xs text-dark-300">
+              <span class="w-1.5 h-1.5 bg-white rounded-full shrink-0"></span>
+              {t('servicesPage.benefit1', lang)}
+            </li>
+            <li class="flex items-center gap-3 text-body-xs text-dark-300">
+              <span class="w-1.5 h-1.5 bg-white rounded-full shrink-0"></span>
+              {t('servicesPage.benefit2', lang)}
+            </li>
+            <li class="flex items-center gap-3 text-body-xs text-dark-300">
+              <span class="w-1.5 h-1.5 bg-white rounded-full shrink-0"></span>
+              {t('servicesPage.benefit3', lang)}
+            </li>
+          </ul>
+        </div>
+        <div class="bg-white/5 p-8 md:p-10 border border-white/10">
+          <h3 class="heading-card-sm text-white mb-8">{t('servicesPage.formTitle', lang)}</h3>
+          <form class="space-y-5">
+            <input type="text" placeholder={t('servicesPage.formName', lang)} class="form-input-dark" />
+            <input type="email" placeholder={t('servicesPage.formEmail', lang)} class="form-input-dark" />
+            <select class="form-input-dark text-dark-400">
+              <option value="">{t('servicesPage.formInterest', lang)}</option>
+              <option value="buying">{t('servicesPage.formBuying', lang)}</option>
+              <option value="investing">{t('servicesPage.formInvesting', lang)}</option>
+              <option value="development">{t('servicesPage.formDevelopment', lang)}</option>
+              <option value="other">{t('servicesPage.formOther', lang)}</option>
+            </select>
+            <textarea rows="3" placeholder={t('servicesPage.formMessage', lang)} class="form-input-dark resize-none"></textarea>
+            <button type="submit" class="btn-primary !bg-white !text-dark-950 hover:!bg-dark-100 w-full">{t('servicesPage.formSubmit', lang)}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

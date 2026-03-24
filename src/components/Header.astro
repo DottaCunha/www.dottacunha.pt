@@ -1,0 +1,161 @@
+---
+import type { Lang } from '../i18n/translations';
+import { languages } from '../i18n/translations';
+import { t, localizedPath, getAlternateLang } from '../i18n/utils';
+import Logo from './Logo.astro';
+
+interface Props {
+  darkHeader?: boolean;
+  lang: Lang;
+}
+
+const { darkHeader = false, lang } = Astro.props;
+const currentPath = Astro.url.pathname;
+const altLang = getAlternateLang(lang);
+
+// Strip the lang prefix to get the base path
+const basePath = currentPath.replace(/^\/(en|pt)/, '') || '/';
+
+const navLinks = [
+  { href: localizedPath('/', lang), label: t('nav.home', lang), match: `/${lang}` },
+  { href: localizedPath('/about', lang), label: t('nav.about', lang), match: `/${lang}/about` },
+  { href: localizedPath('/projects', lang), label: t('nav.projects', lang), match: `/${lang}/projects` },
+  { href: localizedPath('/services', lang), label: t('nav.services', lang), match: `/${lang}/services` },
+  { href: localizedPath('/contact', lang), label: t('nav.contact', lang), match: `/${lang}/contact` },
+];
+
+const isActive = (match: string) => {
+  const clean = currentPath.replace(/\/$/, '');
+  const cleanMatch = match.replace(/\/$/, '');
+  return clean === cleanMatch;
+};
+---
+
+<header
+  id="site-header"
+  class="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+  data-dark={darkHeader ? 'true' : 'false'}
+>
+  <div class="container-main flex items-center justify-between h-20 px-6 md:px-8 xl:px-0">
+    <!-- Logo -->
+    <a href={localizedPath('/', lang)} class="flex items-center relative z-10 header-logo transition-colors duration-500">
+      <Logo size="md" />
+    </a>
+
+    <!-- Desktop Nav -->
+    <nav class="hidden md:flex items-center gap-8">
+      {navLinks.map(link => (
+        <a
+          href={link.href}
+          class:list={[
+            'text-xs font-medium uppercase tracking-[0.15em] transition-all duration-300 header-link',
+            isActive(link.match) ? 'is-active' : ''
+          ]}
+        >
+          {link.label}
+        </a>
+      ))}
+
+      <a href={localizedPath('/contact', lang)} class="inline-flex items-center px-6 py-2.5 text-xxs font-medium uppercase tracking-[0.15em] transition-all duration-500 header-cta">
+        {t('nav.cta', lang)}
+      </a>
+      <!-- Language Switcher -->
+      <a
+        href={`/${altLang}${basePath === '/' ? '' : basePath}`}
+        class="text-xxs font-medium uppercase tracking-[0.15em] transition-all duration-300 header-link opacity-60 hover:opacity-100"
+        title={languages[altLang]}
+      >
+        {altLang.toUpperCase()}
+      </a>
+
+    </nav>
+
+    <!-- Mobile Toggle -->
+    <button id="mobile-toggle" class="md:hidden p-2 relative z-10" aria-label="Toggle menu">
+      <div class="flex flex-col gap-1.5">
+        <span class="block w-6 h-px header-bar transition-all duration-300" id="bar-1"></span>
+        <span class="block w-6 h-px header-bar transition-all duration-300" id="bar-2"></span>
+      </div>
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="md:hidden hidden fixed inset-0 bg-dark-950 z-40">
+    <nav class="flex flex-col items-center justify-center h-full gap-8">
+      {navLinks.map(link => (
+        <a
+          href={link.href}
+          class:list={[
+            'font-display text-2xl font-bold uppercase tracking-wider text-white/60 hover:text-white transition-colors',
+            isActive(link.match) ? '!text-white' : ''
+          ]}
+        >
+          {link.label}
+        </a>
+      ))}
+      <!-- Mobile language switch -->
+      <a
+        href={`/${altLang}${basePath === '/' ? '' : basePath}`}
+        class="text-sm font-medium uppercase tracking-wider text-white/40 hover:text-white transition-colors border-t border-white/10 pt-6 mt-2"
+      >
+        {languages[altLang]}
+      </a>
+      <a href={localizedPath('/contact', lang)} class="mt-2 btn-outline-light">
+        {t('nav.cta', lang)}
+      </a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  /* Default state: transparent, dark text (for light pages) */
+  header { background: transparent; }
+  header .header-logo { color: #0a0a0a; }
+  header .header-link { color: #666666; }
+  header .header-link:hover, header .header-link.is-active { color: #0a0a0a; }
+  header .header-cta { border: 1px solid #0a0a0a; color: #0a0a0a; }
+  header .header-cta:hover { background: #0a0a0a; color: white; }
+  header .header-bar { background: #0a0a0a; }
+
+  /* Dark variant (hero pages): white text when at top */
+  header[data-dark="true"] .header-logo { color: white; }
+  header[data-dark="true"] .header-link { color: rgba(255,255,255,0.6); }
+  header[data-dark="true"] .header-link:hover, header[data-dark="true"] .header-link.is-active { color: white; }
+  header[data-dark="true"] .header-cta { border-color: rgba(255,255,255,0.3); color: white; }
+  header[data-dark="true"] .header-cta:hover { background: white; color: #0a0a0a; }
+  header[data-dark="true"] .header-bar { background: white; }
+
+  /* Scrolled state: frosted glass with dark text */
+  header.is-scrolled {
+    background: rgba(255, 255, 255, 0.70);
+    backdrop-filter: blur(20px);
+  }
+  header.is-scrolled .header-logo { color: #0a0a0a !important; }
+  header.is-scrolled .header-link { color: #666666 !important; }
+  header.is-scrolled .header-link:hover, header.is-scrolled .header-link.is-active { color: #0a0a0a !important; }
+  header.is-scrolled .header-cta { border-color: #0a0a0a !important; color: #0a0a0a !important; }
+  header.is-scrolled .header-cta:hover { background: #0a0a0a !important; color: white !important; }
+  header.is-scrolled .header-bar { background: #0a0a0a !important; }
+</style>
+
+<script>
+  const header = document.getElementById('site-header');
+  const toggle = document.getElementById('mobile-toggle');
+  const menu = document.getElementById('mobile-menu');
+
+  function updateHeader() {
+    if (!header) return;
+    if (window.scrollY > 50) {
+      header.classList.add('is-scrolled');
+    } else {
+      header.classList.remove('is-scrolled');
+    }
+  }
+
+  window.addEventListener('scroll', updateHeader, { passive: true });
+  updateHeader();
+
+  toggle?.addEventListener('click', () => {
+    menu?.classList.toggle('hidden');
+  });
+</script>
