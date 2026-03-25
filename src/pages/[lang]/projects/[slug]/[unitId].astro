@@ -36,15 +36,15 @@ const features = unit.features ?? [];
 
 <BaseLayout title={`${unit.typology} — ${d.title}`} lang={lang}>
   <!-- Breadcrumb -->
-  <section class="pt-32 pb-6 px-6 md:px-8 bg-white">
+  <section class="pt-32 pb-6 px-6 md:px-8 bg-base-100">
     <div class="container-main">
-      <a href={localizedPath(`/projects/${slug}`, lang)} class="inline-flex items-center gap-2 text-link text-dark-400 hover:text-dark-900 mb-10">
+      <a href={localizedPath(`/projects/${slug}`, lang)} class="inline-flex items-center gap-2 text-link text-info hover:text-base-content mb-10">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16l-4-4m0 0l4-4m-4 4h18"/></svg>
         {d.title}
       </a>
 
       <div class="">
-        <h1 class="font-display text-3xl md:text-4xl xl:text-5xl font-extrabold text-dark-950 tracking-tight uppercase mb-2">{unit.typology}</h1>
+        <h1 class="font-display text-3xl md:text-4xl xl:text-5xl font-extrabold text-primary tracking-tight uppercase mb-2">{unit.typology}</h1>
         <p class="text-body-sm">{d.title} — {d.location}</p>
       </div>
     </div>
@@ -52,7 +52,7 @@ const features = unit.features ?? [];
 
   <!-- Full-width carousel -->
   {photos.length > 0 && (
-    <section class="px-6 md:px-8 bg-white">
+    <section class="px-6 md:px-8 bg-base-100">
       <div class="container-main">
         <div class="relative" id="carousel">
           <div class="overflow-hidden aspect-[16/9]">
@@ -67,14 +67,14 @@ const features = unit.features ?? [];
 
           {photos.length > 1 && (
             <>
-              <button id="carousel-prev" class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white flex items-center justify-center transition-colors" aria-label="Previous">
-                <svg class="w-5 h-5 text-dark-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"/></svg>
+              <button id="carousel-prev" class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-base-100/90 hover:bg-base-100 flex items-center justify-center transition-colors" aria-label="Previous">
+                <svg class="w-5 h-5 text-base-content" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"/></svg>
               </button>
-              <button id="carousel-next" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white flex items-center justify-center transition-colors" aria-label="Next">
-                <svg class="w-5 h-5 text-dark-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"/></svg>
+              <button id="carousel-next" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-base-100/90 hover:bg-base-100 flex items-center justify-center transition-colors" aria-label="Next">
+                <svg class="w-5 h-5 text-base-content" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"/></svg>
               </button>
-              <div class="absolute bottom-3 right-3 bg-dark-950/80 px-3 py-1.5">
-                <span class="text-xxs text-white font-medium tabular-nums" id="carousel-counter">1 / {photos.length}</span>
+              <div class="absolute bottom-3 right-3 bg-primary/80 px-3 py-1.5">
+                <span class="text-xxs text-primary-content font-medium tabular-nums" id="carousel-counter">1 / {photos.length}</span>
               </div>
             </>
           )}
@@ -84,7 +84,7 @@ const features = unit.features ?? [];
   )}
 
   <!-- Details: Specs left, Description + Features right -->
-  <section class="pb-24 md:pb-32 px-6 md:px-8 bg-white">
+  <section class="pb-24 md:pb-32 px-6 md:px-8 bg-base-100">
     <div class="container-main pt-10 md:pt-14">
       <!-- Title -->
       <!-- <div class="mb-10">
@@ -95,33 +95,33 @@ const features = unit.features ?? [];
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
         <!-- Left: Specs card -->
         <div class="lg:col-span-4">
-          <div class="border border-dark-100">
+          <div class="border border-base-300">
             <div class="p-6 space-y-0">
-              <div class="flex items-center justify-between py-4 border-b border-dark-50">
+              <div class="flex items-center justify-between py-4 border-b border-base-200">
                 <span class="text-meta text-xs">{t('projectDetail.area', lang)}</span>
                 <span class="text-stat text-base">{unit.area}</span>
               </div>
-              <div class="flex items-center justify-between py-4 border-b border-dark-50">
+              <div class="flex items-center justify-between py-4 border-b border-base-200">
                 <span class="text-meta text-xs">{t('unitDetail.bedrooms', lang)}</span>
                 <span class="text-spec">{unit.bedrooms}</span>
               </div>
-              <div class="flex items-center justify-between py-4 border-b border-dark-50">
+              <div class="flex items-center justify-between py-4 border-b border-base-200">
                 <span class="text-meta text-xs">{t('unitDetail.bathrooms', lang)}</span>
                 <span class="text-spec">{unit.bathrooms}</span>
               </div>
-              <div class="flex items-center justify-between py-4 border-b border-dark-50">
+              <div class="flex items-center justify-between py-4 border-b border-base-200">
                 <span class="text-meta text-xs">{t('unitDetail.floor', lang)}</span>
                 <span class="text-spec">{unit.floor}</span>
               </div>
               {unit.orientation && (
-                <div class="flex items-center justify-between py-4 border-b border-dark-50">
+                <div class="flex items-center justify-between py-4 border-b border-base-200">
                   <span class="text-meta text-xs">{t('unitDetail.orientation', lang)}</span>
                   <span class="text-spec">{unit.orientation}</span>
                 </div>
               )}
             </div>
             <div class="p-6 pt-0">
-              <a href={localizedPath('/contact', lang)} class="btn-primary w-full text-center mt-2">
+              <a href={localizedPath('/contact', lang)} class="btn btn-primary w-full mt-2">
                 {t('unitDetail.inquire', lang)}
               </a>
             </div>
@@ -131,7 +131,7 @@ const features = unit.features ?? [];
         <!-- Right: Description + Features + Floor Plan -->
         <div class="lg:col-span-8">
           {unit.description && (
-            <p class="text-body text-dark-500 text-prose mb-10">{unit.description}</p>
+            <p class="text-body text-secondary text-prose mb-10">{unit.description}</p>
           )}
 
           {features.length > 0 && (
@@ -140,7 +140,7 @@ const features = unit.features ?? [];
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
                 {features.map((feature: string) => (
                   <div class="flex items-center gap-3 text-body-sm text-dark-600">
-                    <span class="w-1.5 h-1.5 bg-dark-900 shrink-0"></span>
+                    <span class="w-1.5 h-1.5 bg-neutral shrink-0"></span>
                     {feature}
                   </div>
                 ))}
@@ -151,7 +151,7 @@ const features = unit.features ?? [];
           {unit.floorPlan && (
             <div>
               <span class="section-label">{t('unitDetail.floorPlan', lang)}</span>
-              <div class="border border-dark-100 p-4">
+              <div class="border border-base-300 p-4">
                 <img src={unit.floorPlan} alt={`${t('unitDetail.floorPlan', lang)} — ${unit.typology}`} class="w-full" loading="lazy" />
               </div>
             </div>
@@ -162,11 +162,11 @@ const features = unit.features ?? [];
   </section>
 
   <!-- CTA -->
-  <section class="section-padding bg-dark-950">
+  <section class="section-padding bg-primary">
     <div class="container-main text-center">
       <h2 class="section-heading-light mb-5">{t('projectsPage.ctaHeading', lang)}</h2>
       <p class="text-body max-w-md mx-auto mb-10">{t('projectsPage.ctaDesc', lang)}</p>
-      <a href={localizedPath(`/projects/${slug}`, lang)} class="btn-outline-light">
+      <a href={localizedPath(`/projects/${slug}`, lang)} class="btn btn-outline btn-light">
         {t('unitDetail.back', lang)}
       </a>
     </div>

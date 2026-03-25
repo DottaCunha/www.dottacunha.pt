@@ -9,14 +9,14 @@ const { lang } = Astro.params as { lang: Lang };
 ---
 
 <BaseLayout title={t('nav.contact', lang)} lang={lang}>
-  <section class="pt-32 pb-16 px-6 md:px-8 bg-white">
+  <section class="pt-32 pb-16 px-6 md:px-8 bg-base-100">
     <div class="container-main">
       <span class="section-label">{t('contactPage.label', lang)}</span>
       <h1 class="section-heading">{t('contactPage.heading', lang)}</h1>
     </div>
   </section>
 
-  <section class="pb-24 md:pb-32 px-6 md:px-8 bg-white">
+  <section class="pb-24 md:pb-32 px-6 md:px-8 bg-base-100">
     <div class="container-main">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
         <!-- Form -->
@@ -27,28 +27,38 @@ const { lang } = Astro.params as { lang: Lang };
           <form class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label for="first-name" class="form-label">{t('contactPage.firstName', lang)}</label>
-                <input type="text" id="first-name" name="first-name" class="form-input" />
+                <label for="first-name" class="label">
+                  <span class="label-text">{t('contactPage.firstName', lang)}</span>
+                </label>
+                <input type="text" id="first-name" name="first-name" class="input w-full" />
               </div>
               <div>
-                <label for="last-name" class="form-label">{t('contactPage.lastName', lang)}</label>
-                <input type="text" id="last-name" name="last-name" class="form-input" />
+                <label for="last-name" class="label">
+                  <span class="label-text">{t('contactPage.lastName', lang)}</span>
+                </label>
+                <input type="text" id="last-name" name="last-name" class="input w-full" />
               </div>
             </div>
 
             <div>
-              <label for="email" class="form-label">{t('contactPage.email', lang)}</label>
-              <input type="email" id="email" name="email" class="form-input" />
+              <label for="email" class="label">
+                <span class="label-text">{t('contactPage.email', lang)}</span>
+              </label>
+              <input type="email" id="email" name="email" class="input w-full" />
             </div>
 
             <div>
-              <label for="phone" class="form-label">{t('contactPage.phone', lang)} <span class="text-dark-300 normal-case tracking-normal">{t('contactPage.phoneOptional', lang)}</span></label>
-              <input type="tel" id="phone" name="phone" class="form-input" placeholder="+351 XXX XXX XXX" />
+              <label for="phone" class="label">
+                <span class="label-text">{t('contactPage.phone', lang)} <span class="text-dark-300 normal-case tracking-normal">{t('contactPage.phoneOptional', lang)}</span></span>
+              </label>
+              <input type="tel" id="phone" name="phone" class="input w-full" placeholder="+351 XXX XXX XXX" />
             </div>
 
             <div>
-              <label for="subject" class="form-label">{t('contactPage.subject', lang)}</label>
-              <select id="subject" name="subject" class="form-input text-dark-400">
+              <label for="subject" class="label">
+                <span class="label-text">{t('contactPage.subject', lang)}</span>
+              </label>
+              <select id="subject" name="subject" class="select w-full text-info">
                 <option value="">{t('contactPage.selectTopic', lang)}</option>
                 <option value="buying">{t('contactPage.topicBuying', lang)}</option>
                 <option value="investing">{t('contactPage.topicInvesting', lang)}</option>
@@ -59,12 +69,14 @@ const { lang } = Astro.params as { lang: Lang };
             </div>
 
             <div>
-              <label for="message" class="form-label">{t('contactPage.message', lang)}</label>
-              <textarea id="message" name="message" rows="4" class="form-input resize-none" placeholder={t('contactPage.messagePlaceholder', lang)}></textarea>
+              <label for="message" class="label">
+                <span class="label-text">{t('contactPage.message', lang)}</span>
+              </label>
+              <textarea id="message" name="message" rows="4" class="textarea w-full resize-none" placeholder={t('contactPage.messagePlaceholder', lang)}></textarea>
             </div>
 
             <div class="pt-4">
-              <button type="submit" class="btn-primary">
+              <button type="submit" class="btn btn-primary">
                 {t('contactPage.submit', lang)}
                 <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
               </button>
@@ -76,47 +88,47 @@ const { lang } = Astro.params as { lang: Lang };
         <div class="lg:col-span-5">
           <div class="space-y-12">
             <div>
-              <h3 class="form-label mb-6">{t('contactPage.officeLabel', lang)}</h3>
+              <h3 class="label-text mb-6">{t('contactPage.officeLabel', lang)}</h3>
               <div class="space-y-6">
                 <div>
-                  <div class="text-body-sm font-medium text-dark-900 mb-1">{t('contactPage.address', lang)}</div>
+                  <div class="text-body-sm font-medium text-base-content mb-1">{t('contactPage.address', lang)}</div>
                   <div class="text-body-sm">Lisbon, Portugal</div>
                 </div>
                 <div>
-                  <div class="text-body-sm font-medium text-dark-900 mb-1">{t('contactPage.email', lang)}</div>
-                  <a href="mailto:info@dottacunha.com" class="text-body-sm hover:text-dark-900 transition-colors">info@dottacunha.com</a>
+                  <div class="text-body-sm font-medium text-base-content mb-1">{t('contactPage.email', lang)}</div>
+                  <a href="mailto:info@dottacunha.com" class="text-body-sm hover:text-base-content transition-colors">info@dottacunha.com</a>
                 </div>
                 <div>
-                  <div class="text-body-sm font-medium text-dark-900 mb-1">{t('contactPage.phone', lang)}</div>
-                  <a href="tel:+351000000000" class="text-body-sm hover:text-dark-900 transition-colors">+351 XXX XXX XXX</a>
+                  <div class="text-body-sm font-medium text-base-content mb-1">{t('contactPage.phone', lang)}</div>
+                  <a href="tel:+351000000000" class="text-body-sm hover:text-base-content transition-colors">+351 XXX XXX XXX</a>
                 </div>
               </div>
             </div>
 
             <div>
-              <h3 class="form-label mb-6">{t('contactPage.hoursLabel', lang)}</h3>
+              <h3 class="label-text mb-6">{t('contactPage.hoursLabel', lang)}</h3>
               <div class="space-y-3">
                 <div class="flex justify-between text-body-sm">
-                  <span class="text-dark-400 font-light">{t('contactPage.monFri', lang)}</span>
-                  <span class="text-dark-900 font-medium">9:00 – 18:00</span>
+                  <span class="text-info font-light">{t('contactPage.monFri', lang)}</span>
+                  <span class="text-base-content font-medium">9:00 – 18:00</span>
                 </div>
                 <div class="flex justify-between text-body-sm">
-                  <span class="text-dark-400 font-light">{t('contactPage.sat', lang)}</span>
-                  <span class="text-dark-900 font-medium">{t('contactPage.byAppointment', lang)}</span>
+                  <span class="text-info font-light">{t('contactPage.sat', lang)}</span>
+                  <span class="text-base-content font-medium">{t('contactPage.byAppointment', lang)}</span>
                 </div>
                 <div class="flex justify-between text-body-sm">
-                  <span class="text-dark-400 font-light">{t('contactPage.sun', lang)}</span>
-                  <span class="text-dark-900 font-medium">{t('contactPage.closed', lang)}</span>
+                  <span class="text-info font-light">{t('contactPage.sun', lang)}</span>
+                  <span class="text-base-content font-medium">{t('contactPage.closed', lang)}</span>
                 </div>
               </div>
             </div>
 
             <div>
-              <h3 class="form-label mb-6">{t('contactPage.followLabel', lang)}</h3>
+              <h3 class="label-text mb-6">{t('contactPage.followLabel', lang)}</h3>
               <div class="flex gap-4">
-                <a href="#" class="text-body-xs hover:text-dark-900 transition-colors uppercase tracking-wider">LinkedIn</a>
+                <a href="#" class="text-body-xs hover:text-base-content transition-colors uppercase tracking-wider">LinkedIn</a>
                 <span class="text-dark-200">·</span>
-                <a href="#" class="text-body-xs hover:text-dark-900 transition-colors uppercase tracking-wider">Instagram</a>
+                <a href="#" class="text-body-xs hover:text-base-content transition-colors uppercase tracking-wider">Instagram</a>
               </div>
             </div>
           </div>
@@ -125,7 +137,7 @@ const { lang } = Astro.params as { lang: Lang };
     </div>
   </section>
 
-  <section class="bg-dark-50">
+  <section class="bg-base-200">
     <div class="h-72 flex items-center justify-center">
       <p class="text-meta text-dark-300">{t('contactPage.mapPlaceholder', lang)}</p>
     </div>

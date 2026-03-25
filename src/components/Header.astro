@@ -33,17 +33,19 @@ const isActive = (match: string) => {
 
 <header
   id="site-header"
-  class="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+  class="navbar fixed top-0 left-0 right-0 z-50 transition-all duration-500"
   data-dark={darkHeader ? 'true' : 'false'}
 >
-  <div class="container-main flex items-center justify-between h-20 px-6 md:px-8 xl:px-0">
-    <!-- Logo -->
-    <a href={localizedPath('/', lang)} class="flex items-center relative z-10 header-logo transition-colors duration-500">
-      <Logo size="md" />
-    </a>
+  <div class="container flex items-center justify-between h-20">
+    <!-- Logo (navbar-start) -->
+    <div class="navbar-start">
+      <a href={localizedPath('/', lang)} class="flex items-center relative z-10 header-logo transition-colors duration-500">
+        <Logo size="md" />
+      </a>
+    </div>
 
-    <!-- Desktop Nav -->
-    <nav class="hidden md:flex items-center gap-8">
+    <!-- Desktop Nav & CTA (navbar-end) -->
+    <div class="navbar-end hidden md:flex items-center gap-8">
       {navLinks.map(link => (
         <a
           href={link.href}
@@ -56,7 +58,7 @@ const isActive = (match: string) => {
         </a>
       ))}
 
-      <a href={localizedPath('/contact', lang)} class="inline-flex items-center px-6 py-2.5 text-xxs font-medium uppercase tracking-[0.15em] transition-all duration-500 header-cta">
+      <a href={localizedPath('/contact', lang)} class="btn btn-outline btn-sm text-xxs tracking-[0.15em] header-cta">
         {t('nav.cta', lang)}
       </a>
       <!-- Language Switcher -->
@@ -67,8 +69,7 @@ const isActive = (match: string) => {
       >
         {altLang.toUpperCase()}
       </a>
-
-    </nav>
+    </div>
 
     <!-- Mobile Toggle -->
     <button id="mobile-toggle" class="md:hidden p-2 relative z-10" aria-label="Toggle menu">
@@ -80,7 +81,7 @@ const isActive = (match: string) => {
   </div>
 
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="md:hidden hidden fixed inset-0 bg-dark-950 z-40">
+  <div id="mobile-menu" class="md:hidden hidden fixed inset-0 bg-primary z-40">
     <nav class="flex flex-col items-center justify-center h-full gap-8">
       {navLinks.map(link => (
         <a
@@ -100,7 +101,7 @@ const isActive = (match: string) => {
       >
         {languages[altLang]}
       </a>
-      <a href={localizedPath('/contact', lang)} class="mt-2 btn-outline-light">
+      <a href={localizedPath('/contact', lang)} class="btn btn-outline mt-2 btn-light">
         {t('nav.cta', lang)}
       </a>
     </nav>
@@ -110,19 +111,19 @@ const isActive = (match: string) => {
 <style>
   /* Default state: transparent, dark text (for light pages) */
   header { background: transparent; }
-  header .header-logo { color: #0a0a0a; }
-  header .header-link { color: #666666; }
-  header .header-link:hover, header .header-link.is-active { color: #0a0a0a; }
-  header .header-cta { border: 1px solid #0a0a0a; color: #0a0a0a; }
-  header .header-cta:hover { background: #0a0a0a; color: white; }
-  header .header-bar { background: #0a0a0a; }
+  header .header-logo { color: var(--color-base-content); }
+  header .header-link { color: var(--color-secondary); }
+  header .header-link:hover, header .header-link.is-active { color: var(--color-base-content); }
+  header .header-cta { border: 1px solid var(--color-base-content); color: var(--color-base-content); }
+  header .header-cta:hover { background: var(--color-base-content); color: var(--color-base-100); }
+  header .header-bar { background: var(--color-base-content); }
 
   /* Dark variant (hero pages): white text when at top */
   header[data-dark="true"] .header-logo { color: white; }
   header[data-dark="true"] .header-link { color: rgba(255,255,255,0.6); }
   header[data-dark="true"] .header-link:hover, header[data-dark="true"] .header-link.is-active { color: white; }
   header[data-dark="true"] .header-cta { border-color: rgba(255,255,255,0.3); color: white; }
-  header[data-dark="true"] .header-cta:hover { background: white; color: #0a0a0a; }
+  header[data-dark="true"] .header-cta:hover { background: var(--color-base-100); color: var(--color-base-content); }
   header[data-dark="true"] .header-bar { background: white; }
 
   /* Scrolled state: frosted glass with dark text */
@@ -130,12 +131,12 @@ const isActive = (match: string) => {
     background: rgba(255, 255, 255, 0.70);
     backdrop-filter: blur(20px);
   }
-  header.is-scrolled .header-logo { color: #0a0a0a !important; }
-  header.is-scrolled .header-link { color: #666666 !important; }
-  header.is-scrolled .header-link:hover, header.is-scrolled .header-link.is-active { color: #0a0a0a !important; }
-  header.is-scrolled .header-cta { border-color: #0a0a0a !important; color: #0a0a0a !important; }
-  header.is-scrolled .header-cta:hover { background: #0a0a0a !important; color: white !important; }
-  header.is-scrolled .header-bar { background: #0a0a0a !important; }
+  header.is-scrolled .header-logo { color: var(--color-base-content) !important; }
+  header.is-scrolled .header-link { color: var(--color-secondary) !important; }
+  header.is-scrolled .header-link:hover, header.is-scrolled .header-link.is-active { color: var(--color-base-content) !important; }
+  header.is-scrolled .header-cta { border-color: var(--color-base-content) !important; color: var(--color-base-content) !important; }
+  header.is-scrolled .header-cta:hover { background: var(--color-base-content) !important; color: var(--color-base-100) !important; }
+  header.is-scrolled .header-bar { background: var(--color-base-content) !important; }
 </style>
 
 <script>

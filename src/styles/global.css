@@ -1,85 +1,225 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* ──────────────────────────────
+   DaisyUI Plugin + Custom Theme
+   ────────────────────────────── */
+
+@plugin "daisyui" {
+  themes: false;
+}
+
+@plugin "daisyui/theme" {
+  name:         "dottacunha";
+  default:      true;
+  color-scheme: light;
+
+  --color-base-100:         #ffffff;
+  --color-base-200:         #f7f7f7;
+  --color-base-300:         #e3e3e3;
+  --color-base-content:     #0a0a0a;
+
+  --color-primary:          #0a0a0a;
+  --color-primary-content:  #ffffff;
+  --color-secondary:        #666666;
+  --color-secondary-content:#ffffff;
+  --color-accent:           #0a0a0a;
+  --color-accent-content:   #ffffff;
+  --color-neutral:          #0a0a0a;
+  --color-neutral-content:  #e7e3e4;
+
+  --color-info:             #818181;
+  --color-success:          #434343;
+  --color-warning:          #666666;
+  --color-error:            #515151;
+
+  --radius-selector: 0rem;
+  --radius-field:    0rem;
+  --radius-box:      0rem;
+  --size-selector:   0.25rem;
+  --size-field:      0.25rem;
+  --border:          1px;
+  --depth:           0;
+  --noise:           0;
+}
+
+/* ──────────────────────────────
+   Tailwind Theme Extensions
+   Custom design tokens: font sizes, colors, fonts, spacing
+   ────────────────────────────── */
+
+@theme {
+  /* Font families */
+  --font-sans:     'Inter', system-ui, sans-serif;
+  --font-display:  'Space Grotesk', system-ui, sans-serif;
+
+  /* Custom font sizes (fills gaps between Tailwind defaults) */
+  --text-3xs:        0.5625rem;  /* 9px  */
+  --text-2xs:        0.625rem;   /* 10px */
+  --text-xxs:        0.6875rem;  /* 11px */
+  /* xs = 0.75rem / 12px  (built-in) */
+  --text-mid:        0.8125rem;  /* 13px */
+  /* sm = 0.875rem / 14px  (built-in) */
+  --text-md:         0.9375rem;  /* 15px */
+  /* base = 1rem / 16px  (built-in) */
+  --text-prose:      1.0625rem;  /* 17px */
+  /* lg = 1.125rem / 18px  (built-in) */
+  --text-display-xs: 1.75rem;    /* 28px */
+  --text-display:    5rem;       /* 80px */
+  --text-display-lg: 5.625rem;   /* 90px */
+
+  /* Intermediate grays (no DaisyUI semantic equivalent) */
+  --color-dark-100: #e3e3e3;
+  --color-dark-200: #c8c8c8;
+  --color-dark-300: #a4a4a4;
+  --color-dark-600: #515151;
+  --color-dark-700: #434343;
+  --color-dark-800: #383838;
+
+  /* Letter spacing */
+  --tracking-label: 0.2em;
+}
+
+/* ──────────────────────────────
+   Base Styles
+   ────────────────────────────── */
 
 @layer base {
   html {
     scroll-behavior: smooth;
   }
   body {
-    @apply font-sans text-dark-900 antialiased bg-white;
+    @apply font-sans text-base-content antialiased;
   }
   ::selection {
-    @apply bg-dark-900 text-white;
+    @apply bg-neutral text-neutral-content;
   }
 }
 
+/* ──────────────────────────────
+   Component Overrides & Custom Utilities
+   ────────────────────────────── */
+
 @layer components {
-  /* Buttons */
-  .btn-primary {
-    @apply inline-flex items-center justify-center px-8 py-3.5 bg-dark-950 text-white text-mid font-medium
-           hover:bg-dark-800 transition-all duration-300 tracking-wide uppercase;
+
+  /* ── DaisyUI Button tweaks ──
+     --btn-p and --fontsize are DaisyUI's own CSS variables.
+     font-weight, text-transform, letter-spacing have no variable — override needed. */
+  .btn {
+    --btn-p: 2rem;
+    --fontsize: 0.8125rem;
+    @apply font-medium tracking-wide uppercase;
   }
-  .btn-outline {
-    @apply inline-flex items-center justify-center px-8 py-3.5 border border-dark-900 text-dark-900 text-mid font-medium
-           hover:bg-dark-950 hover:text-white transition-all duration-300 tracking-wide uppercase;
+
+  /* Light outline variant for dark backgrounds (no DaisyUI equivalent) */
+  .btn-light {
+    --btn-bg: transparent;
+    --btn-fg: white;
+    --btn-border: rgba(255, 255, 255, 0.3);
   }
-  .btn-outline-light {
-    @apply inline-flex items-center justify-center px-8 py-3.5 border border-white/30 text-white text-mid font-medium
-           hover:bg-white hover:text-dark-950 transition-all duration-300 tracking-wide uppercase;
+  .btn-light:hover {
+    --btn-bg: var(--color-base-100);
+    --btn-fg: var(--color-base-content);
+    --btn-border: var(--color-base-100);
+  }
+
+  /* Inverted primary — white bg on dark sections (no DaisyUI equivalent) */
+  .btn-inverted {
+    --btn-bg: var(--color-base-100);
+    --btn-fg: var(--color-base-content);
+    --btn-border: var(--color-base-100);
+  }
+  .btn-inverted:hover {
+    --btn-bg: var(--color-base-300);
+  }
+
+  /* ── DaisyUI Badge tweaks ──
+     Badge exposes --size via --size-selector (set in theme to 0.25rem).
+     Font-size, padding, letter-spacing have no variable — override needed. */
+  .badge {
+    @apply px-3 py-1.5 text-2xs font-medium tracking-wider border-0;
+  }
+
+  /* ── DaisyUI Input tweaks ──
+     The design uses underline-style fields (bottom border only).
+     DaisyUI inputs assume full bordered/filled fields — no variable
+     can switch to underline style, so structural override is needed. */
+  .input, .textarea, .select {
+    @apply rounded-none border-0 border-b border-dark-200 px-0 py-3
+           text-sm bg-transparent font-light
+           focus:outline-none focus:border-base-content;
+  }
+  .input, .textarea {
+    @apply text-base-content placeholder-dark-300;
+  }
+  .select {
+    @apply text-info;
+  }
+
+  /* Dark background form fields (custom variant, not in DaisyUI) */
+  .input-dark {
+    @apply w-full px-4 py-3.5 bg-white/5 border border-white/10 text-white placeholder-secondary
+           text-mid font-light focus:outline-none focus:border-white/30 rounded-none;
+  }
+
+  /* ── DaisyUI Label tweaks ── */
+  .label-text {
+    @apply text-xxs font-medium text-secondary uppercase tracking-label;
+  }
+
+  /* ── DaisyUI Footer tweaks ──
+     footer-title hardcodes opacity:0.6, margin-bottom:0.5rem — no variable. */
+  /* .footer-title {
+    @apply text-2xs text-secondary tracking-label opacity-100 mb-5;
+  }
+  .footer a {
+    @apply text-md text-dark-300 font-light no-underline;
+  }
+  .footer a:hover {
+    @apply text-primary-content;
+  } */
+
+  /* ── DaisyUI Navbar tweaks ──
+     min-height and padding are hardcoded — no variable. */
+  .navbar {
+    @apply min-h-0 p-0;
   }
 
   /* ──────────────────────────────
      Typography – Labels & Body
      ────────────────────────────── */
 
-  /* Section label — eyebrow text above headings */
-  .section-label {
-    @apply text-sm font-medium uppercase tracking-label text-dark-400 mb-6 block;
-  }
+ 
 
-  /* Body text sizes — the default prose styles */
   .text-body {
-    @apply text-md text-dark-400 leading-relaxed font-light;
+    @apply text-md leading-relaxed font-light;
   }
   .text-body-sm {
-    @apply text-sm text-dark-400 leading-relaxed font-light;
+    @apply text-sm leading-relaxed font-light;
   }
   .text-body-xs {
-    @apply text-mid text-dark-400 font-light;
+    @apply text-mid font-light;
   }
 
-  /* Meta — tiny labels under stats, spec tables */
   .text-meta {
-    @apply text-2xs text-dark-400 uppercase tracking-label;
+    @apply text-2xs text-info uppercase tracking-label;
   }
 
-  /* Index — numbered list markers (01, 02…) */
   .text-index {
     @apply text-mid text-dark-200 font-medium tabular-nums;
   }
 
-  /* Link — navigation-style small caps links */
   .text-link {
     @apply text-xs font-medium uppercase tracking-[0.15em] transition-colors;
   }
 
-  /* Footnote — copyright, bottom-bar fine print */
   .text-footnote {
     @apply text-xxs text-dark-600;
   }
 
-  /* Badge — status tags on project cards */
-  .badge {
-    @apply px-3 py-1.5 text-2xs font-medium uppercase tracking-wider;
-  }
-
-  /* Stat — bold display values in spec tables and stat grids */
   .text-stat {
-    @apply font-display font-bold text-dark-900 tracking-tight;
+    @apply font-display font-bold text-base-content tracking-tight;
   }
 
-  /* Spec value — lighter values in unit detail spec rows */
   .text-spec {
     @apply text-md text-dark-700 font-medium;
   }
@@ -88,64 +228,18 @@
      Typography – Headings
      ────────────────────────────── */
 
-  /* Hero heading — full-bleed page heroes */
   .heading-hero {
-    @apply font-display font-extrabold text-white leading-[0.95] tracking-tight uppercase;
+    @apply font-display font-extrabold text-primary-content leading-[0.95] tracking-tight uppercase;
   }
 
-  /* Section heading — main dark section titles */
-  .section-heading {
-    @apply font-display text-3xl md:text-5xl font-bold text-dark-950 tracking-tight leading-[1.1] uppercase;
-  }
 
-  /* Section heading light — CTA / dark-bg section titles */
-  .section-heading-light {
-    @apply font-display text-3xl md:text-5xl font-extrabold text-white tracking-tight uppercase;
-  }
 
-  /* Card heading — service rows, value cards (md size) */
   .heading-card {
-    @apply font-display text-xl md:text-2xl font-bold text-dark-950 uppercase tracking-tight;
+    @apply font-display text-xl md:text-2xl font-bold text-base-content uppercase tracking-tight;
   }
 
-  /* Card heading sm — project cards, unit rows (sm size) */
   .heading-card-sm {
-    @apply font-display text-lg font-bold text-dark-900 uppercase tracking-tight;
-  }
-
-  /* ──────────────────────────────
-     Forms
-     ────────────────────────────── */
-
-  /* Form label — field labels */
-  .form-label {
-    @apply block text-xxs font-medium text-dark-500 uppercase tracking-label mb-3;
-  }
-
-  /* Form input — underline-style fields */
-  .form-input {
-    @apply w-full px-0 py-3 border-0 border-b border-dark-200 text-sm text-dark-900 placeholder-dark-300
-           focus:outline-none focus:border-dark-900 transition-colors bg-transparent font-light;
-  }
-
-  /* Form input dark — dark background fields */
-  .form-input-dark {
-    @apply w-full px-4 py-3.5 bg-white/5 border border-white/10 text-white placeholder-dark-500
-           text-mid font-light focus:outline-none focus:border-white/30 transition-colors;
-  }
-
-  /* ──────────────────────────────
-     Footer
-     ────────────────────────────── */
-
-  .footer-heading {
-    @apply text-meta text-dark-500 text-xxs mb-5;
-  }
-  .footer-link {
-    @apply text-mid text-dark-300 hover:text-white transition-colors font-light;
-  }
-  .footer-text {
-    @apply text-mid text-dark-300 font-light;
+    @apply font-display text-lg font-bold text-base-content uppercase tracking-tight;
   }
 
   /* ──────────────────────────────
@@ -154,7 +248,19 @@
   .section-padding {
     @apply py-24 md:py-32 px-6 md:px-8;
   }
-  .container-main {
-    @apply max-w-[1200px] mx-auto;
+  .section {
+    @apply py-24 md:py-32;
+  }
+  .section-label {
+    @apply text-sm font-medium uppercase tracking-label block;
+  }
+  .section-heading {
+    @apply font-display text-3xl md:text-5xl font-bold tracking-tight leading-[1.1] uppercase;
+  }
+  /* .section-heading-light {
+    @apply font-display text-3xl md:text-5xl font-bold tracking-tight uppercase;
+  } */
+  .container {
+    @apply container w-full mx-auto px-6 md:px-8;;
   }
 }
