@@ -166,18 +166,6 @@
     @apply text-xxs font-medium text-secondary uppercase tracking-label;
   }
 
-  /* ── DaisyUI Footer tweaks ──
-     footer-title hardcodes opacity:0.6, margin-bottom:0.5rem — no variable. */
-  /* .footer-title {
-    @apply text-2xs text-secondary tracking-label opacity-100 mb-5;
-  }
-  .footer a {
-    @apply text-md text-dark-300 font-light no-underline;
-  }
-  .footer a:hover {
-    @apply text-primary-content;
-  } */
-
   /* ── DaisyUI Navbar tweaks ──
      min-height and padding are hardcoded — no variable. */
   .navbar {
@@ -187,8 +175,6 @@
   /* ──────────────────────────────
      Typography – Labels & Body
      ────────────────────────────── */
-
- 
 
   .text-body {
     @apply text-md leading-relaxed font-light;
@@ -232,8 +218,6 @@
     @apply font-display font-extrabold text-primary-content leading-[0.95] tracking-tight uppercase;
   }
 
-
-
   .heading-card {
     @apply font-display text-xl md:text-2xl font-bold text-base-content uppercase tracking-tight;
   }
@@ -257,10 +241,7 @@
   .section-heading {
     @apply font-display text-3xl md:text-5xl font-bold tracking-tight leading-[1.1] uppercase;
   }
-  /* .section-heading-light {
-    @apply font-display text-3xl md:text-5xl font-bold tracking-tight uppercase;
-  } */
   .container {
-    @apply container w-full mx-auto px-6 md:px-8;;
+    @apply container w-full mx-auto px-6 md:px-8;
   }
 }
