@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { t, getI18nPaths } from '../../i18n/utils';
+import type { Lang } from '../../i18n/translations';
+
+export function getStaticPaths() { return getI18nPaths(); }
+
+const { lang } = Astro.params as { lang: Lang };
+
+const content = {
+  en: {
+    title: 'Terms of Service',
+    body: 'This page will contain the terms of service for Dotta & Cunha, Lda. Please check back soon.',
+  },
+  pt: {
+    title: 'Termos de Serviço',
+    body: 'Esta página conterá os termos de serviço da Dotta & Cunha, Lda. Por favor, volte em breve.',
+  },
+};
+
+const page = content[lang];
+---
+
+<BaseLayout title={page.title} lang={lang}>
+  <section class="section bg-base-100 text-base-content">
+    <div class="container max-w-3xl">
+      <h1 class="heading-hero text-4xl md:text-5xl mb-8">{page.title}</h1>
+      <p class="text-body">{page.body}</p>
+    </div>
+  </section>
+</BaseLayout>
