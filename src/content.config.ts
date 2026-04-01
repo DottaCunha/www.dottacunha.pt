@@ -28,6 +28,7 @@ const projects = defineCollection({
     description: z.string(),
     image: z.string(),
     gallery: z.array(z.string()).optional(),
+    visible: z.boolean().default(true),
     featured: z.boolean().default(false),
     order: z.number().default(0),
     units: z.array(unitSchema).optional(),

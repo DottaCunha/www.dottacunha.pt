@@ -1,4 +1,6 @@
 ---
+visible: false
+featured: false
 title: "Bairro Alto Living"
 location: "Bairro Alto, Lisbon"
 type: "Rehabilitation"
@@ -8,7 +10,6 @@ status: "completed"
 year: "2022"
 description: "A sensitive rehabilitation of a historic Bairro Alto building — transforming 16 units into modern apartments while preserving original character."
 image: "/images/architecture-03.jpg"
-featured: false
 order: 5
 units:
   - id: "t0-a"

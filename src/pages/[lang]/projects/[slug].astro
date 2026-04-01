@@ -11,7 +11,7 @@ export async function getStaticPaths() {
   const paths = [];
 
   for (const lang of supportedLangs) {
-    const langProjects = allProjects.filter((p) => p.id.startsWith(`${lang}/`));
+    const langProjects = allProjects.filter((p) => p.id.startsWith(`${lang}/`) && p.data.visible !== false);
     for (const project of langProjects) {
       const slug = getProjectSlug(project.id);
       paths.push({

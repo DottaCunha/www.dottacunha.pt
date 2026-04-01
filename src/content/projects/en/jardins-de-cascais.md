@@ -1,4 +1,6 @@
 ---
+visible: false
+featured: false
 title: "Jardins de Cascais"
 location: "Cascais"
 type: "Townhouses"
@@ -8,7 +10,6 @@ status: "under_construction"
 year: "2025"
 description: "Eight elegant townhouses with private gardens, just steps from the Cascais coastline. Modern design meets coastal living."
 image: "/images/architecture-04.jpg"
-featured: true
 order: 2
 units:
   - id: "th-a"

@@ -1,4 +1,6 @@
 ---
+visible: false
+featured: false
 title: "Parque das Nações Residences"
 location: "Parque das Nações, Lisbon"
 type: "Apartments"
@@ -8,7 +10,6 @@ status: "under_construction"
 year: "2026"
 description: "A modern residential complex with 36 apartments, shared amenities including rooftop pool, gym, and co-working space."
 image: "/images/architecture-01.jpg"
-featured: false
 order: 6
 units:
   - id: "t1-a"

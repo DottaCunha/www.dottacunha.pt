@@ -1,4 +1,6 @@
 ---
+visible: false
+featured: false
 title: "Residências da Estrela"
 location: "Estrela, Lisboa"
 type: "Apartamentos de Luxo"
@@ -8,7 +10,6 @@ status: "completed"
 year: "2024"
 description: "Uma coleção boutique de 12 apartamentos de luxo no coração da Estrela, com acabamentos premium, terraços privados e vistas panorâmicas da cidade."
 image: "/images/architecture-06.jpg"
-featured: true
 order: 1
 units:
   - id: "t1-a"

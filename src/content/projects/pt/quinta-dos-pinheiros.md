@@ -1,4 +1,6 @@
 ---
+visible: false
+featured: false
 title: "Quinta dos Pinheiros"
 location: "Sintra"
 type: "Villas"
@@ -8,7 +10,6 @@ status: "completed"
 year: "2023"
 description: "Cinco villas exclusivas nas colinas de Sintra, rodeadas pela natureza. Cada casa tem piscina privada, jardins e interiores personalizados."
 image: "/images/architecture-08.jpg"
-featured: false
 order: 4
 units:
   - id: "v4-a"

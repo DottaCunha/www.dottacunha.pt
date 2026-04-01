@@ -1,4 +1,6 @@
 ---
+visible: false
+featured: false
 title: "Vista do Tejo"
 location: "Alcântara, Lisboa"
 type: "Apartamentos Premium"
@@ -8,7 +10,6 @@ status: "coming_soon"
 year: "2026"
 description: "Um desenvolvimento ribeirinho marcante com 24 apartamentos premium, vistas desimpedidas do Tejo e arquitetura contemporânea."
 image: "/images/architecture-07.jpg"
-featured: true
 order: 3
 units:
   - id: "t1-river"

@@ -1,4 +1,6 @@
 ---
+visible: false
+featured: false
 title: "Bairro Alto Living"
 location: "Bairro Alto, Lisboa"
 type: "Reabilitação"
@@ -8,7 +10,6 @@ status: "completed"
 year: "2022"
 description: "Uma reabilitação sensível de um edifício histórico do Bairro Alto — transformando 16 unidades em apartamentos modernos preservando o carácter original."
 image: "/images/architecture-03.jpg"
-featured: false
 order: 5
 units:
   - id: "t0-a"

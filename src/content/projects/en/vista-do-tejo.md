@@ -1,4 +1,6 @@
 ---
+visible: false
+featured: false
 title: "Vista do Tejo"
 location: "Alcântara, Lisbon"
 type: "Premium Apartments"
@@ -8,7 +10,6 @@ status: "coming_soon"
 year: "2026"
 description: "A landmark riverside development offering 24 premium apartments with unobstructed Tagus River views and contemporary architecture."
 image: "/images/architecture-07.jpg"
-featured: true
 order: 3
 units:
   - id: "t1-river"

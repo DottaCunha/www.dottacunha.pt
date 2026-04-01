@@ -1,4 +1,6 @@
 ---
+visible: false
+featured: false
 title: "Residências Parque das Nações"
 location: "Parque das Nações, Lisboa"
 type: "Apartamentos"
@@ -8,7 +10,6 @@ status: "under_construction"
 year: "2026"
 description: "Um complexo residencial moderno com 36 apartamentos, amenidades partilhadas incluindo piscina no terraço, ginásio e espaço de co-working."
 image: "/images/architecture-01.jpg"
-featured: false
 order: 6
 units:
   - id: "t1-a"

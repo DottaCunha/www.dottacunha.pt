@@ -1,4 +1,7 @@
 ---
+order: 1
+visible: false
+featured: false
 title: "Residências da Estrela"
 location: "Estrela, Lisbon"
 type: "Luxury Apartments"
@@ -8,8 +11,6 @@ status: "completed"
 year: "2024"
 description: "A boutique collection of 12 luxury apartments in the heart of Estrela, featuring premium finishes, private terraces, and panoramic city views."
 image: "/images/architecture-06.jpg"
-featured: true
-order: 1
 units:
   - id: "t1-a"
     typology: "T1"
