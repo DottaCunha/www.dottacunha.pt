@@ -44,4 +44,64 @@ const services = defineCollection({
   }),
 });
 
-export const collections = { projects, services };
+const serviceItemSchema = z.object({
+  key: z.string(),
+  title: z.string(),
+  description: z.string(),
+});
+
+const ctaButtonSchema = z.object({
+  label: z.string(),
+  href: z.string(),
+});
+
+const pages = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/pages' }),
+  schema: z.object({
+    // Hero
+    hero: z.object({
+      label: z.string(),
+      title: z.string(),
+      description: z.string(),
+      image: z.string(),
+      cta: ctaButtonSchema,
+      secondaryCta: ctaButtonSchema,
+    }),
+
+    // About teaser (body supports markdown)
+    about: z.object({
+      label: z.string(),
+      heading: z.string(),
+      body: z.string(),
+      cta: ctaButtonSchema,
+      images: z.array(z.string()),
+    }),
+
+    // Featured projects
+    projects: z.object({
+      label: z.string(),
+      heading: z.string(),
+      viewAllLabel: z.string(),
+    }),
+
+    // Services overview
+    services: z.object({
+      label: z.string(),
+      heading: z.string(),
+      description: z.string(),
+      items: z.array(serviceItemSchema),
+    }),
+
+    // CTA
+    cta: z.object({
+      label: z.string(),
+      heading: z.string(),
+      description: z.string(),
+      image: z.string(),
+      primaryCta: ctaButtonSchema,
+      secondaryCta: ctaButtonSchema,
+    }),
+  }),
+});
+
+export const collections = { projects, services, pages };

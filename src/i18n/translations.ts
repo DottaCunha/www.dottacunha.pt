@@ -17,30 +17,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     'nav.contact': 'Contact',
     'nav.cta': 'Get in Touch',
 
-    // Hero
-    'hero.label': 'Residential Development — Portugal',
-    'hero.title': 'Building with intention',
-    'hero.description': "We develop residential properties in Portugal's most desirable locations. Quality architecture, thoughtful design.",
-    'hero.cta': 'View Projects',
-    'hero.learn': 'Learn more',
-
-    // Stats
-    'stats.projects': 'Projects',
-    'stats.years': 'Years',
-    'stats.homes': 'Homes Built',
-    'stats.satisfaction': 'Satisfaction',
-
-    // About teaser
-    'about.label': 'About',
-    'about.heading': 'Rooted in quality',
-    'about.p1': 'Dotta & Cunha is a residential development company based in Lisbon. We bring together architecture, engineering, and project management to create homes that stand the test of time.',
-    'about.p2': 'Founded with a commitment to quality over quantity, we focus on carefully selected locations and design that serves the people who live there.',
-    'about.cta': 'About Us',
-
-    // Projects section
-    'projects.label': 'Portfolio',
-    'projects.heading': 'Selected Projects',
-    'projects.viewAll': 'View all projects',
+    // Projects (shared keys used across pages)
     'projects.units': 'units',
 
     // Project statuses
@@ -48,25 +25,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     'status.underConstruction': 'Under Construction',
     'status.comingSoon': 'Coming Soon',
 
-    // Services section
-    'services.label': 'Services',
-    'services.heading': 'What we do',
-    'services.description': 'End-to-end residential development — from land acquisition and design through construction and delivery.',
-    'services.development': 'Development',
-    'services.development.desc': 'Full-cycle residential development from land to keys.',
-    'services.architecture': 'Architecture',
-    'services.architecture.desc': 'Design that balances form, function, and feeling.',
-    'services.projectManagement': 'Project Management',
-    'services.projectManagement.desc': 'Rigorous oversight of timelines, budgets, and quality.',
-    'services.investment': 'Investment Advisory',
-    'services.investment.desc': 'Market insights and strategic guidance for investors.',
-    'services.learnMore': 'Learn more',
-
-    // CTA
-    'cta.label': 'Contact',
-    'cta.heading.1': "Let's build",
-    'cta.heading.2': 'something together',
-    'cta.description': "Whether you're looking for your next home or exploring a development opportunity — we'd like to hear from you.",
+    // CTA (shared keys used on about + projects pages)
     'cta.primary': 'Get in Touch',
     'cta.secondary': 'Browse Projects',
 
@@ -255,30 +214,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     'nav.contact': 'Contacto',
     'nav.cta': 'Fale Connosco',
 
-    // Hero
-    'hero.label': 'Promoção Imobiliária — Portugal',
-    'hero.title': 'Construir com intenção',
-    'hero.description': 'Desenvolvemos propriedades residenciais nas localizações mais desejadas de Portugal. Arquitetura de qualidade, design pensado.',
-    'hero.cta': 'Ver Projetos',
-    'hero.learn': 'Saber mais',
-
-    // Stats
-    'stats.projects': 'Projetos',
-    'stats.years': 'Anos',
-    'stats.homes': 'Casas Construídas',
-    'stats.satisfaction': 'Satisfação',
-
-    // About teaser
-    'about.label': 'Sobre',
-    'about.heading': 'Raízes na qualidade',
-    'about.p1': 'A Dotta & Cunha é uma empresa de promoção imobiliária residencial sediada em Lisboa. Unimos arquitetura, engenharia e gestão de projetos para criar casas que resistem ao tempo.',
-    'about.p2': 'Fundada com o compromisso de qualidade sobre quantidade, focamo-nos em localizações cuidadosamente selecionadas e em design que serve as pessoas que lá vivem.',
-    'about.cta': 'Sobre Nós',
-
-    // Projects section
-    'projects.label': 'Portfólio',
-    'projects.heading': 'Projetos Selecionados',
-    'projects.viewAll': 'Ver todos os projetos',
+    // Projects (shared keys used across pages)
     'projects.units': 'unidades',
 
     // Project statuses
@@ -286,25 +222,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     'status.underConstruction': 'Em Construção',
     'status.comingSoon': 'Brevemente',
 
-    // Services section
-    'services.label': 'Serviços',
-    'services.heading': 'O que fazemos',
-    'services.description': 'Promoção imobiliária de ponta a ponta — da aquisição de terreno e design à construção e entrega.',
-    'services.development': 'Promoção',
-    'services.development.desc': 'Desenvolvimento imobiliário completo, do terreno à chave.',
-    'services.architecture': 'Arquitetura',
-    'services.architecture.desc': 'Design que equilibra forma, função e emoção.',
-    'services.projectManagement': 'Gestão de Projeto',
-    'services.projectManagement.desc': 'Supervisão rigorosa de prazos, orçamentos e qualidade.',
-    'services.investment': 'Consultoria de Investimento',
-    'services.investment.desc': 'Análise de mercado e orientação estratégica para investidores.',
-    'services.learnMore': 'Saber mais',
-
-    // CTA
-    'cta.label': 'Contacto',
-    'cta.heading.1': 'Vamos construir',
-    'cta.heading.2': 'algo juntos',
-    'cta.description': 'Seja à procura da sua próxima casa ou a explorar uma oportunidade de investimento — gostaríamos de o ouvir.',
+    // CTA (shared keys used on about + projects pages)
     'cta.primary': 'Fale Connosco',
     'cta.secondary': 'Ver Projetos',
 
