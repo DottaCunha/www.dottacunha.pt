@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import NetlifyForm from '../../components/NetlifyForm.astro';
 import { t, localizedPath, getI18nPaths } from '../../i18n/utils';
 import type { Lang } from '../../i18n/translations';
 import { getCollection } from 'astro:content';
@@ -11,6 +12,7 @@ const { lang } = Astro.params as { lang: Lang };
 const allPages = await getCollection('pages');
 const servicesPage = allPages.find(p => p.id === `${lang}/services`);
 const page = servicesPage!.data;
+const successMsg = lang === 'pt' ? 'Obrigado! Entraremos em contacto em breve.' : "Thank you! We'll be in touch soon.";
 ---
 
 <BaseLayout title={t('nav.services', lang)} lang={lang} darkHeader>
@@ -104,18 +106,18 @@ const page = servicesPage!.data;
         {page.form && (
         <div class="bg-white/5 p-8 md:p-10 border border-white/10">
           <h3 class="heading-card-sm text-primary-content mb-8">{page.form.title}</h3>
-          <form class="space-y-5 flex flex-col">
-            <input type="text" placeholder={page.form.namePlaceholder} class="input input-dark w-full" />
-            <input type="email" placeholder={page.form.emailPlaceholder} class="input input-dark w-full" />
-            <select class="select input-dark text-info w-full">
+          <NetlifyForm name="services-inquiry" class="space-y-5 flex flex-col" successMessage={successMsg}>
+            <input type="text" name="name" required placeholder={page.form.namePlaceholder} class="input input-dark w-full" />
+            <input type="email" name="email" required placeholder={page.form.emailPlaceholder} class="input input-dark w-full" />
+            <select name="interest" class="select input-dark text-info w-full">
               <option value="">{page.form.interestLabel}</option>
               {page.form.interests.map(interest => (
                 <option value={interest.value}>{interest.label}</option>
               ))}
             </select>
-            <textarea rows="3" placeholder={page.form.messagePlaceholder} class="textarea input-dark resize-none w-full"></textarea>
+            <textarea name="message" rows="3" placeholder={page.form.messagePlaceholder} class="textarea input-dark resize-none w-full"></textarea>
             <button type="submit" class="btn btn-primary btn-inverted w-full">{page.form.submitLabel}</button>
-          </form>
+          </NetlifyForm>
         </div>
         )}
       </div>

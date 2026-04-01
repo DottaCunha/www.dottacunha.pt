@@ -1,11 +1,13 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import NetlifyForm from '../../components/NetlifyForm.astro';
 import { t, localizedPath, getI18nPaths } from '../../i18n/utils';
 import type { Lang } from '../../i18n/translations';
 
 export function getStaticPaths() { return getI18nPaths(); }
 
 const { lang } = Astro.params as { lang: Lang };
+const successMsg = lang === 'pt' ? 'Obrigado! Entraremos em contacto em breve.' : "Thank you! We'll be in touch soon.";
 ---
 
 <BaseLayout title={t('nav.contact', lang)} lang={lang} darkHeader>
@@ -28,19 +30,19 @@ const { lang } = Astro.params as { lang: Lang };
           <h2 class="heading-card mb-2">{t('contactPage.formTitle', lang)}</h2>
           <p class="text-body-xs mb-10">{t('contactPage.formSubtitle', lang)}</p>
 
-          <form class="space-y-6">
+          <NetlifyForm name="contact" class="space-y-6" successMessage={successMsg}>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label for="first-name" class="label">
                   <span class="label-text">{t('contactPage.firstName', lang)}</span>
                 </label>
-                <input type="text" id="first-name" name="first-name" class="input w-full" />
+                <input type="text" id="first-name" name="first-name" required class="input w-full" />
               </div>
               <div>
                 <label for="last-name" class="label">
                   <span class="label-text">{t('contactPage.lastName', lang)}</span>
                 </label>
-                <input type="text" id="last-name" name="last-name" class="input w-full" />
+                <input type="text" id="last-name" name="last-name" required class="input w-full" />
               </div>
             </div>
 
@@ -48,7 +50,7 @@ const { lang } = Astro.params as { lang: Lang };
               <label for="email" class="label">
                 <span class="label-text">{t('contactPage.email', lang)}</span>
               </label>
-              <input type="email" id="email" name="email" class="input w-full" />
+              <input type="email" id="email" name="email" required class="input w-full" />
             </div>
 
             <div>
@@ -76,7 +78,7 @@ const { lang } = Astro.params as { lang: Lang };
               <label for="message" class="label">
                 <span class="label-text">{t('contactPage.message', lang)}</span>
               </label>
-              <textarea id="message" name="message" rows="4" class="textarea w-full resize-none" placeholder={t('contactPage.messagePlaceholder', lang)}></textarea>
+              <textarea id="message" name="message" rows="4" required class="textarea w-full resize-none" placeholder={t('contactPage.messagePlaceholder', lang)}></textarea>
             </div>
 
             <div class="pt-4">
@@ -85,7 +87,7 @@ const { lang } = Astro.params as { lang: Lang };
                 <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
               </button>
             </div>
-          </form>
+          </NetlifyForm>
         </div>
 
         <!-- Sidebar -->
@@ -100,12 +102,12 @@ const { lang } = Astro.params as { lang: Lang };
                 </div>
                 <div>
                   <div class="text-body-sm font-medium text-base-content mb-1">{t('contactPage.email', lang)}</div>
-                  <a href="mailto:info@dottacunha.com" class="text-body-sm hover:text-base-content transition-colors">info@dottacunha.com</a>
+                  <a href="mailto:info@dottacunha.com" class="text-body-sm hover:text-base-content transition-colors">partners@dottacunha.pt</a>
                 </div>
-                <div>
+                <!-- <div>
                   <div class="text-body-sm font-medium text-base-content mb-1">{t('contactPage.phone', lang)}</div>
                   <a href="tel:+351000000000" class="text-body-sm hover:text-base-content transition-colors">+351 XXX XXX XXX</a>
-                </div>
+                </div> -->
               </div>
             </div>
 

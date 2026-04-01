@@ -1,0 +1,84 @@
+---
+interface Props {
+  name: string;
+  class?: string;
+  successMessage?: string;
+}
+
+const {
+  name,
+  class: className = '',
+  successMessage = "Thank you! We'll be in touch soon.",
+} = Astro.props;
+---
+
+<div class="netlify-form-wrapper" data-success-message={successMessage}>
+  <form
+    name={name}
+    method="POST"
+    data-netlify="true"
+    netlify-honeypot="bot-field"
+    class={className}
+  >
+    <!-- Netlify hidden fields -->
+    <input type="hidden" name="form-name" value={name} />
+    <p class="hidden" aria-hidden="true">
+      <label>Don't fill this out: <input name="bot-field" /></label>
+    </p>
+
+    <!-- Form fields via slot -->
+    <slot />
+  </form>
+
+  <!-- Success state (hidden by default) -->
+  <div class="form-success hidden" role="alert">
+    <div class="flex flex-col items-center justify-center text-center py-12 gap-4">
+      <svg class="w-12 h-12 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <p class="text-body font-medium">{successMessage}</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.netlify-form-wrapper').forEach((wrapper) => {
+    const form = wrapper.querySelector('form');
+    const success = wrapper.querySelector('.form-success');
+    if (!form || !success) return;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = '...';
+      }
+
+      try {
+        const response = await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(new FormData(form) as any).toString(),
+        });
+
+        if (response.ok) {
+          form.classList.add('hidden');
+          success.classList.remove('hidden');
+        } else {
+          throw new Error('Form submission failed');
+        }
+      } catch {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = submitBtn.dataset.originalText || 'Submit';
+        }
+        alert('Something went wrong. Please try again.');
+      }
+    });
+
+    // Store original button text
+    const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+    if (btn) btn.dataset.originalText = btn.textContent || '';
+  });
+</script>

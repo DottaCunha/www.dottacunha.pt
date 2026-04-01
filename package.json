@@ -12,6 +12,7 @@
     "@tailwindcss/vite": "^4.2.2",
     "astro": "^5.0.0",
     "daisyui": "^5.5.19",
+    "oniguruma-to-es": "^4.3.5",
     "tailwindcss": "^4.2.2"
   }
 }
