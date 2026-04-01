@@ -6,7 +6,7 @@
 hero:
   label: "Sobre"
   title: "A Nossa História"
-  image: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1600&q=80"
+  image: "/images/architecture-05.jpg"
 
 story:
   label: "Quem Somos"
@@ -21,9 +21,9 @@ story:
     Em 15 anos, entregámos mais de 50 projetos e 500 casas em Portugal — cada uma um reflexo da nossa crença de que a boa arquitetura pode transformar a forma como as pessoas vivem.
 
 images:
-  - "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=600&q=80"
-  - "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80"
-  - "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&q=80"
+  - "/images/architecture-03.jpg"
+  - "/images/architecture-06.jpg"
+  - "/images/architecture-07.jpg"
 
 values:
   label: "Valores"

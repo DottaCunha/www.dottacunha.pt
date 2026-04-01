@@ -7,7 +7,7 @@ area: "55–130 m²"
 status: "under_construction"
 year: "2026"
 description: "A modern residential complex with 36 apartments, shared amenities including rooftop pool, gym, and co-working space."
-image: "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=1200&q=80"
+image: "/images/architecture-01.jpg"
 featured: false
 order: 6
 units:
@@ -25,7 +25,7 @@ units:
       - "Parking space"
       - "Pool and gym access"
     photos:
-      - "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&q=80"
+      - "/images/architecture-01.jpg"
   - id: "t2-a"
     typology: "T2"
     area: "85 m²"
@@ -42,8 +42,8 @@ units:
       - "Storage room"
       - "Pool and gym access"
     photos:
-      - "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80"
-      - "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=800&q=80"
+      - "/images/architecture-04.jpg"
+      - "/images/architecture-03.jpg"
   - id: "t2-b"
     typology: "T2"
     area: "90 m²"
@@ -61,7 +61,7 @@ units:
       - "Parking space"
       - "Storage room"
     photos:
-      - "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80"
+      - "/images/architecture-07.jpg"
   - id: "t3-a"
     typology: "T3"
     area: "115 m²"
@@ -79,7 +79,7 @@ units:
       - "Storage room"
       - "Pool, gym, and co-working access"
     photos:
-      - "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&q=80"
+      - "/images/architecture-05.jpg"
   - id: "t4-penthouse"
     typology: "T4 Penthouse"
     area: "130 m²"
@@ -98,6 +98,6 @@ units:
       - "Storage room"
       - "Access to all amenities"
     photos:
-      - "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80"
-      - "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80"
+      - "/images/architecture-08.jpg"
+      - "/images/architecture-06.jpg"
 ---

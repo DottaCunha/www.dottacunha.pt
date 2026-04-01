@@ -7,7 +7,7 @@ area: "80–180 m²"
 status: "completed"
 year: "2024"
 description: "Uma coleção boutique de 12 apartamentos de luxo no coração da Estrela, com acabamentos premium, terraços privados e vistas panorâmicas da cidade."
-image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80"
+image: "/images/architecture-06.jpg"
 featured: true
 order: 1
 units:
@@ -25,8 +25,8 @@ units:
       - "Pavimento em carvalho"
       - "Ar condicionado por condutas"
     photos:
-      - "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80"
-      - "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&q=80"
+      - "/images/architecture-07.jpg"
+      - "/images/architecture-02.jpg"
   - id: "t2-a"
     typology: "T2"
     area: "110 m²"
@@ -42,8 +42,8 @@ units:
       - "Pavimento em carvalho"
       - "Lugar de estacionamento"
     photos:
-      - "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80"
-      - "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=800&q=80"
+      - "/images/architecture-04.jpg"
+      - "/images/architecture-03.jpg"
   - id: "t3-a"
     typology: "T3"
     area: "145 m²"
@@ -59,8 +59,8 @@ units:
       - "Dois lugares de estacionamento"
       - "Arrecadação"
     photos:
-      - "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&q=80"
-      - "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&q=80"
+      - "/images/architecture-01.jpg"
+      - "/images/architecture-05.jpg"
   - id: "t3-duplex"
     typology: "T3 Duplex"
     area: "180 m²"
@@ -77,6 +77,6 @@ units:
       - "Cozinha Gaggenau"
       - "Dois lugares de estacionamento"
     photos:
-      - "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80"
-      - "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80"
+      - "/images/architecture-08.jpg"
+      - "/images/architecture-06.jpg"
 ---

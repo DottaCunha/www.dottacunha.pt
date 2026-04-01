@@ -6,7 +6,7 @@
 hero:
   label: "About"
   title: "Our Story"
-  image: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1600&q=80"
+  image: "/images/architecture-05.jpg"
 
 story:
   label: "Who We Are"
@@ -21,9 +21,9 @@ story:
     Over 15 years, we've delivered more than 50 projects and 500 homes across Portugal — each one a reflection of our belief that good architecture can transform how people live.
 
 images:
-  - "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=600&q=80"
-  - "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80"
-  - "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&q=80"
+  - "/images/architecture-03.jpg"
+  - "/images/architecture-06.jpg"
+  - "/images/architecture-07.jpg"
 
 values:
   label: "Values"

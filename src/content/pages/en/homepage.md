@@ -9,7 +9,7 @@ hero:
   label: "Real Estate Development"
   title: "Building with intention"
   description: "We develop residential properties in Portugal's most desirable locations. Quality architecture, thoughtful design."
-  image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1600&q=80"
+  image: "/images/architecture-02.jpg"
   cta:
     label: "View Projects"
     href: "/projects"
@@ -27,8 +27,8 @@ about:
     label: "About Us"
     href: "/about"
   images:
-    - "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=600&q=80"
-    - "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=600&q=80"
+    - "/images/architecture-05.jpg"
+    - "/images/architecture-03.jpg"
 
 projects:
   label: "Portfolio"
@@ -57,7 +57,7 @@ cta:
   label: "Contact"
   heading: "Let's build something together"
   description: "Whether you're looking for your next home or exploring a development opportunity — we'd like to hear from you."
-  image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1600&q=80"
+  image: "/images/architecture-02.jpg"
   primaryCta:
     label: "Get in Touch"
     href: "/contact"

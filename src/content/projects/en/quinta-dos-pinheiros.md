@@ -7,7 +7,7 @@ area: "300–450 m²"
 status: "completed"
 year: "2023"
 description: "Five exclusive villas nestled in the Sintra hills, surrounded by nature. Each home features private pools, landscaped gardens, and bespoke interiors."
-image: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&q=80"
+image: "/images/architecture-08.jpg"
 featured: false
 order: 4
 units:
@@ -26,7 +26,7 @@ units:
       - "Double garage"
       - "Solar panels"
     photos:
-      - "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80"
+      - "/images/architecture-08.jpg"
   - id: "v5-a"
     typology: "V5"
     area: "450 m²"
@@ -44,6 +44,6 @@ units:
       - "Triple garage"
       - "Solar panels"
     photos:
-      - "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80"
-      - "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&q=80"
+      - "/images/architecture-06.jpg"
+      - "/images/architecture-05.jpg"
 ---

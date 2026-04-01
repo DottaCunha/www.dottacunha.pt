@@ -7,7 +7,7 @@ area: "200–280 m²"
 status: "under_construction"
 year: "2025"
 description: "Eight elegant townhouses with private gardens, just steps from the Cascais coastline. Modern design meets coastal living."
-image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80"
+image: "/images/architecture-04.jpg"
 featured: true
 order: 2
 units:
@@ -26,8 +26,8 @@ units:
       - "Box garage"
       - "EV charger pre-installation"
     photos:
-      - "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80"
-      - "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&q=80"
+      - "/images/architecture-04.jpg"
+      - "/images/architecture-02.jpg"
   - id: "th-b"
     typology: "T3"
     area: "210 m²"
@@ -43,7 +43,7 @@ units:
       - "Box garage"
       - "Home automation"
     photos:
-      - "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&q=80"
+      - "/images/architecture-01.jpg"
   - id: "th-c"
     typology: "T4"
     area: "250 m²"
@@ -60,8 +60,8 @@ units:
       - "Double garage"
       - "Home automation"
     photos:
-      - "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80"
-      - "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&q=80"
+      - "/images/architecture-08.jpg"
+      - "/images/architecture-05.jpg"
   - id: "th-d"
     typology: "T4 Duplex"
     area: "280 m²"
@@ -79,5 +79,5 @@ units:
       - "Double garage"
       - "Private pool pre-installation"
     photos:
-      - "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80"
+      - "/images/architecture-06.jpg"
 ---

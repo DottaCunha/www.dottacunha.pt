@@ -9,7 +9,7 @@ hero:
   label: "Promoção Imobiliária — Portugal"
   title: "Construir com intenção"
   description: "Desenvolvemos propriedades residenciais nas localizações mais desejadas de Portugal. Arquitetura de qualidade, design pensado."
-  image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1600&q=80"
+  image: "/images/architecture-02.jpg"
   cta:
     label: "Ver Projetos"
     href: "/projects"
@@ -27,8 +27,8 @@ about:
     label: "Sobre Nós"
     href: "/about"
   images:
-    - "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=600&q=80"
-    - "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=600&q=80"
+    - "/images/architecture-05.jpg"
+    - "/images/architecture-03.jpg"
 
 projects:
   label: "Portfólio"
@@ -57,7 +57,7 @@ cta:
   label: "Contacto"
   heading: "Vamos construir algo juntos"
   description: "Seja à procura da sua próxima casa ou a explorar uma oportunidade de investimento — gostaríamos de o ouvir."
-  image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1600&q=80"
+  image: "/images/architecture-02.jpg"
   primaryCta:
     label: "Fale Connosco"
     href: "/contact"

@@ -7,7 +7,7 @@ area: "45–120 m²"
 status: "completed"
 year: "2022"
 description: "Uma reabilitação sensível de um edifício histórico do Bairro Alto — transformando 16 unidades em apartamentos modernos preservando o carácter original."
-image: "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=1200&q=80"
+image: "/images/architecture-03.jpg"
 featured: false
 order: 5
 units:
@@ -24,7 +24,7 @@ units:
       - "Pavimento em madeira restaurado"
       - "Kitchenette equipada"
     photos:
-      - "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=800&q=80"
+      - "/images/architecture-03.jpg"
   - id: "t2-top"
     typology: "T2"
     area: "85 m²"
@@ -39,7 +39,7 @@ units:
       - "Cozinha aberta"
       - "Pavimento em madeira restaurado"
     photos:
-      - "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80"
+      - "/images/architecture-04.jpg"
   - id: "t3-penth"
     typology: "T3"
     area: "120 m²"
@@ -55,6 +55,6 @@ units:
       - "Tectos altos originais"
       - "Lareira"
     photos:
-      - "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80"
-      - "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&q=80"
+      - "/images/architecture-07.jpg"
+      - "/images/architecture-05.jpg"
 ---
