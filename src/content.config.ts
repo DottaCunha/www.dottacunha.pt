@@ -50,6 +50,11 @@ const serviceItemSchema = z.object({
   description: z.string(),
 });
 
+const valueItemSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+});
+
 const ctaButtonSchema = z.object({
   label: z.string(),
   href: z.string(),
@@ -58,49 +63,66 @@ const ctaButtonSchema = z.object({
 const pages = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/pages' }),
   schema: z.object({
-    // Hero
+    // Hero (shared across pages)
     hero: z.object({
       label: z.string(),
       title: z.string(),
-      description: z.string(),
+      description: z.string().optional(),
       image: z.string(),
-      cta: ctaButtonSchema,
-      secondaryCta: ctaButtonSchema,
-    }),
+      cta: ctaButtonSchema.optional(),
+      secondaryCta: ctaButtonSchema.optional(),
+    }).optional(),
 
-    // About teaser (body supports markdown)
+    // About teaser — homepage
     about: z.object({
       label: z.string(),
       heading: z.string(),
       body: z.string(),
       cta: ctaButtonSchema,
       images: z.array(z.string()),
-    }),
+    }).optional(),
 
-    // Featured projects
+    // Story — about page
+    story: z.object({
+      label: z.string(),
+      heading: z.string(),
+      body: z.string(),
+    }).optional(),
+
+    // Image gallery
+    images: z.array(z.string()).optional(),
+
+    // Values — about page
+    values: z.object({
+      label: z.string(),
+      heading: z.string(),
+      items: z.array(valueItemSchema),
+    }).optional(),
+
+    // Featured projects — homepage
     projects: z.object({
       label: z.string(),
       heading: z.string(),
       viewAllLabel: z.string(),
-    }),
+    }).optional(),
 
-    // Services overview
+    // Services overview — homepage
     services: z.object({
       label: z.string(),
       heading: z.string(),
       description: z.string(),
       items: z.array(serviceItemSchema),
-    }),
+    }).optional(),
 
     // CTA
     cta: z.object({
-      label: z.string(),
+      label: z.string().optional(),
       heading: z.string(),
       description: z.string(),
-      image: z.string(),
+      image: z.string().optional(),
       primaryCta: ctaButtonSchema,
-      secondaryCta: ctaButtonSchema,
-    }),
+      secondaryCta: ctaButtonSchema.optional(),
+    }).optional(),
   }),
 });
 
