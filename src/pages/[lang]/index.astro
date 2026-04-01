@@ -145,14 +145,16 @@ const aboutParagraphs = page.about.body.split(/\n\s*\n/).map((p: string) => p.tr
           <div class="border-b border-base-300">
             <a
               href={`${localizedPath('/services', lang)}#${service.key}`}
-              class="group w-full flex items-center justify-between py-8 text-left transition-all duration-300 hover:pl-4"
+              class="group flex items-center justify-between py-8 text-left transition-all duration-300 hover:pl-4"
             >
-              <div class="flex items-center gap-6">
-                <span class="text-index">0{index + 1}</span>
-                <h3 class="heading-card group-hover:text-secondary transition-colors">{service.title}</h3>
-                <p class="text-body-sm max-w-lg">{service.description}</p>
+              <div class="flex flex-col md:flex-row md:items-center gap-2 md:gap-6">
+                <div class="flex items-center gap-6">
+                  <span class="text-index">0{index + 1}</span>
+                  <h3 class="heading-card group-hover:text-secondary transition-colors">{service.title}</h3>
+                </div>
+                <p class="text-body-sm max-w-lg pl-[calc(theme(spacing.6)+2ch)] md:pl-0">{service.description}</p>
               </div>
-              <svg class="w-5 h-5 text-dark-300 group-hover:text-base-content transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+              <svg class="w-5 h-5 shrink-0 text-dark-300 group-hover:text-base-content transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
             </a>
           </div>
         ))}
