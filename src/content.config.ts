@@ -50,6 +50,19 @@ const serviceItemSchema = z.object({
   description: z.string(),
 });
 
+const serviceDetailSchema = z.object({
+  key: z.string(),
+  title: z.string(),
+  description: z.string(),
+  features: z.array(z.string()),
+});
+
+const processStepSchema = z.object({
+  step: z.string(),
+  title: z.string(),
+  description: z.string(),
+});
+
 const valueItemSchema = z.object({
   title: z.string(),
   description: z.string(),
@@ -114,7 +127,28 @@ const pages = defineCollection({
       items: z.array(serviceItemSchema),
     }).optional(),
 
-    // CTA
+    // Detailed services — services page
+    serviceDetails: z.array(serviceDetailSchema).optional(),
+
+    // Process — services page
+    process: z.object({
+      label: z.string(),
+      heading: z.string(),
+      items: z.array(processStepSchema),
+    }).optional(),
+
+    // Contact form — services page
+    form: z.object({
+      title: z.string(),
+      namePlaceholder: z.string(),
+      emailPlaceholder: z.string(),
+      interestLabel: z.string(),
+      interests: z.array(z.object({ value: z.string(), label: z.string() })),
+      messagePlaceholder: z.string(),
+      submitLabel: z.string(),
+    }).optional(),
+
+    // CTA (extended with optional benefits)
     cta: z.object({
       label: z.string().optional(),
       heading: z.string(),
@@ -122,6 +156,7 @@ const pages = defineCollection({
       image: z.string().optional(),
       primaryCta: ctaButtonSchema,
       secondaryCta: ctaButtonSchema.optional(),
+      benefits: z.array(z.string()).optional(),
     }).optional(),
   }),
 });

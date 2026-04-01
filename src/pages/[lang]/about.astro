@@ -58,7 +58,7 @@ const storyParagraphs = page.story?.body.split(/\n\s*\n/).map((p: string) => p.t
         <div class="grid grid-cols-3 gap-4 h-[50vh]">
           {page.images.map((src: string, i: number) => (
             <div class="overflow-hidden">
-              <img src={src} alt={`Image ${i + 1}`} class="w-full h-full object-cover" />
+              <img src={src} alt={`Image ${i + 1}`} class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
             </div>
           ))}
         </div>

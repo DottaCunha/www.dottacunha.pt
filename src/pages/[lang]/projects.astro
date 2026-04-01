@@ -3,24 +3,31 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { t, localizedPath, getI18nPaths } from '../../i18n/utils';
 import type { Lang } from '../../i18n/translations';
 import { getProjectsByLang, getProjectSlug, getStatusLabel } from '../../lib/projects';
+import { getCollection } from 'astro:content';
 
 export function getStaticPaths() { return getI18nPaths(); }
 
 const { lang } = Astro.params as { lang: Lang };
 const projects = await getProjectsByLang(lang);
+
+const allPages = await getCollection('pages');
+const projectsPage = allPages.find(p => p.id === `${lang}/projects`);
+const page = projectsPage!.data;
 ---
 
 <BaseLayout title={t('nav.projects', lang)} lang={lang} darkHeader>
+  {page.hero && (
   <section class="section relative min-h-[40vh] flex items-end overflow-hidden bg-primary text-primary-content">
     <div class="absolute inset-0">
-      <img src="/images/architecture-05.jpg" alt="Architecture" class="w-full h-full object-cover opacity-30" loading="eager" />
+      <img src={page.hero.image} alt={page.hero.title} class="w-full h-full object-cover opacity-30" loading="eager" />
       <div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/40 to-primary/60"></div>
     </div>
     <div class="container relative z-10">
-      <span class="section-label mb-4">{t('projectsPage.label', lang)}</span>
-      <h1 class="heading-hero text-5xl md:text-7xl lg:text-display">{t('projectsPage.heading', lang)}</h1>
+      <span class="section-label mb-4">{page.hero.label}</span>
+      <h1 class="heading-hero text-5xl md:text-7xl lg:text-display">{page.hero.title}</h1>
     </div>
   </section>
+  )}
 
   <section class="section bg-base-100 text-base-content">
     <div class="container">
@@ -84,18 +91,22 @@ const projects = await getProjectsByLang(lang);
     </div>
   </section>
 
+  {page.cta && (
   <section class="relative bg-secondary text-secondary-content overflow-hidden">
+    {page.cta.image && (
     <div class="absolute inset-0">
-      <img src="/images/architecture-02.jpg" alt="Architecture" class="w-full h-full object-cover opacity-15" />
+      <img src={page.cta.image} alt={page.cta.heading} class="w-full h-full object-cover opacity-15" />
     </div>
+    )}
     <div class="container section relative z-10">
       <div class="flex flex-col items-center gap-6">
-        <h2 class="section-heading">{t('projectsPage.ctaHeading', lang)}</h2>
-        <p class="text-center max-w-md">{t('projectsPage.ctaDesc', lang)}</p>
-        <a href={localizedPath('/contact', lang)} class="btn btn-primary">
-          {t('cta.primary', lang)}
+        <h2 class="section-heading">{page.cta.heading}</h2>
+        <p class="text-center max-w-md">{page.cta.description}</p>
+        <a href={localizedPath(page.cta.primaryCta.href, lang)} class="btn btn-primary">
+          {page.cta.primaryCta.label}
         </a>
       </div>
     </div>
   </section>
+  )}
 </BaseLayout>

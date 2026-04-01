@@ -2,49 +2,37 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { t, localizedPath, getI18nPaths } from '../../i18n/utils';
 import type { Lang } from '../../i18n/translations';
+import { getCollection } from 'astro:content';
 
 export function getStaticPaths() { return getI18nPaths(); }
 
 const { lang } = Astro.params as { lang: Lang };
 
-const serviceKeys = ['development', 'architecture', 'projectManagement', 'investment', 'rehabilitation', 'sustainability'];
-const services = serviceKeys.map(key => ({
-  key,
-  title: t(`svc.${key}`, lang),
-  description: t(`svc.${key}.desc`, lang),
-  features: [
-    t(`svc.${key}.f1`, lang),
-    t(`svc.${key}.f2`, lang),
-    t(`svc.${key}.f3`, lang),
-    t(`svc.${key}.f4`, lang),
-  ],
-}));
-
-const process = [
-  { step: '01', title: t('servicesPage.step1', lang), description: t('servicesPage.step1.desc', lang) },
-  { step: '02', title: t('servicesPage.step2', lang), description: t('servicesPage.step2.desc', lang) },
-  { step: '03', title: t('servicesPage.step3', lang), description: t('servicesPage.step3.desc', lang) },
-  { step: '04', title: t('servicesPage.step4', lang), description: t('servicesPage.step4.desc', lang) },
-];
+const allPages = await getCollection('pages');
+const servicesPage = allPages.find(p => p.id === `${lang}/services`);
+const page = servicesPage!.data;
 ---
 
 <BaseLayout title={t('nav.services', lang)} lang={lang} darkHeader>
+  {page.hero && (
   <section class="section relative min-h-[40vh] flex items-end overflow-hidden bg-primary text-primary-content">
     <div class="absolute inset-0">
-      <img src="/images/architecture-05.jpg" alt="Architecture" class="w-full h-full object-cover opacity-30" loading="eager" />
+      <img src={page.hero.image} alt={page.hero.title} class="w-full h-full object-cover opacity-30" loading="eager" />
       <div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/40 to-primary/60"></div>
     </div>
     <div class="container relative z-10">
-      <span class="section-label mb-4">{t('servicesPage.label', lang)}</span>
-      <h1 class="heading-hero text-5xl md:text-7xl lg:text-display">{t('servicesPage.heading', lang)}</h1>
-      <p class="max-w-xl mt-6">{t('servicesPage.description', lang)}</p>
+      <span class="section-label mb-4">{page.hero.label}</span>
+      <h1 class="heading-hero text-5xl md:text-7xl lg:text-display">{page.hero.title}</h1>
+      {page.hero.description && <p class="max-w-xl mt-6">{page.hero.description}</p>}
     </div>
   </section>
+  )}
 
+  {page.serviceDetails && (
   <section class="section bg-base-100 text-base-content">
     <div class="container">
       <div class="border-t border-base-300">
-        {services.map((service, index) => (
+        {page.serviceDetails.map((service, index) => (
           <div id={service.key} class="border-b border-base-300 py-10 md:py-14 scroll-mt-24">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
               <div class="lg:col-span-1">
@@ -72,15 +60,17 @@ const process = [
       </div>
     </div>
   </section>
+  )}
 
+  {page.process && (
   <section class="section bg-base-200">
     <div class="container">
       <div class="mb-20">
-        <span class="section-label">{t('servicesPage.processLabel', lang)}</span>
-        <h2 class="section-heading">{t('servicesPage.processHeading', lang)}</h2>
+        <span class="section-label">{page.process.label}</span>
+        <h2 class="section-heading">{page.process.heading}</h2>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-        {process.map((item) => (
+        {page.process.items.map((item) => (
           <div>
             <div class="font-display text-6xl font-extrabold text-dark-100 tracking-tight mb-4">{item.step}</div>
             <h3 class="heading-card-sm text-base-content mb-3">{item.title}</h3>
@@ -90,46 +80,46 @@ const process = [
       </div>
     </div>
   </section>
+  )}
 
-  <section class="section bg-primary text-primary-content">
+  {page.cta && (
+  <section class="section bg-secondary text-secondary-content">
     <div class="container">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
         <div>
-          <span class="section-label !text-secondary">{t('servicesPage.ctaLabel', lang)}</span>
-          <h2 class="section-heading leading-[1] mb-6">{t('servicesPage.ctaHeading', lang)}</h2>
-          <p class="text-body mb-10 max-w-md">{t('servicesPage.ctaDesc', lang)}</p>
+          {page.cta.label && <span class="section-label !text-secondary">{page.cta.label}</span>}
+          <h2 class="section-heading leading-[1] mb-6">{page.cta.heading}</h2>
+          <p class="text-body mb-10 max-w-md">{page.cta.description}</p>
+          {/* {page.cta.benefits && (
           <ul class="space-y-4">
-            <li class="flex items-center gap-3 text-body-xs text-dark-300">
-              <span class="w-1.5 h-1.5 bg-primary-content rounded-full shrink-0"></span>
-              {t('servicesPage.benefit1', lang)}
-            </li>
-            <li class="flex items-center gap-3 text-body-xs text-dark-300">
-              <span class="w-1.5 h-1.5 bg-primary-content rounded-full shrink-0"></span>
-              {t('servicesPage.benefit2', lang)}
-            </li>
-            <li class="flex items-center gap-3 text-body-xs text-dark-300">
-              <span class="w-1.5 h-1.5 bg-primary-content rounded-full shrink-0"></span>
-              {t('servicesPage.benefit3', lang)}
-            </li>
+            {page.cta.benefits.map(benefit => (
+              <li class="flex items-center gap-3 text-body-xs text-dark-300">
+                <span class="w-1.5 h-1.5 bg-primary-content rounded-full shrink-0"></span>
+                {benefit}
+              </li>
+            ))}
           </ul>
+          )} */}
         </div>
+        {page.form && (
         <div class="bg-white/5 p-8 md:p-10 border border-white/10">
-          <h3 class="heading-card-sm text-primary-content mb-8">{t('servicesPage.formTitle', lang)}</h3>
-          <form class="space-y-5">
-            <input type="text" placeholder={t('servicesPage.formName', lang)} class="input input-dark" />
-            <input type="email" placeholder={t('servicesPage.formEmail', lang)} class="input input-dark" />
-            <select class="select input-dark text-info">
-              <option value="">{t('servicesPage.formInterest', lang)}</option>
-              <option value="buying">{t('servicesPage.formBuying', lang)}</option>
-              <option value="investing">{t('servicesPage.formInvesting', lang)}</option>
-              <option value="development">{t('servicesPage.formDevelopment', lang)}</option>
-              <option value="other">{t('servicesPage.formOther', lang)}</option>
+          <h3 class="heading-card-sm text-primary-content mb-8">{page.form.title}</h3>
+          <form class="space-y-5 flex flex-col">
+            <input type="text" placeholder={page.form.namePlaceholder} class="input input-dark w-full" />
+            <input type="email" placeholder={page.form.emailPlaceholder} class="input input-dark w-full" />
+            <select class="select input-dark text-info w-full">
+              <option value="">{page.form.interestLabel}</option>
+              {page.form.interests.map(interest => (
+                <option value={interest.value}>{interest.label}</option>
+              ))}
             </select>
-            <textarea rows="3" placeholder={t('servicesPage.formMessage', lang)} class="textarea input-dark resize-none"></textarea>
-            <button type="submit" class="btn btn-primary btn-inverted w-full">{t('servicesPage.formSubmit', lang)}</button>
+            <textarea rows="3" placeholder={page.form.messagePlaceholder} class="textarea input-dark resize-none w-full"></textarea>
+            <button type="submit" class="btn btn-primary btn-inverted w-full">{page.form.submitLabel}</button>
           </form>
         </div>
+        )}
       </div>
     </div>
   </section>
+  )}
 </BaseLayout>
