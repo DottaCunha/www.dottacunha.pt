@@ -17,9 +17,6 @@ story:
     Based in Lisbon, our team brings together decades of experience in construction, architecture, engineering, and real estate investment. We work across the full development cycle — from identifying opportunities and acquiring land, through design and construction, to marketing and final delivery.
 
     What sets us apart is not just what we build, but how we build. Every decision is guided by a commitment to quality materials, thoughtful design, and respect for the communities where we work. We choose our projects carefully, preferring depth over volume.
-
-    Over 15 years, we've delivered more than 50 projects and 500 homes across Portugal — each one a reflection of our belief that good architecture can transform how people live.
-
 images:
   - "/images/architecture-03.jpg"
   - "/images/architecture-06.jpg"

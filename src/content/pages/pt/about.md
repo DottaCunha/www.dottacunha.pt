@@ -17,9 +17,6 @@ story:
     Sediados em Lisboa, a nossa equipa reúne décadas de experiência em construção, arquitetura, engenharia e investimento imobiliário. Trabalhamos em todo o ciclo de desenvolvimento — desde a identificação de oportunidades e aquisição de terrenos, passando pelo design e construção, até ao marketing e entrega final.
 
     O que nos distingue não é apenas o que construímos, mas como construímos. Cada decisão é guiada pelo compromisso com materiais de qualidade, design pensado e respeito pelas comunidades onde trabalhamos.
-
-    Em 15 anos, entregámos mais de 50 projetos e 500 casas em Portugal — cada uma um reflexo da nossa crença de que a boa arquitetura pode transformar a forma como as pessoas vivem.
-
 images:
   - "/images/architecture-03.jpg"
   - "/images/architecture-06.jpg"
