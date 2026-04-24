@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Dotta &amp; Cunha — Email signature preview</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 40px 20px 80px;
+      background: #f4f4f5;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      color: #0a0a0a;
+    }
+    .wrap { max-width: 720px; margin: 0 auto; }
+    h1 {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #515151;
+      margin: 0 0 18px;
+    }
+    .card {
+      background: #ffffff;
+      border: 1px solid #e3e3e3;
+      padding: 36px 40px;
+      margin-bottom: 28px;
+    }
+    .email-preamble {
+      font-size: 14px;
+      color: #383838;
+      line-height: 1.55;
+      margin-bottom: 28px;
+    }
+    .email-preamble p { margin: 0 0 14px; }
+    hr.email-rule {
+      border: 0;
+      border-top: 1px solid #e3e3e3;
+      margin: 0 0 18px;
+    }
+    .install {
+      background: #ffffff;
+      border: 1px solid #e3e3e3;
+      padding: 28px 32px;
+    }
+    .install h2 {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #515151;
+      margin: 0 0 14px;
+    }
+    .install ol { margin: 0; padding-left: 20px; }
+    .install li { font-size: 13px; line-height: 1.6; margin-bottom: 6px; color: #383838; }
+    .install code {
+      background: #f4f4f5;
+      padding: 1px 6px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12px;
+    }
+    details { margin-top: 14px; }
+    summary { font-size: 12px; color: #515151; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <h1>In context — bottom of an email</h1>
+    <div class="card">
+      <div class="email-preamble">
+        <p>Hi Maria,</p>
+        <p>Thanks for the call earlier — sending over the term sheet draft this afternoon. Let me know if Tuesday still works for the follow-up.</p>
+        <p>Best,<br>Diogo</p>
+      </div>
+      <hr class="email-rule">
+
+      <!-- ============= SIGNATURE BLOCK ============= -->
+      <table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#0a0a0a;line-height:1.4;">
+        <tr>
+          <td bgcolor="#0a0a0a" valign="middle" align="center" width="110" style="background-color:#0a0a0a;width:110px;padding:22px 18px;vertical-align:middle;">
+            <img src="data:image/png;base64,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" alt="Dotta &amp; Cunha" width="75" height="56" style="display:block;border:0;outline:none;text-decoration:none;width:75px;height:56px;">
+          </td>
+          <td width="22" style="width:22px;font-size:1px;line-height:1px;">&nbsp;</td>
+          <td valign="middle" style="vertical-align:middle;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#0a0a0a;">
+            <table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;">
+              <tr><td style="font-family:'Space Grotesk','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:18px;font-weight:600;letter-spacing:-0.01em;color:#0a0a0a;text-transform:uppercase;line-height:1.1;padding-bottom:4px;">Diogo Cunha</td></tr>
+              <tr><td style="font-size:11px;font-weight:600;letter-spacing:0.2em;color:#515151;text-transform:uppercase;line-height:1.2;padding-bottom:8px;">Partner&nbsp;&nbsp;·&nbsp;&nbsp;Dotta &amp; Cunha</td></tr>
+              <tr><td style="font-size:13px;color:#383838;line-height:1.45;padding-bottom:10px;max-width:340px;">Building lasting partnerships in Lisbon.</td></tr>
+              <tr><td style="font-size:1px;line-height:1px;border-top:1px solid #e3e3e3;padding-top:9px;">&nbsp;</td></tr>
+              <tr><td style="font-size:12px;color:#0a0a0a;line-height:1.5;">
+                <a href="mailto:diogo@dottacunha.pt" style="color:#0a0a0a;text-decoration:none;">diogo@dottacunha.pt</a>
+                <span style="color:#a4a4a4;">&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+                <a href="tel:+351919417538" style="color:#0a0a0a;text-decoration:none;">+351 919 417 538</a>
+              </td></tr>
+              <tr><td style="font-size:12px;color:#515151;line-height:1.5;padding-top:2px;">
+                <a href="https://dottacunha.pt" style="color:#515151;text-decoration:none;">dottacunha.pt</a>
+                <span style="color:#a4a4a4;">&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+                <a href="https://www.linkedin.com/company/dottacunha/" style="color:#515151;text-decoration:none;">LinkedIn</a>
+                <span style="color:#a4a4a4;">&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+                <span>Lisbon, Portugal</span>
+              </td></tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <!-- =========== END SIGNATURE BLOCK =========== -->
+    </div>
+
+    <h1>How to install</h1>
+    <div class="install">
+      <h2>Apple Mail</h2>
+      <ol>
+        <li>Open <code>signature.html</code> in Safari (double-click the file).</li>
+        <li>Select all (<code>⌘A</code>) and copy (<code>⌘C</code>).</li>
+        <li>Mail → <em>Settings → Signatures</em>. Create a new signature.</li>
+        <li>Paste (<code>⌘V</code>) into the signature pane. Uncheck <em>"Always match my default message font"</em>.</li>
+      </ol>
+      <h2 style="margin-top:18px;">Outlook (new) / Outlook 365 web</h2>
+      <ol>
+        <li>Open <code>preview.html</code> in your browser, scroll to the signature block above.</li>
+        <li>Select the entire signature (just the table) and copy (<code>⌘C</code> / <code>Ctrl+C</code>).</li>
+        <li>Outlook → <em>Settings → Mail → Compose and reply → Email signature</em>.</li>
+        <li>Paste into the editor and save.</li>
+      </ol>
+      <details>
+        <summary>Logo not showing in Outlook for Windows?</summary>
+        <ol style="margin-top:8px;">
+          <li>Push your latest deploy so <code>https://dottacunha.pt/email/logo-white.png</code> goes live.</li>
+          <li>Open <code>signature.html</code>, find the long <code>src="data:image/png;base64,..."</code> string, and replace it with <code>src="https://dottacunha.pt/email/logo-white.png"</code>.</li>
+          <li>Re-paste into Outlook.</li>
+        </ol>
+      </details>
+    </div>
+
+  </div>
+</body>
+</html>
