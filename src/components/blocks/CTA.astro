@@ -1,0 +1,182 @@
+---
+import { getEntry } from "astro:content";
+
+import { localizedPath } from "../../i18n/utils";
+import type { Lang } from "../../i18n/translations";
+import NetlifyForm from "../NetlifyForm.astro";
+
+export interface Props {
+  label?: string;
+  heading?: string;
+  body?: string;
+  image?: string;
+  cta_primary?: { label: string; href: string };
+  cta_secondary?: { label: string; href: string };
+  form?: string;
+  variant: "primary" | "secondary" | "form";
+}
+
+const { lang } = Astro.params as { lang: Lang };
+const {
+  label,
+  heading,
+  body,
+  image,
+  cta_primary,
+  cta_secondary,
+  variant = "primary",
+} = Astro.props;
+
+const props = Astro.props;
+const form = await getEntry("forms", `${lang}/${props.form}`); //, )
+---
+
+{
+  variant === "primary" && (
+    <section class="relative bg-secondary text-secondary-content overflow-hidden">
+      {/*
+    <div class="absolute inset-0">
+      <img src={image} alt="Architecture" class="w-full h-full object-cover opacity-15" />
+    </div>
+    */}
+      <div class="container section relative z-10">
+        <div class="max-w-2xl">
+          <div class="flex flex-col gap-6">
+            <span class="section-label">{label}</span>
+            <h2 class="section-heading">{heading}</h2>
+            <p class="max-w-md">{body}</p>
+          </div>
+          <div class="flex flex-wrap gap-4 mt-10">
+            {cta_primary && (
+              <a
+                href={localizedPath(cta_primary.href, lang)}
+                class="btn btn-primary"
+              >
+                {cta_primary.label}
+              </a>
+            )}
+            {cta_secondary && (
+              <a
+                href={localizedPath(cta_secondary.href, lang)}
+                class="btn btn-outline"
+              >
+                {cta_secondary.label}
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+{
+  variant === "secondary" && (
+    <section class="relative bg-secondary text-secondary-content overflow-hidden">
+      <div class="container section relative z-10">
+        <div class="flex flex-col items-center gap-6">
+          <h2 class="section-heading">{heading}</h2>
+          <p class="text-center max-w-md">{body}</p>
+          {cta_primary && (
+            <a
+              href={localizedPath(cta_primary.href, lang)}
+              class="btn btn-primary"
+            >
+              {cta_primary.label}
+            </a>
+          )}
+        </div>
+      </div>
+    </section>
+  )
+}
+{
+  props.variant === "form" && (
+    <section class="section bg-secondary text-secondary-content">
+      <div class="container">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+          <div class="flex flex-col gap-6">
+            {props.label && <span class="section-label">{props.label}</span>}
+            {props.heading && <h2 class="section-heading">{props.heading}</h2>}
+            {props.body && <p class="max-w-md">{props.body}</p>}
+            {/* {props.benefits && (
+          <ul class="space-y-4">
+            {props.benefits.map(benefit => (
+              <li class="flex items-center gap-3 text-body-xs text-dark-300">
+                <span class="w-1.5 h-1.5 bg-primary-content rounded-full shrink-0"></span>
+                {benefit}
+              </li>
+            ))}
+          </ul>
+          )} */}
+          </div>
+          {form && (
+            <div class="bg-white/5 p-8 md:p-10 border border-white/10">
+              <h3 class="heading-card-sm text-primary-content mb-8">
+                {form.data.title}
+              </h3>
+              <NetlifyForm
+                name="services-inquiry"
+                class="space-y-5 flex flex-col"
+                successMessage={form.data.success_message}
+              >
+                {form.data.fields?.map((field) => {
+                  if (field.type === "text" || field.type === "email") {
+                    return (
+                      <input
+                        class="input w-full"
+                        type={field.type}
+                        name={field.name}
+                        required={field.required}
+                        placeholder={field.placeholder}
+                      />
+                    );
+                  } else if (field.type === "textarea") {
+                    return (
+                      <textarea
+                        class="textarea resize-none w-full"
+                        name={field.name}
+                        rows={field.rows}
+                        required={field.required}
+                        placeholder={field.placeholder}
+                      />
+                    );
+                  } else if (field.type === "select") {
+                    return (
+                      <select
+                        class="select text-info w-full"
+                        name={field.name}
+                        required={field.required}
+                      >
+                        {field.placeholder && (
+                          <option value="">{field.placeholder}</option>
+                        )}
+                        {field.options.map((option) => (
+                          <option value={option.value}>{option.label}</option>
+                        ))}
+                      </select>
+                    );
+                  }
+                })}
+                {/* <input type="text" name="name" required placeholder={form.data.namePlaceholder} class="input input-dark w-full" />
+            <input type="email" name="email" required placeholder={form.data.emailPlaceholder} class="input input-dark w-full" />
+            <select name="interest" class="select input-dark text-info w-full">
+              <option value="">{form.data.interestLabel}</option>
+              {form.data.interests.map(interest => (
+                <option value={interest.value}>{interest.label}</option>
+              ))}
+            </select>
+            <textarea name="message" rows="3" placeholder={page.form.messagePlaceholder} class="textarea input-dark resize-none w-full"></textarea> */}
+                <button
+                  type="submit"
+                  class="btn btn-primary btn-inverted w-full"
+                >
+                  {form.data.submit_label}
+                </button>
+              </NetlifyForm>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  )
+}

@@ -1,0 +1,46 @@
+---
+import CTA, { type Props as CTAProps } from "./CTA.astro";
+import Hero, { type Props as HeroProps } from "./Hero.astro";
+import Images, { type Props as ImagesProps } from "./Images.astro";
+import List, { type Props as ListProps } from "./List.astro";
+import Projects, { type Props as ProjectsProps } from "./Projects.astro";
+import Section, { type Props as SectionProps } from "./Section.astro";
+
+type Props = {
+    blocks: (
+        | ({ type: "cta" } & CTAProps)
+        | ({ type: "hero" } & HeroProps)
+        | ({ type: "images" } & ImagesProps)
+        | ({ type: "list" } & ListProps)
+        | ({ type: "projects" } & ProjectsProps)
+        | ({ type: "section" } & SectionProps)
+    )[];
+};
+
+const props = Astro.props;
+---
+
+<>
+    {
+        props.blocks.map((block) => {
+            if (block.type === "hero") {
+                return <Hero {...block} />;
+            }
+            if (block.type === "section") {
+                return <Section {...block} />;
+            }
+            if (block.type === "cta") {
+                return <CTA {...block} />;
+            }
+            if (block.type === "images") {
+                return <Images {...block} />;
+            }
+            if (block.type === "list") {
+                return <List {...block} />;
+            }
+            if (block.type === "projects") {
+                return <Projects {...block} />;
+            }
+        })
+    }
+</>

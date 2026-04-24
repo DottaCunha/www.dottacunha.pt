@@ -6,7 +6,7 @@ year: 2027
 location: Olaias, Beato, Lisboa
 area: 250
 totalUnits: 3
-description: Three elegant apartments in the heart of Lisbon. Modern design meets urban living.
+description: Três apartamentos elegantes no coração de Lisboa. Onde o design moderno se encontra com a vida urbana.
 image: /images/uploads/carrascal-01.jpg
 visible: true
 featured: true
@@ -21,8 +21,8 @@ units:
     orientation: East-West
     description: ''
     features:
-      - Home automation
-      - 60 m² private garden
+      - Domótica
+      - Logradouro privado de 60 m²
     photos:
       - /images/uploads/carrascal-t1-01.jpg
       - /images/uploads/carrascal-t1-02.jpg
@@ -31,12 +31,12 @@ units:
     area: 80
     typology: T2
     bedrooms: 2
-    bathrooms: 1
+    bathrooms: 2
     floor: 1
     orientation: East-West
     description: ''
     features:
-      - Home automation
+      - Domótica
     photos:
       - /images/uploads/carrascal-t2-01.jpg
       - /images/uploads/carrascal-t2-02.jpg
@@ -50,8 +50,8 @@ units:
     description: ''
     features:
       - Duplex
-      - Home automation
-      - Sea view
+      - Domótica
+      - Vista mar
     photos:
       - /images/uploads/carrascal-duplex-01.jpg
       - /images/uploads/carrascal-duplex-02.jpg

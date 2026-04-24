@@ -1,0 +1,26 @@
+---
+export interface Props {
+  label?: string;
+  heading?: string;
+  images: string[];
+  variant: "primary" | "secondary";
+}
+
+const { label, heading, images, variant = "primary" } = Astro.props;
+---
+
+{
+  variant === "primary" && (
+    <section class="px-6 md:px-8">
+      <div class="container">
+        <div class="grid grid-cols-3 gap-4 h-[50vh]">
+          {images.map((src: string, i: number) => (
+            <div class="overflow-hidden">
+              <img src={src} alt={`Image ${i + 1}`} class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}

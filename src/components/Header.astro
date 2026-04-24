@@ -79,34 +79,34 @@ const isActive = (match: string) => {
       </div>
     </button>
   </div>
-
-  <!-- Mobile Menu -->
-  <div id="mobile-menu" class="md:hidden hidden fixed inset-0 bg-primary z-40">
-    <nav class="flex flex-col items-center justify-center h-full gap-8">
-      {navLinks.map(link => (
-        <a
-          href={link.href}
-          class:list={[
-            'font-display text-2xl font-bold uppercase tracking-wider text-white/60 hover:text-white transition-colors',
-            isActive(link.match) ? '!text-white' : ''
-          ]}
-        >
-          {link.label}
-        </a>
-      ))}
-      <!-- Mobile language switch -->
-      <a
-        href={`/${altLang}${basePath === '/' ? '' : basePath}`}
-        class="text-sm font-medium uppercase tracking-wider text-white/40 hover:text-white transition-colors border-t border-white/10 pt-6 mt-2"
-      >
-        {languages[altLang]}
-      </a>
-      <a href={localizedPath('/contact', lang)} class="btn btn-outline mt-2 btn-light">
-        {t('nav.cta', lang)}
-      </a>
-    </nav>
-  </div>
 </header>
+
+<!-- Mobile Menu (outside header: backdrop-filter on header creates a containing block that would squash a fixed descendant) -->
+<div id="mobile-menu" class="md:hidden hidden fixed inset-0 bg-primary z-100">
+  <nav class="flex flex-col items-center justify-center h-full gap-8">
+    {navLinks.map(link => (
+      <a
+        href={link.href}
+        class:list={[
+          'font-display text-2xl font-bold uppercase tracking-wider text-white/60 hover:text-white transition-colors',
+          isActive(link.match) ? '!text-white' : ''
+        ]}
+      >
+        {link.label}
+      </a>
+    ))}
+    <!-- Mobile language switch -->
+    <a
+      href={`/${altLang}${basePath === '/' ? '' : basePath}`}
+      class="text-sm font-medium uppercase tracking-wider text-white/40 hover:text-white transition-colors border-t border-white/10 pt-6 mt-2"
+    >
+      {languages[altLang]}
+    </a>
+    <a href={localizedPath('/contact', lang)} class="btn btn-outline mt-2 btn-light">
+      {t('nav.cta', lang)}
+    </a>
+  </nav>
+</div>
 
 <style>
   /* Default state: transparent, dark text (for light pages) */
@@ -157,6 +157,8 @@ const isActive = (match: string) => {
   updateHeader();
 
   toggle?.addEventListener('click', () => {
+    const isOpening = menu?.classList.contains('hidden');
     menu?.classList.toggle('hidden');
+    document.body.style.overflow = isOpening ? 'hidden' : '';
   });
 </script>

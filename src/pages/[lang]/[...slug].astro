@@ -1,0 +1,25 @@
+---
+import { getCollection } from "astro:content";
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Blocks from "../../components/blocks/Blocks.astro";
+
+export async function getStaticPaths() {
+  const pages = await getCollection("pages_new");
+  return pages.map((page) => {
+    const lang = page.id.split("/")[0];
+    const slug = page.data.slug;
+    return {
+      params: { lang, slug },
+      props: { page },
+    };
+  });
+}
+
+const { page } = Astro.props;
+const { lang } = Astro.params;
+---
+
+<BaseLayout title={page.data.title} darkHeader={true} lang={lang}>
+  <Blocks blocks={page.data.blocks} />
+</BaseLayout>

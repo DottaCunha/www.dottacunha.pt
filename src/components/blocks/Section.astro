@@ -1,0 +1,115 @@
+---
+import { localizedPath } from "../../i18n/utils";
+
+interface BaseProps {
+  label?: string;
+  heading?: string;
+  body?: string;
+  variant: string;
+}
+
+interface SimpleProps extends BaseProps {
+  variant: "simple";
+}
+
+interface FullProps extends BaseProps {
+  images: string[];
+  cta?: { label: string; href: string };
+  variant: "full";
+}
+
+export type Props = SimpleProps | FullProps;
+
+const props = Astro.props;
+const { lang } = Astro.params;
+
+const { label, heading, body, variant } = Astro.props;
+const paragraphs =
+  body
+    ?.split(/\n\s*\n/)
+    .map((p: string) => p.trim())
+    .filter(Boolean) ?? [];
+---
+
+{
+  variant === "simple" && (
+    <section class="section bg-base-100 text-base-content">
+      <div class="container">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
+          <div class="lg:col-span-5">
+            <span class="section-label mb-3">{label}</span>
+            <h2 class="section-heading text-2xl md:text-4xl">{heading}</h2>
+          </div>
+          <div class="lg:col-span-7 space-y-5 text-body leading-[1.8]">
+            {paragraphs.map((p: string) => (
+              <p>{p}</p>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+{
+  props.variant === "full" && (
+    <section class="section bg-base-100 text-base-content">
+      <div class="container">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+          <div class="lg:col-span-5">
+            <span class="section-label mb-3">{props.label}</span>
+            <h2 class="section-heading mb-6">{props.heading}</h2>
+            <div class="space-y-4 text-body">
+              {paragraphs.map((p: string) => (
+                <p>{p}</p>
+              ))}
+            </div>
+            {props.cta && (
+              <a
+                class="btn btn-outline mt-10"
+                href={localizedPath(props.cta.href, lang)}
+              >
+                {props.cta.label}
+                <svg
+                  class="w-4 h-4 ml-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </a>
+            )}
+          </div>
+          <div class="lg:col-span-7">
+            <div class="grid grid-cols-2 gap-4">
+              {props.images[0] && (
+                <div class="aspect-[3/4] overflow-hidden">
+                  <img
+                    src={props.images[0]}
+                    alt="Architecture detail"
+                    class="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                  />
+                </div>
+              )}
+              {props.images[1] && (
+                <div class="aspect-[3/4] overflow-hidden mt-12">
+                  <img
+                    src={props.images[1]}
+                    alt="Interior design"
+                    class="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}

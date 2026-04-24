@@ -1,0 +1,107 @@
+---
+import { localizedPath } from "../../i18n/utils";
+import type { Lang } from "../../i18n/translations";
+
+interface BaseProps {
+  label?: string;
+  heading?: string;
+  image?: string;
+  variant: string;
+}
+
+interface HalfProps extends BaseProps {
+  variant: "half";
+}
+
+interface FullProps extends BaseProps {
+  body?: string;
+  cta_primary?: { label: string; href: string };
+  cta_secondary?: { label: string; href: string };
+  variant: "full";
+}
+
+export type Props = HalfProps | FullProps;
+
+const { lang } = Astro.params as { lang: Lang };
+
+const props = Astro.props;
+---
+
+{
+  props.variant === "full" && (
+    <section class="section relative min-h-screen flex items-center bg-neutral text-neutral-content overflow-hidden">
+      <div class="absolute inset-0">
+        {props.image && (
+          <img
+            src={props.image}
+            alt="Modern residential architecture"
+            class="w-full h-full object-cover opacity-50"
+            loading="eager"
+          />
+        )}
+        <div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/30 to-primary/50" />
+      </div>
+
+      <div class="container relative z-10">
+        <div class="max-w-4xl">
+          {props.label && <p class="section-label mb-4">{props.label}</p>}
+          {props.heading && (
+            <h1 class="heading-hero text-5xl md:text-7xl lg:text-display-lg mb-8">
+              {props.heading}
+            </h1>
+          )}
+          {props.body && (
+            <p class="text-lg leading-relaxed mb-12 max-w-xl font-light">
+              {props.body}
+            </p>
+          )}
+          {(props.cta_primary || props.cta_secondary) && (
+            <div class="flex items-center gap-6">
+              {props.cta_primary && (
+                <a
+                  class="btn"
+                  href={localizedPath(props.cta_primary.href, lang)}
+                >
+                  {props.cta_primary.label}
+                </a>
+              )}
+              {props.cta_secondary && (
+                <a
+                  class="btn btn-outline"
+                  href={localizedPath(props.cta_secondary.href, lang)}
+                >
+                  {props.cta_secondary.label}
+                </a>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  )
+}
+{
+  props.variant === "half" && (
+    <section class="section relative min-h-[40vh] flex items-end overflow-hidden bg-primary text-primary-content">
+      <div class="absolute inset-0">
+        {props.image && (
+          <img
+            src={props.image}
+            alt={props.heading}
+            class="w-full h-full object-cover opacity-30"
+            loading="eager"
+          />
+        )}
+        <div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/40 to-primary/60" />
+      </div>
+      <div class="container relative z-10">
+        {props.label && <span class="section-label mb-4">{props.label}</span>}
+        {props.heading && (
+          <h1 class="heading-hero text-5xl md:text-7xl lg:text-display">
+            {props.heading}
+          </h1>
+        )}
+      </div>
+    </section>
+  )
+}

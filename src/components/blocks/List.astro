@@ -1,0 +1,97 @@
+---
+import { localizedPath } from "../../i18n/utils";
+import type { Lang } from "../../i18n/translations";
+
+export interface Props {
+  label?: string;
+  heading?: string;
+  body?: string;
+  items?: { key: string; heading: string; body: string }[];
+  variant: "grid" | "list";
+}
+
+const { lang } = Astro.params as { lang: Lang };
+const props = Astro.props;
+const { label, heading, items, variant } = Astro.props;
+---
+
+{
+  props.variant === "grid" && (
+    <section class="section bg-base-100 text-base-content">
+      <div class="container">
+        <div class="mb-20">
+          {props.label && <span class="section-label mb-3">{props.label}</span>}
+          {props.heading && <h2 class="section-heading">{props.heading}</h2>}
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-base-300">
+          {props.items?.map(
+            (
+              value: { heading: string; body: string },
+              index: number,
+            ) => (
+              <div class="bg-base-100 p-10 md:p-14">
+                <span class="text-index block mb-4">0{index + 1}</span>
+                <h3 class="heading-card mb-4">{value.heading}</h3>
+                <p class="text-body-sm">{value.body}</p>
+              </div>
+            ),
+          )}
+        </div>
+      </div>
+    </section>
+  )
+}
+{
+  props.variant === "list" && (
+    <section class="section bg-base-200 text-base-content">
+      <div class="container">
+        <div class="mb-16">
+          {props.label && <span class="section-label mb-3">{props.label}</span>}
+          {props.heading && <h2 class="section-heading mb-6">{props.heading}</h2>}
+          {props.body && <p class="text-body">{props.body}</p>}
+        </div>
+
+        <div class="border-t border-base-300">
+          {props.items?.map(
+            (
+              item: { key: string; heading: string; body: string },
+              index: number,
+            ) => (
+              <div class="border-b border-base-300">
+                <a
+                  href={`${localizedPath("/services", lang)}#${item.key}`}
+                  class="group flex items-center justify-between py-8 text-left transition-all duration-300 hover:pl-4"
+                >
+                  <div class="flex flex-col md:flex-row md:items-center gap-2 md:gap-6">
+                    <div class="flex items-center gap-6">
+                      <span class="text-index">0{index + 1}</span>
+                      <h3 class="heading-card group-hover:text-secondary transition-colors">
+                        {item.heading}
+                      </h3>
+                    </div>
+                    <p class="text-body-sm max-w-lg pl-[calc(theme(spacing.6)+2ch)] md:pl-0">
+                      {item.body}
+                    </p>
+                  </div>
+                  <svg
+                    class="w-5 h-5 shrink-0 text-dark-300 group-hover:text-base-content transition-all duration-300"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
+                  </svg>
+                </a>
+              </div>
+            ),
+          )}
+        </div>
+      </div>
+    </section>
+  )
+}

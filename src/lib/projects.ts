@@ -3,6 +3,7 @@ import type { Lang } from '../i18n/translations';
 
 export async function getProjectsByLang(lang: Lang) {
   const allProjects = await getCollection('projects');
+
   // Filter by language folder (id starts with "pt/" or "en/")
   const filtered = allProjects
     .filter((p) => p.id.startsWith(`${lang}/`) && p.data.visible !== false)

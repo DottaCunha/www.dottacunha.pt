@@ -1,9 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import NetlifyForm from '../../components/NetlifyForm.astro';
-import { t, localizedPath, getI18nPaths } from '../../i18n/utils';
+import { t, getI18nPaths } from '../../i18n/utils';
 import type { Lang } from '../../i18n/translations';
 import { getCollection } from 'astro:content';
+import Hero from '../../components/blocks/Hero.astro';
+import CTA from '../../components/blocks/CTA.astro';
 
 export function getStaticPaths() { return getI18nPaths(); }
 
@@ -12,23 +13,10 @@ const { lang } = Astro.params as { lang: Lang };
 const allPages = await getCollection('pages');
 const servicesPage = allPages.find(p => p.id === `${lang}/services`);
 const page = servicesPage!.data;
-const successMsg = lang === 'pt' ? 'Obrigado! Entraremos em contacto em breve.' : "Thank you! We'll be in touch soon.";
 ---
 
 <BaseLayout title={t('nav.services', lang)} lang={lang} darkHeader>
-  {page.hero && (
-  <section class="section relative min-h-[40vh] flex items-end overflow-hidden bg-primary text-primary-content">
-    <div class="absolute inset-0">
-      <img src={page.hero.image} alt={page.hero.title} class="w-full h-full object-cover opacity-30" loading="eager" />
-      <div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/40 to-primary/60"></div>
-    </div>
-    <div class="container relative z-10">
-      <span class="section-label mb-4">{page.hero.label}</span>
-      <h1 class="heading-hero text-5xl md:text-7xl lg:text-display">{page.hero.title}</h1>
-      {page.hero.description && <p class="max-w-xl mt-6">{page.hero.description}</p>}
-    </div>
-  </section>
-  )}
+  {page.hero && (<Hero variant='half' label={page.hero.label} heading={page.hero.title} image={page.hero.image} />)}
 
   {page.serviceDetails && (
   <section class="section bg-base-100 text-base-content">
@@ -84,44 +72,5 @@ const successMsg = lang === 'pt' ? 'Obrigado! Entraremos em contacto em breve.' 
   </section>
   )}
 
-  {page.cta && (
-  <section class="section bg-secondary text-secondary-content">
-    <div class="container">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-        <div>
-          {page.cta.label && <span class="section-label !text-secondary">{page.cta.label}</span>}
-          <h2 class="section-heading leading-[1] mb-6">{page.cta.heading}</h2>
-          <p class="text-body mb-10 max-w-md">{page.cta.description}</p>
-          {/* {page.cta.benefits && (
-          <ul class="space-y-4">
-            {page.cta.benefits.map(benefit => (
-              <li class="flex items-center gap-3 text-body-xs text-dark-300">
-                <span class="w-1.5 h-1.5 bg-primary-content rounded-full shrink-0"></span>
-                {benefit}
-              </li>
-            ))}
-          </ul>
-          )} */}
-        </div>
-        {page.form && (
-        <div class="bg-white/5 p-8 md:p-10 border border-white/10">
-          <h3 class="heading-card-sm text-primary-content mb-8">{page.form.title}</h3>
-          <NetlifyForm name="services-inquiry" class="space-y-5 flex flex-col" successMessage={successMsg}>
-            <input type="text" name="name" required placeholder={page.form.namePlaceholder} class="input input-dark w-full" />
-            <input type="email" name="email" required placeholder={page.form.emailPlaceholder} class="input input-dark w-full" />
-            <select name="interest" class="select input-dark text-info w-full">
-              <option value="">{page.form.interestLabel}</option>
-              {page.form.interests.map(interest => (
-                <option value={interest.value}>{interest.label}</option>
-              ))}
-            </select>
-            <textarea name="message" rows="3" placeholder={page.form.messagePlaceholder} class="textarea input-dark resize-none w-full"></textarea>
-            <button type="submit" class="btn btn-primary btn-inverted w-full">{page.form.submitLabel}</button>
-          </NetlifyForm>
-        </div>
-        )}
-      </div>
-    </div>
-  </section>
-  )}
+  {page.cta && <CTA variant='form' form='inquiry' label={page.cta.label} heading={page.cta.heading} body={page.cta.description} />}
 </BaseLayout>
