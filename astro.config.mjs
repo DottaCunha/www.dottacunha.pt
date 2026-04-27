@@ -1,4 +1,4 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 import netlify from '@astrojs/netlify';
@@ -29,4 +29,18 @@ export default defineConfig({
       },
     },
   })],
+  fonts: [
+    {
+      provider: fontProviders.google(),
+      name: 'Inter',
+      cssVariable: '--font-inter',
+      weights: [300, 400, 500, 600],
+    },
+    {
+      provider: fontProviders.google(),
+      name: 'Space Grotesk',
+      cssVariable: '--font-space-grotesk',
+      weights: [400, 500, 600, 700],
+    },
+  ],
 });

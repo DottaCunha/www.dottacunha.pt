@@ -3,6 +3,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
 import type { Lang } from '../i18n/translations';
+import { Font } from 'astro:assets';
 
 interface Props {
   title: string;
@@ -60,10 +61,9 @@ const fullTitle = `Dotta & Cunha | ${title}`;
   <link rel="alternate" hreflang="x-default" href={`${site}/pt${Astro.url.pathname.replace(/^\/(en|pt)/, '')}`} />
 
   <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-
+  <Font cssVariable="--font-inter" preload />
+  <Font cssVariable="--font-space-grotesk" preload />
+  
   <!-- Structured Data -->
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
