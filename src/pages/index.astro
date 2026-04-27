@@ -2,5 +2,6 @@
 export const prerender = false;
 
 const locale = Astro.preferredLocale ?? "en";
-return Astro.redirect(`/${locale}/`);
+Astro.response.headers.set('Vary', 'Accept-Language');
+return Astro.redirect(`/${locale}/`, 302);
 ---

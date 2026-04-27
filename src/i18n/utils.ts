@@ -18,7 +18,8 @@ export function getLangFromUrl(url: URL): Lang {
 export function localizedPath(path: string, lang: Lang): string {
   // Ensure path starts with /
   const cleanPath = path.startsWith('/') ? path : `/${path}`;
-  return `/${lang}${cleanPath === '/' ? '' : cleanPath}`;
+  const suffix = cleanPath === '/' ? '/' : `${cleanPath}/`;
+  return `/${lang}${cleanPath === '/' ? '/' : suffix}`;
 }
 
 /** Get the alternate language */

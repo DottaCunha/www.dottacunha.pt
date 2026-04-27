@@ -5,6 +5,7 @@ import netlify from '@astrojs/netlify';
 
 export default defineConfig({
   site: 'https://dottacunha.pt',
+  trailingSlash: 'always',
   adapter: netlify({
     middlewareMode: 'edge',
   }),
@@ -19,6 +20,7 @@ export default defineConfig({
     }
   },
   integrations: [sitemap({
+    filter: (page) => !page.includes('/admin') && page !== 'https://dottacunha.pt/',
     i18n: {
       defaultLocale: 'en',
       locales: {
