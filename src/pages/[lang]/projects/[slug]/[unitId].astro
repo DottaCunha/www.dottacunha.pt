@@ -3,8 +3,9 @@ import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import { t, localizedPath } from '../../../../i18n/utils';
 import type { Lang } from '../../../../i18n/translations';
 import { getCollection } from 'astro:content';
-import { getProjectSlug, getStatusLabel } from '../../../../lib/projects';
+import { getProjectSlug } from '../../../../lib/projects';
 import { supportedLangs } from '../../../../i18n/translations';
+import { Picture } from 'astro:assets';
 
 export async function getStaticPaths() {
   const allProjects = await getCollection('projects');
@@ -36,7 +37,7 @@ const features = unit.features ?? [];
 
 <BaseLayout title={`${unit.typology} — ${d.title}`} lang={lang}>
   <!-- Breadcrumb -->
-  <section class="pt-32 pb-6 px-6 md:px-8 bg-base-100">
+  <section class="pt-32 pb-6 bg-base-100">
     <div class="container">
       <a href={localizedPath(`/projects/${slug}`, lang)} class="inline-flex items-center gap-2 text-link text-info hover:text-base-content mb-10">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16l-4-4m0 0l4-4m-4 4h18"/></svg>
@@ -52,14 +53,14 @@ const features = unit.features ?? [];
 
   <!-- Full-width carousel -->
   {photos.length > 0 && (
-    <section class="px-6 md:px-8 bg-base-100">
+    <section class="bg-base-100">
       <div class="container">
         <div class="relative" id="carousel">
           <div class="overflow-hidden aspect-[16/9]">
             <div class="flex transition-transform duration-500 ease-out h-full" id="carousel-track">
               {photos.map((photo: string, i: number) => (
                 <div class="w-full flex-shrink-0 h-full">
-                  <img src={photo} alt={`${unit.typology} — ${i + 1}`} class="w-full h-full object-cover" loading={i === 0 ? 'eager' : 'lazy'} />
+                  <Picture width={1446} height={1033} src={photo} formats={['avif', 'webp']} widths={[400, 800, 1200, 1600]} sizes="(max-width: 768px) 100vw, 50vw" inferSize alt={`${unit.typology} — ${i + 1}`} loading={i === 0 ? 'eager' : 'lazy'} class="w-full h-full object-cover" />
                 </div>
               ))}
             </div>
@@ -84,7 +85,7 @@ const features = unit.features ?? [];
   )}
 
   <!-- Details: Specs left, Description + Features right -->
-  <section class="pb-24 md:pb-32 px-6 md:px-8 bg-base-100">
+  <section class="pb-24 md:pb-32 bg-base-100">
     <div class="container pt-10 md:pt-14">
       <!-- Title -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
@@ -143,14 +144,14 @@ const features = unit.features ?? [];
             </div>
           )}
 
-          {unit.floorPlan && (
+          <!-- {unit.floorPlan && (
             <div>
               <span class="section-label">{t('unitDetail.floorPlan', lang)}</span>
               <div class="border border-base-300 p-4">
                 <img src={unit.floorPlan} alt={`${t('unitDetail.floorPlan', lang)} — ${unit.typology}`} class="w-full" loading="lazy" />
               </div>
             </div>
-          )}
+          )} -->
         </div>
       </div>
     </div>

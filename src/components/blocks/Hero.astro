@@ -1,6 +1,7 @@
 ---
 import { localizedPath } from "../../i18n/utils";
 import type { Lang } from "../../i18n/translations";
+import PublicPicture from "../PublicPicture.astro";
 
 interface BaseProps {
   label?: string;
@@ -32,11 +33,15 @@ const props = Astro.props;
     <section class="section relative min-h-screen flex items-center bg-neutral text-neutral-content overflow-hidden">
       <div class="absolute inset-0">
         {props.image && (
-          <img
+          <PublicPicture
+            priority
+            quality={60}
+            sizes="100vw"
             src={props.image}
+            formats={["avif", "webp"]}
+            widths={[400, 800, 1200, 1600, 2400]}
             alt="Modern residential architecture"
             class="w-full h-full object-cover opacity-50"
-            loading="eager"
           />
         )}
         <div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/30 to-primary/50" />
@@ -85,11 +90,15 @@ const props = Astro.props;
     <section class="section relative min-h-[40vh] flex items-end overflow-hidden bg-primary text-primary-content">
       <div class="absolute inset-0">
         {props.image && (
-          <img
+          <PublicPicture
+            priority
+            quality={60}
+            sizes="100vw"
             src={props.image}
-            alt={props.heading}
-            class="w-full h-full object-cover opacity-30"
-            loading="eager"
+            formats={["avif", "webp"]}
+            widths={[400, 800, 1200, 1600, 2400]}
+            alt="Modern residential architecture"
+            class="w-full h-full object-cover opacity-50"
           />
         )}
         <div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/40 to-primary/60" />

@@ -1,5 +1,6 @@
 ---
 import { localizedPath } from "../../i18n/utils";
+import PublicPicture from "../PublicPicture.astro";
 
 interface BaseProps {
   label?: string;
@@ -90,18 +91,26 @@ const paragraphs =
             <div class="grid grid-cols-2 gap-4">
               {props.images[0] && (
                 <div class="aspect-[3/4] overflow-hidden">
-                  <img
+                  <PublicPicture
                     src={props.images[0]}
                     alt="Architecture detail"
+                    formats={['avif', 'webp']}
+                    widths={[400, 800, 1200, 1600]}
+                    sizes="(max-width: 1024px) 50vw, (max-width: 1280px) 29vw, 370px"
+                    loading="lazy"
                     class="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                   />
                 </div>
               )}
               {props.images[1] && (
                 <div class="aspect-[3/4] overflow-hidden mt-12">
-                  <img
+                  <PublicPicture
                     src={props.images[1]}
                     alt="Interior design"
+                    formats={['avif', 'webp']}
+                    widths={[400, 800, 1200, 1600]}
+                    sizes="(max-width: 1024px) 50vw, (max-width: 1280px) 29vw, 370px"
+                    loading="lazy"
                     class="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                   />
                 </div>

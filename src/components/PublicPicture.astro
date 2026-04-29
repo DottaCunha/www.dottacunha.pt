@@ -1,0 +1,21 @@
+---
+import { Picture } from 'astro:assets';
+import type { ComponentProps } from 'astro/types';
+import sharp from 'sharp';
+import { join } from 'node:path';
+
+type AstroPictureProps = ComponentProps<typeof Picture>;
+
+type Props = Omit<AstroPictureProps, 'src' | 'width' | 'height' | 'inferSize'> & {
+  src: string;
+};
+
+const filePath = join(process.cwd(), 'public', Astro.props.src.replace(/^\//, ''));
+const { width, height } = await sharp(filePath).metadata();
+---
+<Picture
+  {...Astro.props}
+  width={width}
+  height={height}
+  widths={Astro.props.widths}
+/>

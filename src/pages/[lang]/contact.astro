@@ -1,8 +1,9 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/blocks/Hero.astro';
 import NetlifyForm from '../../components/NetlifyForm.astro';
-import { t, localizedPath, getI18nPaths } from '../../i18n/utils';
 import type { Lang } from '../../i18n/translations';
+import { getI18nPaths, t } from '../../i18n/utils';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 
 export function getStaticPaths() { return getI18nPaths(); }
 
@@ -11,16 +12,7 @@ const successMsg = lang === 'pt' ? 'Obrigado! Entraremos em contacto em breve.' 
 ---
 
 <BaseLayout title={t('nav.contact', lang)} lang={lang} darkHeader>
-  <section class="section relative min-h-[40vh] flex items-end overflow-hidden bg-primary text-primary-content">
-    <div class="absolute inset-0">
-      <img src="/images/architecture-05.jpg" alt="Architecture" class="w-full h-full object-cover opacity-30" loading="eager" />
-      <div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/40 to-primary/60"></div>
-    </div>
-    <div class="container relative z-10">
-      <span class="section-label mb-4">{t('contactPage.label', lang)}</span>
-      <h1 class="heading-hero text-5xl md:text-7xl lg:text-display">{t('contactPage.heading', lang)}</h1>
-    </div>
-  </section>
+  <Hero variant='half' label={t('contactPage.label', lang)} heading={t('contactPage.heading', lang)} image={"/images/architecture-05.jpg"} />
 
   <section class="section bg-base-100">
     <div class="container">

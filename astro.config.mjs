@@ -7,8 +7,12 @@ export default defineConfig({
   site: 'https://dottacunha.pt',
   trailingSlash: 'always',
   adapter: netlify({
+    imageCDN: true,
     middlewareMode: 'edge',
   }),
+  image: {
+    domains: ['dottacunha.pt'],
+  },
   vite: {
     plugins: [tailwindcss()],
   },
