@@ -26,7 +26,7 @@ export default defineConfig({
   integrations: [sitemap({
     filter: (page) => !page.includes('/admin') && page !== 'https://dottacunha.pt/',
     i18n: {
-      defaultLocale: 'en',
+      defaultLocale: 'pt',
       locales: {
         en: 'en-US',
         pt: 'pt-PT',
