@@ -16,7 +16,7 @@ blocks:
       href: /about
   - type: section
     variant: full
-    label: About
+    label: Sobre Nós
     heading: Raízes na qualidade
     body: |-
       A Dotta & Cunha é uma empresa de promoção imobiliária residencial sediada em Lisboa. Unimos arquitetura, engenharia e gestão de projetos para criar casas que resistem ao tempo.
