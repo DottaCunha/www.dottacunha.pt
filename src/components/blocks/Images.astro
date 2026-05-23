@@ -9,7 +9,7 @@ const { images, variant = "primary" } = Astro.props;
 
 {
   variant === "primary" && (
-    <section class="px-6 md:px-8">
+    <section>
       <div class="container">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:h-[50vh]">
           {images.map((src: string, i: number) => (
