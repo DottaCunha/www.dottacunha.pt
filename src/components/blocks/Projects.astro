@@ -7,24 +7,10 @@ import {
   getProjectSlug,
   getStatusLabel,
 } from "../../lib/projects";
+import type { BlockProps } from "../../lib/blocks";
 import PublicPicture from "../PublicPicture.astro";
 
-interface BaseProps {
-  label: string;
-  heading: string;
-  variant: string;
-}
-
-interface FeaturedProps extends BaseProps {
-  viewAllLabel: string;
-  variant: "featured";
-}
-
-interface AllProps extends BaseProps {
-  variant: "all";
-}
-
-export type Props = FeaturedProps | AllProps;
+export type Props = BlockProps<"projects">;
 
 const { lang } = Astro.params as { lang: Lang };
 
@@ -49,7 +35,7 @@ const projects =
             href={localizedPath("/projects", lang)}
             class="text-link text-info hover:text-base-content flex items-center gap-2"
           >
-            {props.viewAllLabel}
+            {t("projects.viewAll", lang)}
             <svg
               class="w-4 h-4"
               fill="none"

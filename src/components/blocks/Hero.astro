@@ -1,27 +1,10 @@
 ---
 import { localizedPath } from "../../i18n/utils";
 import type { Lang } from "../../i18n/translations";
+import type { BlockProps } from "../../lib/blocks";
 import PublicPicture from "../PublicPicture.astro";
 
-interface BaseProps {
-  label?: string;
-  heading?: string;
-  image?: string;
-  variant: string;
-}
-
-interface HalfProps extends BaseProps {
-  variant: "half";
-}
-
-interface FullProps extends BaseProps {
-  body?: string;
-  cta_primary?: { label: string; href: string };
-  cta_secondary?: { label: string; href: string };
-  variant: "full";
-}
-
-export type Props = HalfProps | FullProps;
+export type Props = BlockProps<"hero">;
 
 const { lang } = Astro.params as { lang: Lang };
 

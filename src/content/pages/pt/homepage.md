@@ -31,7 +31,6 @@ blocks:
     variant: featured
     label: Portfolio
     heading: Projetos Selecionados
-    viewAllLabel: Ver todos os projetos
   - type: list
     variant: list
     label: Serviços

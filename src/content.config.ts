@@ -4,17 +4,12 @@ import { defineCollection } from 'astro:content';
 import config from './sveltia.config';
 import { allCollectionSchemas } from './sveltia-zod';
 
-const { projects, forms } = allCollectionSchemas(config);
+const { projects, pages, forms } = allCollectionSchemas(config);
 
 export const collections = {
   pages: defineCollection({
-    loader: glob({ pattern: '**/*.md', base: './src/content/pages' }),
-  }),
-  pages_new: defineCollection({
-    loader: glob({ pattern: '**/*.md', base: './src/content/pages_new', generateId: ({ entry }) => entry.replace(".md", ''), }),
-  }),
-  services: defineCollection({
-    loader: glob({ pattern: '**/*.md', base: './src/content/services' }),
+    loader: glob({ pattern: '**/*.md', base: './src/content/pages', generateId: ({ entry }) => entry.replace(".md", ''), }),
+    schema: pages,
   }),
   projects: defineCollection({
     loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
@@ -22,6 +17,6 @@ export const collections = {
   }),
   forms: defineCollection({
     loader: glob({ pattern: '**/*.md', base: './src/content/forms', generateId: ({ entry }) => entry.replace(".md", ''), }),
-    // schema: forms,
+    schema: forms,
   })
 }

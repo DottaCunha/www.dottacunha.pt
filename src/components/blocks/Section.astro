@@ -1,28 +1,13 @@
 ---
 import { localizedPath } from "../../i18n/utils";
+import type { Lang } from "../../i18n/translations";
+import type { BlockProps } from "../../lib/blocks";
 import PublicPicture from "../PublicPicture.astro";
 
-interface BaseProps {
-  label?: string;
-  heading?: string;
-  body?: string;
-  variant: string;
-}
-
-interface SimpleProps extends BaseProps {
-  variant: "simple";
-}
-
-interface FullProps extends BaseProps {
-  images: string[];
-  cta?: { label: string; href: string };
-  variant: "full";
-}
-
-export type Props = SimpleProps | FullProps;
+export type Props = BlockProps<"section">;
 
 const props = Astro.props;
-const { lang } = Astro.params;
+const { lang } = Astro.params as { lang: Lang };
 
 const { label, heading, body, variant } = Astro.props;
 const paragraphs =
@@ -89,7 +74,7 @@ const paragraphs =
           </div>
           <div class="lg:col-span-7">
             <div class="grid grid-cols-2 gap-4">
-              {props.images[0] && (
+              {props.images?.[0] && (
                 <div class="aspect-[3/4] overflow-hidden">
                   <PublicPicture
                     src={props.images[0]}
@@ -102,7 +87,7 @@ const paragraphs =
                   />
                 </div>
               )}
-              {props.images[1] && (
+              {props.images?.[1] && (
                 <div class="aspect-[3/4] overflow-hidden mt-12">
                   <PublicPicture
                     src={props.images[1]}

@@ -17,7 +17,19 @@ type SelectValue<Opts extends readonly any[]> =
     : never
     : never;
 
+// Discriminator key for a variable-type list ("type" unless overridden via typeKey)
+type ListTypeKey<F> = F extends { typeKey: infer K extends string } ? K : 'type';
+
+// One variant of a typed list: its declared fields plus the discriminator literal
+type TypeVariant<T, K extends string> =
+  T extends { name: infer N extends string; fields: infer SubF extends readonly any[] }
+    ? Prettify<{ [P in K]: N } & Shape<SubF>>
+    : T extends { name: infer N extends string }
+      ? { [P in K]: N }
+      : never;
+
 type FieldValue<F> =
+  F extends { widget: 'list'; types: infer T extends readonly any[] } ? TypeVariant<T[number], ListTypeKey<F>>[] :
   F extends { widget: 'list'; fields: infer Sub extends readonly any[] } ? Shape<Sub>[] :
   F extends { widget: 'list' } ? string[] :
   F extends { widget: 'object'; fields: infer Sub extends readonly any[] } ? Shape<Sub> :
@@ -92,6 +104,16 @@ function fieldToZod(field: Field): z.ZodTypeAny {
       break;
     }
     case 'list': {
+      const types = (field as any).types as (Field & { fields?: Field[] })[] | undefined;
+      if (types && types.length > 0) {
+        const typeKey = (field as any).typeKey ?? 'type';
+        const variants = types.map(t =>
+          // discriminator placed last so it always wins over a same-named field
+          z.object({ ...toShape(t.fields ?? []), [typeKey]: z.literal(t.name) }),
+        ) as [z.ZodObject<any>, ...z.ZodObject<any>[]];
+        schema = z.array(z.discriminatedUnion(typeKey, variants));
+        break;
+      }
       const sub = (field as any).fields as Field[] | undefined;
       schema = sub ? z.array(z.object(toShape(sub))) : z.array(z.string());
       break;

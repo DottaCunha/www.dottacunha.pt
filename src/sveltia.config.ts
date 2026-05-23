@@ -16,9 +16,9 @@ export default {
     public_folder: "/images/uploads",
     collections: [
         {
-            name: "pages_new",
+            name: "pages",
             label: "Pages",
-            folder: "/src/content/pages_new",
+            folder: "/src/content/pages",
             i18n: true,
             fields: [
                 { name: "title", label: "Title", widget: "string", i18n: true },
@@ -56,6 +56,16 @@ export default {
                             ]
                         },
                         {
+                            label: "Images",
+                            name: "images",
+                            fields: [
+                                { name: "variant", label: "Variant", widget: "select", required: false, i18n: "duplicate", options: [{ label: "Primary", value: "primary" }, { label: "Secondary", value: "secondary" }] },
+                                { name: "label", label: "Label", widget: "string", required: false, i18n: true },
+                                { name: "heading", label: "Heading", widget: "string", required: false, i18n: true },
+                                { name: "images", label: "Images", widget: "list", i18n: "duplicate", field: { name: "image", label: "Image", widget: "image", i18n: "duplicate" } },
+                            ]
+                        },
+                        {
                             label: "Projects",
                             name: "projects",
                             fields: [
@@ -75,7 +85,37 @@ export default {
                                 {
                                     name: "items", label: "Items", widget: "list", i18n: true, fields: [
                                         { name: "heading", label: "Heading", widget: "string", i18n: true },
-                                        { name: "description", label: "Description", widget: "text", i18n: true }
+                                        { name: "body", label: "Body", widget: "text", i18n: true },
+                                        { name: "key", label: "Key", widget: "string", required: false, i18n: "duplicate" }
+                                    ]
+                                },
+                            ]
+                        },
+                        {
+                            label: "Services",
+                            name: "services",
+                            fields: [
+                                {
+                                    name: "items", label: "Services", widget: "list", i18n: true, fields: [
+                                        { name: "key", label: "Key", widget: "string", i18n: "duplicate" },
+                                        { name: "heading", label: "Heading", widget: "string", i18n: true },
+                                        { name: "body", label: "Body", widget: "text", i18n: true },
+                                        { name: "features", label: "Features", widget: "list", required: false, i18n: true, field: { name: "feature", label: "Feature", widget: "string", i18n: true } },
+                                    ]
+                                },
+                            ]
+                        },
+                        {
+                            label: "Process",
+                            name: "process",
+                            fields: [
+                                { name: "label", label: "Label", widget: "string", required: false, i18n: true },
+                                { name: "heading", label: "Heading", widget: "string", required: false, i18n: true },
+                                {
+                                    name: "items", label: "Steps", widget: "list", i18n: true, fields: [
+                                        { name: "step", label: "Step", widget: "string", i18n: "duplicate" },
+                                        { name: "heading", label: "Heading", widget: "string", i18n: true },
+                                        { name: "body", label: "Body", widget: "text", i18n: true },
                                     ]
                                 },
                             ]
@@ -100,6 +140,7 @@ export default {
                                     // dropdown_threshold: 0,
                                     display_fields: ['slug'],
                                     search_fields: ['slug', 'title', 'description'],
+                                    required: false,
                                     i18n: "duplicate"
                                 },
                             ]

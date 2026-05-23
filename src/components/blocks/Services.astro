@@ -1,0 +1,39 @@
+---
+import type { BlockProps } from "../../lib/blocks";
+
+export type Props = BlockProps<"services">;
+
+const { items } = Astro.props;
+---
+
+<section class="section bg-base-100 text-base-content">
+  <div class="container">
+    <div class="border-t border-base-300">
+      {items?.map((service, index) => (
+        <div id={service.key} class="border-b border-base-300 py-10 md:py-14 scroll-mt-24">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div class="lg:col-span-1">
+              <span class="text-index">0{index + 1}</span>
+            </div>
+            <div class="lg:col-span-4">
+              <h3 class="heading-card">{service.heading}</h3>
+            </div>
+            <div class="lg:col-span-4">
+              <p class="text-body-sm">{service.body}</p>
+            </div>
+            <div class="lg:col-span-3">
+              <ul class="space-y-2">
+                {service.features?.map((feature) => (
+                  <li class="flex items-center gap-3 text-body-xs text-secondary">
+                    <span class="w-1 h-1 bg-dark-300 rounded-full shrink-0" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

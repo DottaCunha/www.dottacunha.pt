@@ -1,18 +1,12 @@
 ---
 import { localizedPath } from "../../i18n/utils";
 import type { Lang } from "../../i18n/translations";
+import type { BlockProps } from "../../lib/blocks";
 
-export interface Props {
-  label?: string;
-  heading?: string;
-  body?: string;
-  items?: { key: string; heading: string; body: string }[];
-  variant: "grid" | "list";
-}
+export type Props = BlockProps<"list">;
 
 const { lang } = Astro.params as { lang: Lang };
 const props = Astro.props;
-const { label, heading, items, variant } = Astro.props;
 ---
 
 {
@@ -25,10 +19,7 @@ const { label, heading, items, variant } = Astro.props;
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-base-300">
           {props.items?.map(
-            (
-              value: { heading: string; body: string },
-              index: number,
-            ) => (
+            (value, index) => (
               <div class="bg-base-100 p-10 md:p-14">
                 <span class="text-index block mb-4">0{index + 1}</span>
                 <h3 class="heading-card mb-4">{value.heading}</h3>
@@ -53,10 +44,7 @@ const { label, heading, items, variant } = Astro.props;
 
         <div class="border-t border-base-300">
           {props.items?.map(
-            (
-              item: { key: string; heading: string; body: string },
-              index: number,
-            ) => (
+            (item, index) => (
               <div class="border-b border-base-300">
                 <a
                   href={`${localizedPath("/services", lang)}#${item.key}`}

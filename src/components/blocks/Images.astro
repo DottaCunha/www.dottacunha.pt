@@ -1,14 +1,10 @@
 ---
+import type { BlockProps } from "../../lib/blocks";
 import PublicPicture from "../PublicPicture.astro";
 
-export interface Props {
-  label?: string;
-  heading?: string;
-  images: string[];
-  variant: "primary" | "secondary";
-}
+export type Props = BlockProps<"images">;
 
-const { label, heading, images, variant = "primary" } = Astro.props;
+const { images, variant = "primary" } = Astro.props;
 ---
 
 {

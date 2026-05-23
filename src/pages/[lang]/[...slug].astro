@@ -1,13 +1,14 @@
 ---
 import { getCollection } from "astro:content";
 
+import type { Lang } from "../../i18n/translations";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Blocks from "../../components/blocks/Blocks.astro";
 
 export async function getStaticPaths() {
-  const pages = await getCollection("pages_new");
+  const pages = await getCollection("pages");
   return pages.map((page) => {
-    const lang = page.id.split("/")[0];
+    const lang = page.id.split("/")[0] as Lang;
     const slug = page.data.slug;
     return {
       params: { lang, slug },

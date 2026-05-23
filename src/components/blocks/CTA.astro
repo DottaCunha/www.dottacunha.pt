@@ -3,25 +3,16 @@ import { getEntry } from "astro:content";
 
 import { localizedPath } from "../../i18n/utils";
 import type { Lang } from "../../i18n/translations";
+import type { BlockProps } from "../../lib/blocks";
 import NetlifyForm from "../NetlifyForm.astro";
 
-export interface Props {
-  label?: string;
-  heading?: string;
-  body?: string;
-  image?: string;
-  cta_primary?: { label: string; href: string };
-  cta_secondary?: { label: string; href: string };
-  form?: string;
-  variant: "primary" | "secondary" | "form";
-}
+export type Props = BlockProps<"cta">;
 
 const { lang } = Astro.params as { lang: Lang };
 const {
   label,
   heading,
   body,
-  image,
   cta_primary,
   cta_secondary,
   variant = "primary",

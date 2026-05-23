@@ -19,6 +19,7 @@ export const translations: Record<Lang, Record<string, string>> = {
 
     // Projects (shared keys used across pages)
     'projects.units': 'units',
+    'projects.viewAll': 'View all projects',
 
     // Project statuses
     'status.completed': 'Completed',
@@ -119,6 +120,7 @@ export const translations: Record<Lang, Record<string, string>> = {
 
     // Projects (shared keys used across pages)
     'projects.units': 'unidades',
+    'projects.viewAll': 'Ver todos os projetos',
 
     // Project statuses
     'status.completed': 'Concluído',
