@@ -1,8 +1,8 @@
-import { getCollection } from 'astro:content';
-import type { Lang } from '../i18n/translations';
+import { getCollection } from "astro:content";
+import type { Lang } from "../i18n/translations";
 
 export async function getProjectsByLang(lang: Lang) {
-  const allProjects = await getCollection('projects');
+  const allProjects = await getCollection("projects");
 
   // Filter by language folder (id starts with "pt/" or "en/")
   const filtered = allProjects
@@ -18,15 +18,18 @@ export async function getFeaturedProjectsByLang(lang: Lang) {
 
 export function getProjectSlug(id: string) {
   // id is like "pt/residencias-da-estrela" — extract slug part
-  return id.split('/').slice(1).join('/').replace(/\.md$/, '');
+  return id.split("/").slice(1).join("/").replace(/\.md$/, "");
 }
 
-export function getStatusLabel(status: string, t: (key: string, lang: Lang) => string, lang: Lang) {
+export function getStatusLabel(
+  status: string,
+  t: (key: string, lang: Lang) => string,
+  lang: Lang,
+) {
   const map: Record<string, string> = {
-    completed: t('status.completed', lang),
-    under_construction: t('status.underConstruction', lang),
-    coming_soon: t('status.comingSoon', lang),
+    completed: t("status.completed", lang),
+    under_construction: t("status.underConstruction", lang),
+    coming_soon: t("status.comingSoon", lang),
   };
   return map[status] ?? status;
 }
-

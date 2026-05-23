@@ -1,82 +1,162 @@
 ---
-import Hero from '../../components/blocks/Hero.astro';
-import NetlifyForm from '../../components/NetlifyForm.astro';
-import type { Lang } from '../../i18n/translations';
-import { getI18nPaths, t } from '../../i18n/utils';
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from "../../components/blocks/Hero.astro";
+import NetlifyForm from "../../components/NetlifyForm.astro";
+import type { Lang } from "../../i18n/translations";
+import { getI18nPaths, t } from "../../i18n/utils";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 
-export function getStaticPaths() { return getI18nPaths(); }
+export function getStaticPaths() {
+  return getI18nPaths();
+}
 
 const { lang } = Astro.params as { lang: Lang };
-const successMsg = lang === 'pt' ? 'Obrigado! Entraremos em contacto em breve.' : "Thank you! We'll be in touch soon.";
+const successMsg =
+  lang === "pt"
+    ? "Obrigado! Entraremos em contacto em breve."
+    : "Thank you! We'll be in touch soon.";
 ---
 
-<BaseLayout title={t('nav.contact', lang)} lang={lang} darkHeader>
-  <Hero variant='half' label={t('contactPage.label', lang)} heading={t('contactPage.heading', lang)} image={"/images/architecture-05.jpg"} />
+<BaseLayout title={t("nav.contact", lang)} lang={lang} darkHeader>
+  <Hero
+    variant="half"
+    label={t("contactPage.label", lang)}
+    heading={t("contactPage.heading", lang)}
+    image={"/images/architecture-05.jpg"}
+  />
 
   <section class="section bg-base-100">
     <div class="container">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
         <!-- Form -->
         <div class="lg:col-span-7">
-          <h2 class="heading-card mb-2">{t('contactPage.formTitle', lang)}</h2>
-          <p class="text-body-xs mb-10">{t('contactPage.formSubtitle', lang)}</p>
+          <h2 class="heading-card mb-2">{t("contactPage.formTitle", lang)}</h2>
+          <p class="text-body-xs mb-10">
+            {t("contactPage.formSubtitle", lang)}
+          </p>
 
-          <NetlifyForm name="contact" class="space-y-6" successMessage={successMsg}>
+          <NetlifyForm
+            name="contact"
+            class="space-y-6"
+            successMessage={successMsg}
+          >
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label for="first-name" class="label">
-                  <span class="label-text">{t('contactPage.firstName', lang)}</span>
+                  <span class="label-text"
+                    >{t("contactPage.firstName", lang)}</span
+                  >
                 </label>
-                <input type="text" id="first-name" name="first-name" required class="input w-full" />
+                <input
+                  type="text"
+                  id="first-name"
+                  name="first-name"
+                  required
+                  class="input w-full"
+                />
               </div>
               <div>
                 <label for="last-name" class="label">
-                  <span class="label-text">{t('contactPage.lastName', lang)}</span>
+                  <span class="label-text"
+                    >{t("contactPage.lastName", lang)}</span
+                  >
                 </label>
-                <input type="text" id="last-name" name="last-name" required class="input w-full" />
+                <input
+                  type="text"
+                  id="last-name"
+                  name="last-name"
+                  required
+                  class="input w-full"
+                />
               </div>
             </div>
 
             <div>
               <label for="email" class="label">
-                <span class="label-text">{t('contactPage.email', lang)}</span>
+                <span class="label-text">{t("contactPage.email", lang)}</span>
               </label>
-              <input type="email" id="email" name="email" required class="input w-full" />
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                class="input w-full"
+              />
             </div>
 
             <div>
               <label for="phone" class="label">
-                <span class="label-text">{t('contactPage.phone', lang)} <span class="text-dark-300 normal-case tracking-normal">{t('contactPage.phoneOptional', lang)}</span></span>
+                <span class="label-text"
+                  >{t("contactPage.phone", lang)}
+                  <span class="text-dark-300 normal-case tracking-normal"
+                    >{t("contactPage.phoneOptional", lang)}</span
+                  ></span
+                >
               </label>
-              <input type="tel" id="phone" name="phone" class="input w-full" placeholder="+351 XXX XXX XXX" />
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                class="input w-full"
+                placeholder="+351 XXX XXX XXX"
+              />
             </div>
 
             <div>
               <label for="subject" class="label">
-                <span class="label-text">{t('contactPage.subject', lang)}</span>
+                <span class="label-text">{t("contactPage.subject", lang)}</span>
               </label>
-              <select id="subject" name="subject" class="select w-full text-info">
-                <option value="">{t('contactPage.selectTopic', lang)}</option>
-                <option value="buying">{t('contactPage.topicBuying', lang)}</option>
-                <option value="investing">{t('contactPage.topicInvesting', lang)}</option>
-                <option value="partnership">{t('contactPage.topicPartnership', lang)}</option>
-                <option value="careers">{t('contactPage.topicCareers', lang)}</option>
-                <option value="general">{t('contactPage.topicGeneral', lang)}</option>
+              <select
+                id="subject"
+                name="subject"
+                class="select w-full text-info"
+              >
+                <option value="">{t("contactPage.selectTopic", lang)}</option>
+                <option value="buying"
+                  >{t("contactPage.topicBuying", lang)}</option
+                >
+                <option value="investing"
+                  >{t("contactPage.topicInvesting", lang)}</option
+                >
+                <option value="partnership"
+                  >{t("contactPage.topicPartnership", lang)}</option
+                >
+                <option value="careers"
+                  >{t("contactPage.topicCareers", lang)}</option
+                >
+                <option value="general"
+                  >{t("contactPage.topicGeneral", lang)}</option
+                >
               </select>
             </div>
 
             <div>
               <label for="message" class="label">
-                <span class="label-text">{t('contactPage.message', lang)}</span>
+                <span class="label-text">{t("contactPage.message", lang)}</span>
               </label>
-              <textarea id="message" name="message" rows="4" required class="textarea w-full resize-none" placeholder={t('contactPage.messagePlaceholder', lang)}></textarea>
+              <textarea
+                id="message"
+                name="message"
+                rows="4"
+                required
+                class="textarea w-full resize-none"
+                placeholder={t("contactPage.messagePlaceholder", lang)}
+              ></textarea>
             </div>
 
             <div class="pt-4">
               <button type="submit" class="btn btn-primary">
-                {t('contactPage.submit', lang)}
-                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                {t("contactPage.submit", lang)}
+                <svg
+                  class="w-4 h-4 ml-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  ><path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg
+                >
               </button>
             </div>
           </NetlifyForm>
@@ -86,15 +166,25 @@ const successMsg = lang === 'pt' ? 'Obrigado! Entraremos em contacto em breve.' 
         <div class="lg:col-span-5">
           <div class="space-y-12">
             <div>
-              <h3 class="label-text mb-6">{t('contactPage.officeLabel', lang)}</h3>
+              <h3 class="label-text mb-6">
+                {t("contactPage.officeLabel", lang)}
+              </h3>
               <div class="space-y-6">
                 <div>
-                  <div class="text-body-sm font-medium text-base-content mb-1">{t('contactPage.address', lang)}</div>
+                  <div class="text-body-sm font-medium text-base-content mb-1">
+                    {t("contactPage.address", lang)}
+                  </div>
                   <div class="text-body-sm">Lisbon, Portugal</div>
                 </div>
                 <div>
-                  <div class="text-body-sm font-medium text-base-content mb-1">{t('contactPage.email', lang)}</div>
-                  <a href="mailto:partners@dottacunha.pt" class="text-body-sm hover:text-base-content transition-colors">partners@dottacunha.pt</a>
+                  <div class="text-body-sm font-medium text-base-content mb-1">
+                    {t("contactPage.email", lang)}
+                  </div>
+                  <a
+                    href="mailto:partners@dottacunha.pt"
+                    class="text-body-sm hover:text-base-content transition-colors"
+                    >partners@dottacunha.pt</a
+                  >
                 </div>
                 <!-- <div>
                   <div class="text-body-sm font-medium text-base-content mb-1">{t('contactPage.phone', lang)}</div>
@@ -104,27 +194,48 @@ const successMsg = lang === 'pt' ? 'Obrigado! Entraremos em contacto em breve.' 
             </div>
 
             <div>
-              <h3 class="label-text mb-6">{t('contactPage.hoursLabel', lang)}</h3>
+              <h3 class="label-text mb-6">
+                {t("contactPage.hoursLabel", lang)}
+              </h3>
               <div class="space-y-3">
                 <div class="flex justify-between text-body-sm">
-                  <span class="text-info font-light">{t('contactPage.monFri', lang)}</span>
-                  <span class="text-base-content font-medium">9:00 – 18:00</span>
+                  <span class="text-info font-light"
+                    >{t("contactPage.monFri", lang)}</span
+                  >
+                  <span class="text-base-content font-medium">9:00 – 18:00</span
+                  >
                 </div>
                 <div class="flex justify-between text-body-sm">
-                  <span class="text-info font-light">{t('contactPage.sat', lang)}</span>
-                  <span class="text-base-content font-medium">{t('contactPage.byAppointment', lang)}</span>
+                  <span class="text-info font-light"
+                    >{t("contactPage.sat", lang)}</span
+                  >
+                  <span class="text-base-content font-medium"
+                    >{t("contactPage.byAppointment", lang)}</span
+                  >
                 </div>
                 <div class="flex justify-between text-body-sm">
-                  <span class="text-info font-light">{t('contactPage.sun', lang)}</span>
-                  <span class="text-base-content font-medium">{t('contactPage.closed', lang)}</span>
+                  <span class="text-info font-light"
+                    >{t("contactPage.sun", lang)}</span
+                  >
+                  <span class="text-base-content font-medium"
+                    >{t("contactPage.closed", lang)}</span
+                  >
                 </div>
               </div>
             </div>
 
             <div>
-              <h3 class="label-text mb-6">{t('contactPage.followLabel', lang)}</h3>
+              <h3 class="label-text mb-6">
+                {t("contactPage.followLabel", lang)}
+              </h3>
               <div class="flex gap-4">
-                <a href="https://www.linkedin.com/company/dottacunha" target="_blank" rel="noopener noreferrer" class="text-body-xs hover:text-base-content transition-colors uppercase tracking-wider">LinkedIn</a>
+                <a
+                  href="https://www.linkedin.com/company/dottacunha"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-body-xs hover:text-base-content transition-colors uppercase tracking-wider"
+                  >LinkedIn</a
+                >
                 <!-- <span class="text-dark-200">·</span> -->
                 <!-- <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="text-body-xs hover:text-base-content transition-colors uppercase tracking-wider">Instagram</a> -->
               </div>
@@ -137,7 +248,9 @@ const successMsg = lang === 'pt' ? 'Obrigado! Entraremos em contacto em breve.' 
 
   <section class="bg-base-200">
     <div class="h-72 flex items-center justify-center">
-      <p class="text-meta text-dark-300">{t('contactPage.mapPlaceholder', lang)}</p>
+      <p class="text-meta text-dark-300">
+        {t("contactPage.mapPlaceholder", lang)}
+      </p>
     </div>
   </section>
 </BaseLayout>

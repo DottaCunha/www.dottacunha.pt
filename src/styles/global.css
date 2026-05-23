@@ -9,37 +9,37 @@
 }
 
 @plugin "daisyui/theme" {
-  name:         "dottacunha";
-  default:      true;
+  name: "dottacunha";
+  default: true;
   color-scheme: light;
 
-  --color-base-100:         #ffffff;
-  --color-base-200:         #f7f7f7;
-  --color-base-300:         #e3e3e3;
-  --color-base-content:     #0a0a0a;
+  --color-base-100: #ffffff;
+  --color-base-200: #f7f7f7;
+  --color-base-300: #e3e3e3;
+  --color-base-content: #0a0a0a;
 
-  --color-primary:          #0a0a0a;
-  --color-primary-content:  #ffffff;
-  --color-secondary:        #666666;
-  --color-secondary-content:#ffffff;
-  --color-accent:           #0a0a0a;
-  --color-accent-content:   #ffffff;
-  --color-neutral:          #0a0a0a;
-  --color-neutral-content:  #e7e3e4;
+  --color-primary: #0a0a0a;
+  --color-primary-content: #ffffff;
+  --color-secondary: #666666;
+  --color-secondary-content: #ffffff;
+  --color-accent: #0a0a0a;
+  --color-accent-content: #ffffff;
+  --color-neutral: #0a0a0a;
+  --color-neutral-content: #e7e3e4;
 
-  --color-info:             #818181;
-  --color-success:          #434343;
-  --color-warning:          #666666;
-  --color-error:            #515151;
+  --color-info: #818181;
+  --color-success: #434343;
+  --color-warning: #666666;
+  --color-error: #515151;
 
   --radius-selector: 0rem;
-  --radius-field:    0rem;
-  --radius-box:      0rem;
-  --size-selector:   0.25rem;
-  --size-field:      0.25rem;
-  --border:          1px;
-  --depth:           0;
-  --noise:           0;
+  --radius-field: 0rem;
+  --radius-box: 0rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
 }
 
 /* ──────────────────────────────
@@ -49,23 +49,23 @@
 
 @theme {
   /* Font families */
-  --font-sans:     var(--font-inter), system-ui, sans-serif;
-  --font-display:  var(--font-space-grotesk), system-ui, sans-serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
 
   /* Custom font sizes (fills gaps between Tailwind defaults) */
-  --text-3xs:        0.5625rem;  /* 9px  */
-  --text-2xs:        0.625rem;   /* 10px */
-  --text-xxs:        0.6875rem;  /* 11px */
+  --text-3xs: 0.5625rem; /* 9px  */
+  --text-2xs: 0.625rem; /* 10px */
+  --text-xxs: 0.6875rem; /* 11px */
   /* xs = 0.75rem / 12px  (built-in) */
-  --text-mid:        0.8125rem;  /* 13px */
+  --text-mid: 0.8125rem; /* 13px */
   /* sm = 0.875rem / 14px  (built-in) */
-  --text-md:         0.9375rem;  /* 15px */
+  --text-md: 0.9375rem; /* 15px */
   /* base = 1rem / 16px  (built-in) */
-  --text-prose:      1.0625rem;  /* 17px */
+  --text-prose: 1.0625rem; /* 17px */
   /* lg = 1.125rem / 18px  (built-in) */
-  --text-display-xs: 1.75rem;    /* 28px */
-  --text-display:    5rem;       /* 80px */
-  --text-display-lg: 5.625rem;   /* 90px */
+  --text-display-xs: 1.75rem; /* 28px */
+  --text-display: 5rem; /* 80px */
+  --text-display-lg: 5.625rem; /* 90px */
 
   /* Intermediate grays (no DaisyUI semantic equivalent) */
   --color-dark-100: #e3e3e3;
@@ -100,7 +100,6 @@
    ────────────────────────────── */
 
 @layer components {
-
   /* ── DaisyUI Button tweaks ──
      --btn-p and --fontsize are DaisyUI's own CSS variables.
      font-weight, text-transform, letter-spacing have no variable — override needed. */
@@ -143,12 +142,15 @@
      The design uses underline-style fields (bottom border only).
      DaisyUI inputs assume full bordered/filled fields — no variable
      can switch to underline style, so structural override is needed. */
-  .input, .textarea, .select {
+  .input,
+  .textarea,
+  .select {
     @apply rounded-none border-0 border-b border-dark-200 px-0 py-3
            text-sm bg-transparent font-light
            focus:outline-none focus:border-base-content;
   }
-  .input, .textarea {
+  .input,
+  .textarea {
     @apply text-base-content placeholder-dark-300;
   }
   .select {

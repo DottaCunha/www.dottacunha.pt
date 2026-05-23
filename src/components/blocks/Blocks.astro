@@ -15,32 +15,32 @@ const props = Astro.props;
 ---
 
 <>
-    {
-        props.blocks?.map((block) => {
-            if (block.type === "hero") {
-                return <Hero {...block} />;
-            }
-            if (block.type === "section") {
-                return <Section {...block} />;
-            }
-            if (block.type === "cta") {
-                return <CTA {...block} />;
-            }
-            if (block.type === "images") {
-                return <Images {...block} />;
-            }
-            if (block.type === "list") {
-                return <List {...block} />;
-            }
-            if (block.type === "projects") {
-                return <Projects {...block} />;
-            }
-            if (block.type === "services") {
-                return <Services {...block} />;
-            }
-            if (block.type === "process") {
-                return <Process {...block} />;
-            }
-        })
-    }
+  {
+    props.blocks?.map((block) => {
+      if (block.type === "hero") {
+        return <Hero {...block} />;
+      }
+      if (block.type === "section") {
+        return <Section {...block} />;
+      }
+      if (block.type === "cta") {
+        return <CTA {...block} />;
+      }
+      if (block.type === "images") {
+        return <Images {...block} />;
+      }
+      if (block.type === "list") {
+        return <List {...block} />;
+      }
+      if (block.type === "projects") {
+        return <Projects {...block} />;
+      }
+      if (block.type === "services") {
+        return <Services {...block} />;
+      }
+      if (block.type === "process") {
+        return <Process {...block} />;
+      }
+    })
+  }
 </>

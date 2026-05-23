@@ -1,73 +1,122 @@
-import { z } from 'astro/zod';
-import type { CmsConfig, Collection, CollectionDivider, Field } from '@sveltia/cms';
+import { z } from "astro/zod";
+import type {
+  CmsConfig,
+  Collection,
+  CollectionDivider,
+  Field,
+} from "@sveltia/cms";
 
 // ---------- Type-level inference ----------
 
-type ScalarWidgetType<W> =
-  W extends 'string' | 'text' | 'markdown' | 'richtext' | 'image' | 'file' | 'color' | 'uuid' | 'relation' ? string :
-  W extends 'number' ? number :
-  W extends 'boolean' ? boolean :
-  W extends 'datetime' ? Date :
-  unknown;
+type ScalarWidgetType<W> = W extends
+  | "string"
+  | "text"
+  | "markdown"
+  | "richtext"
+  | "image"
+  | "file"
+  | "color"
+  | "uuid"
+  | "relation"
+  ? string
+  : W extends "number"
+    ? number
+    : W extends "boolean"
+      ? boolean
+      : W extends "datetime"
+        ? Date
+        : unknown;
 
-type SelectValue<Opts extends readonly any[]> =
-  Opts[number] extends infer O
-    ? O extends { value: infer V } ? V
-    : O extends string ? O
-    : never
-    : never;
+type SelectValue<Opts extends readonly any[]> = Opts[number] extends infer O
+  ? O extends { value: infer V }
+    ? V
+    : O extends string
+      ? O
+      : never
+  : never;
 
 // Discriminator key for a variable-type list ("type" unless overridden via typeKey)
-type ListTypeKey<F> = F extends { typeKey: infer K extends string } ? K : 'type';
+type ListTypeKey<F> = F extends { typeKey: infer K extends string }
+  ? K
+  : "type";
 
 // One variant of a typed list: its declared fields plus the discriminator literal
-type TypeVariant<T, K extends string> =
-  T extends { name: infer N extends string; fields: infer SubF extends readonly any[] }
-    ? Prettify<{ [P in K]: N } & Shape<SubF>>
-    : T extends { name: infer N extends string }
-      ? { [P in K]: N }
-      : never;
-
-type FieldValue<F> =
-  F extends { widget: 'list'; types: infer T extends readonly any[] } ? TypeVariant<T[number], ListTypeKey<F>>[] :
-  F extends { widget: 'list'; fields: infer Sub extends readonly any[] } ? Shape<Sub>[] :
-  F extends { widget: 'list' } ? string[] :
-  F extends { widget: 'object'; fields: infer Sub extends readonly any[] } ? Shape<Sub> :
-  F extends { widget: 'select'; options: infer Opts extends readonly any[]; multiple: true } ? SelectValue<Opts>[] :
-  F extends { widget: 'select'; options: infer Opts extends readonly any[] } ? SelectValue<Opts> :
-  F extends { widget: infer W } ? ScalarWidgetType<W> :
-  unknown;
-
-type FieldEntry<F> =
-  F extends { name: infer N extends string; required?: infer R }
-    ? R extends false
-      ? { [K in N]?: FieldValue<F> }
-      : { [K in N]: FieldValue<F> }
+type TypeVariant<T, K extends string> = T extends {
+  name: infer N extends string;
+  fields: infer SubF extends readonly any[];
+}
+  ? Prettify<{ [P in K]: N } & Shape<SubF>>
+  : T extends { name: infer N extends string }
+    ? { [P in K]: N }
     : never;
 
-type UnionToIntersection<U> =
-  (U extends any ? (k: U) => void : never) extends (k: infer I) => void ? I : never;
+type FieldValue<F> = F extends {
+  widget: "list";
+  types: infer T extends readonly any[];
+}
+  ? TypeVariant<T[number], ListTypeKey<F>>[]
+  : F extends { widget: "list"; fields: infer Sub extends readonly any[] }
+    ? Shape<Sub>[]
+    : F extends { widget: "list" }
+      ? string[]
+      : F extends { widget: "object"; fields: infer Sub extends readonly any[] }
+        ? Shape<Sub>
+        : F extends {
+              widget: "select";
+              options: infer Opts extends readonly any[];
+              multiple: true;
+            }
+          ? SelectValue<Opts>[]
+          : F extends {
+                widget: "select";
+                options: infer Opts extends readonly any[];
+              }
+            ? SelectValue<Opts>
+            : F extends { widget: infer W }
+              ? ScalarWidgetType<W>
+              : unknown;
+
+type FieldEntry<F> = F extends {
+  name: infer N extends string;
+  required?: infer R;
+}
+  ? R extends false
+    ? { [K in N]?: FieldValue<F> }
+    : { [K in N]: FieldValue<F> }
+  : never;
+
+type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
+  k: infer I,
+) => void
+  ? I
+  : never;
 
 type Prettify<T> = { [K in keyof T]: Exclude<T[K], undefined> } & {};
 
-type Shape<Fields extends readonly any[]> = Prettify<UnionToIntersection<FieldEntry<Fields[number]>>>;
+type Shape<Fields extends readonly any[]> = Prettify<
+  UnionToIntersection<FieldEntry<Fields[number]>>
+>;
 
-export type CollectionData<Config, Name extends string> =
-  Config extends { collections: readonly (infer C)[] }
-    ? C extends { name: Name; fields: infer F extends readonly any[] }
-      ? Shape<F>
-      : never
-    : never;
+export type CollectionData<Config, Name extends string> = Config extends {
+  collections: readonly (infer C)[];
+}
+  ? C extends { name: Name; fields: infer F extends readonly any[] }
+    ? Shape<F>
+    : never
+  : never;
 
-type FolderCollectionNames<Config> =
-  Config extends { collections: readonly (infer C)[] }
-    ? C extends { name: infer N extends string; folder: string }
-      ? N
-      : never
-    : never;
+type FolderCollectionNames<Config> = Config extends {
+  collections: readonly (infer C)[];
+}
+  ? C extends { name: infer N extends string; folder: string }
+    ? N
+    : never
+  : never;
 
 type CollectionSchemaMap<Config> = {
-  [Name in FolderCollectionNames<Config>]: z.ZodType<CollectionData<Config, Name>>;
+  [Name in FolderCollectionNames<Config>]: z.ZodType<
+    CollectionData<Config, Name>
+  >;
 };
 
 // ---------- Runtime mapper ----------
@@ -76,40 +125,48 @@ function fieldToZod(field: Field): z.ZodTypeAny {
   let schema: z.ZodTypeAny;
 
   switch (field.widget) {
-    case 'string':
-    case 'text':
-    case 'markdown':
-    case 'richtext':
-    case 'color':
-    case 'uuid':
-    case 'relation':
-    case 'file':
-    case 'image':
+    case "string":
+    case "text":
+    case "markdown":
+    case "richtext":
+    case "color":
+    case "uuid":
+    case "relation":
+    case "file":
+    case "image":
       schema = z.string();
       break;
-    case 'number':
+    case "number":
       schema = z.number();
       break;
-    case 'boolean':
+    case "boolean":
       schema = z.boolean();
       break;
-    case 'datetime':
+    case "datetime":
       schema = z.coerce.date();
       break;
-    case 'select': {
+    case "select": {
       const opts = (field as any).options as (string | { value: string })[];
-      const values = opts.map(o => typeof o === 'string' ? o : o.value) as [string, ...string[]];
+      const values = opts.map((o) => (typeof o === "string" ? o : o.value)) as [
+        string,
+        ...string[],
+      ];
       const base = z.enum(values);
       schema = (field as any).multiple ? z.array(base) : base;
       break;
     }
-    case 'list': {
-      const types = (field as any).types as (Field & { fields?: Field[] })[] | undefined;
+    case "list": {
+      const types = (field as any).types as
+        | (Field & { fields?: Field[] })[]
+        | undefined;
       if (types && types.length > 0) {
-        const typeKey = (field as any).typeKey ?? 'type';
-        const variants = types.map(t =>
+        const typeKey = (field as any).typeKey ?? "type";
+        const variants = types.map((t) =>
           // discriminator placed last so it always wins over a same-named field
-          z.object({ ...toShape(t.fields ?? []), [typeKey]: z.literal(t.name) }),
+          z.object({
+            ...toShape(t.fields ?? []),
+            [typeKey]: z.literal(t.name),
+          }),
         ) as [z.ZodObject<any>, ...z.ZodObject<any>[]];
         schema = z.array(z.discriminatedUnion(typeKey, variants));
         break;
@@ -118,39 +175,45 @@ function fieldToZod(field: Field): z.ZodTypeAny {
       schema = sub ? z.array(z.object(toShape(sub))) : z.array(z.string());
       break;
     }
-    case 'object':
+    case "object":
       schema = z.object(toShape((field as any).fields));
       break;
     default:
       schema = z.any();
   }
 
-  return 'required' in field && field.required === false ? schema.optional() : schema;
+  return "required" in field && field.required === false
+    ? schema.optional()
+    : schema;
 }
 
 function toShape(fields: readonly Field[]) {
-  return Object.fromEntries(fields.map(f => [f.name, fieldToZod(f)]));
+  return Object.fromEntries(fields.map((f) => [f.name, fieldToZod(f)]));
 }
 
 function isFolderCollection(
   c: Collection | CollectionDivider,
 ): c is Extract<Collection, { folder: string }> {
-  return 'folder' in c && 'fields' in c;
+  return "folder" in c && "fields" in c;
 }
 
 export function collectionSchema(c: Collection | CollectionDivider) {
   if (!isFolderCollection(c)) {
-    throw new Error(`Collection "${(c as any).name ?? '?'}" is not a folder collection`);
+    throw new Error(
+      `Collection "${(c as any).name ?? "?"}" is not a folder collection`,
+    );
   }
   return z.object(toShape(c.fields));
 }
 
-export function allCollectionSchemas<C extends CmsConfig>(config: C): CollectionSchemaMap<C> {
+export function allCollectionSchemas<C extends CmsConfig>(
+  config: C,
+): CollectionSchemaMap<C> {
   if (!config.collections) return {} as CollectionSchemaMap<C>;
 
   return Object.fromEntries(
     config.collections
       .filter(isFolderCollection)
-      .map(c => [c.name, collectionSchema(c)]),
+      .map((c) => [c.name, collectionSchema(c)]),
   ) as unknown as CollectionSchemaMap<C>;
 }

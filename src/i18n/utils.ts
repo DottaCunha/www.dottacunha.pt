@@ -1,4 +1,9 @@
-import { translations, defaultLang, supportedLangs, type Lang } from './translations';
+import {
+  translations,
+  defaultLang,
+  supportedLangs,
+  type Lang,
+} from "./translations";
 
 /** Get translation for a key in the given language */
 export function t(key: string, lang: Lang): string {
@@ -7,7 +12,7 @@ export function t(key: string, lang: Lang): string {
 
 /** Extract language from URL path */
 export function getLangFromUrl(url: URL): Lang {
-  const [, langSegment] = url.pathname.split('/');
+  const [, langSegment] = url.pathname.split("/");
   if (supportedLangs.includes(langSegment as Lang)) {
     return langSegment as Lang;
   }
@@ -17,17 +22,17 @@ export function getLangFromUrl(url: URL): Lang {
 /** Build a localized path */
 export function localizedPath(path: string, lang: Lang): string {
   // Ensure path starts with /
-  const cleanPath = path.startsWith('/') ? path : `/${path}`;
-  const suffix = cleanPath === '/' ? '/' : `${cleanPath}/`;
-  return `/${lang}${cleanPath === '/' ? '/' : suffix}`;
+  const cleanPath = path.startsWith("/") ? path : `/${path}`;
+  const suffix = cleanPath === "/" ? "/" : `${cleanPath}/`;
+  return `/${lang}${cleanPath === "/" ? "/" : suffix}`;
 }
 
 /** Get the alternate language */
 export function getAlternateLang(lang: Lang): Lang {
-  return lang === 'pt' ? 'en' : 'pt';
+  return lang === "pt" ? "en" : "pt";
 }
 
 /** Get all static paths for a page (used in getStaticPaths) */
 export function getI18nPaths() {
-  return supportedLangs.map(lang => ({ params: { lang } }));
+  return supportedLangs.map((lang) => ({ params: { lang } }));
 }

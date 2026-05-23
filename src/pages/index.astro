@@ -1,10 +1,10 @@
 ---
 export const prerender = false;
 
-const ua = Astro.request.headers.get('user-agent') ?? '';
+const ua = Astro.request.headers.get("user-agent") ?? "";
 const isBot = /bot|crawl|spider|slurp|bingpreview/i.test(ua);
 
-const locale = isBot ? 'pt' : (Astro.preferredLocale ?? 'pt');
-Astro.response.headers.set('Vary', 'Accept-Language');
+const locale = isBot ? "pt" : (Astro.preferredLocale ?? "pt");
+Astro.response.headers.set("Vary", "Accept-Language");
 return Astro.redirect(`/${locale}/`, 301);
 ---

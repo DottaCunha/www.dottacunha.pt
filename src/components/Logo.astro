@@ -1,10 +1,10 @@
 ---
 interface Props {
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
   color?: string;
 }
 
-const { size = 'md', color = 'currentColor' } = Astro.props;
+const { size = "md", color = "currentColor" } = Astro.props;
 
 const ASPECT = 81 / 56;
 
@@ -13,8 +13,19 @@ const height = heights[size];
 const width = Math.round(height * ASPECT);
 ---
 
-<svg width={width} height={height} viewBox="0 0 81 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Dotta & Cunha">
-  <path d="M0 0H34C40.6274 0 46 5.37258 46 12V44C46 50.6274 40.6274 56 34 56H0V0Z" fill={color}/>
-  <path d="M75 0H67.5475C61.5894 0 56.5335 4.37162 55.6732 10.2673L51.0039 42.2673C49.9474 49.5077 55.561 56 62.8781 56H67.9429L75 0Z" fill={color}/>
-  <circle cx="78" cy="53" r="3" fill={color} />
+<svg
+  width={width}
+  height={height}
+  viewBox="0 0 81 56"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  aria-label="Dotta & Cunha"
+>
+  <path
+    d="M0 0H34C40.6274 0 46 5.37258 46 12V44C46 50.6274 40.6274 56 34 56H0V0Z"
+    fill={color}></path>
+  <path
+    d="M75 0H67.5475C61.5894 0 56.5335 4.37162 55.6732 10.2673L51.0039 42.2673C49.9474 49.5077 55.561 56 62.8781 56H67.9429L75 0Z"
+    fill={color}></path>
+  <circle cx="78" cy="53" r="3" fill={color}></circle>
 </svg>

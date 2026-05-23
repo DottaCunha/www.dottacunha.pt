@@ -32,7 +32,7 @@ src/sveltia.config.ts   ← THE source. Defines CMS collections + fields.
 ```
 
 - To change a content model (add a field, a block type, a collection): **edit `src/sveltia.config.ts`**. The Zod schema and TS types follow automatically.
-- `src/sveltia-zod.ts` is generic, project-agnostic machinery (widget → Zod/type mapper). It maps scalar widgets, `object`/`list` (with `fields`), `select` → enums, and **`list` with `types`** (variable-type block lists) → a `z.discriminatedUnion` keyed on the list's `typeKey` (default `"type"`). You rarely edit it — only to support a *new widget kind*.
+- `src/sveltia-zod.ts` is generic, project-agnostic machinery (widget → Zod/type mapper). It maps scalar widgets, `object`/`list` (with `fields`), `select` → enums, and **`list` with `types`** (variable-type block lists) → a `z.discriminatedUnion` keyed on the list's `typeKey` (default `"type"`). You rarely edit it — only to support a _new widget kind_.
 - `src/content.config.ts` calls `allCollectionSchemas(config)` and assigns the derived schema to each collection (`pages`, `projects`, `forms` all validate).
 - **Consequence — declaring fields is mandatory:** content is validated against the config at build. A field used in content or read by a component **must** be declared in `sveltia.config.ts`, otherwise Zod strips it (data silently lost) or the build fails. This is by design — it's what keeps content, config, and components in sync.
 
@@ -51,12 +51,14 @@ src/sveltia.config.ts   ← THE source. Defines CMS collections + fields.
 The `pages` collection is **block-based**: each page is a `blocks` list rendered by `src/components/blocks/Blocks.astro`, which dispatches on `block.type`.
 
 Block component Props are **derived from the schema**, not hand-written. `src/lib/blocks.ts` exports:
+
 - `PageBlock` — the full discriminated union of page blocks (from the config).
 - `BlockOf<'hero'>` — one variant by `type`; `BlockProps<'hero'>` — that variant minus the `type` key.
 
 Each block component does `export type Props = BlockProps<'name'>`, so it can never drift from the config.
 
 **To add a block type:**
+
 1. Declare it under `blocks` → `types` in `sveltia.config.ts`.
 2. Add `src/components/blocks/<Name>.astro` with `export type Props = BlockProps<'name'>`.
 3. Add a dispatch branch in `Blocks.astro` (typed as `PageBlock[]`).
@@ -69,11 +71,11 @@ Current block types: `hero`, `section`, `projects`, `list`, `images`, `services`
 
 ## Content collections & routing
 
-| Collection   | Content path                | Rendered by                                  |
-|--------------|-----------------------------|----------------------------------------------|
-| `pages`      | `src/content/pages/`        | `src/pages/[lang]/[...slug].astro` (catch-all, by `slug`) — homepage, projects, about, **services** |
-| `projects`   | `src/content/projects/`     | `src/pages/[lang]/projects/[slug].astro` + `[unitId].astro`; helpers in `src/lib/projects.ts` |
-| `forms`      | `src/content/forms/`        | consumed by the `cta` block (`variant: form`) via `getEntry` |
+| Collection | Content path            | Rendered by                                                                                         |
+| ---------- | ----------------------- | --------------------------------------------------------------------------------------------------- |
+| `pages`    | `src/content/pages/`    | `src/pages/[lang]/[...slug].astro` (catch-all, by `slug`) — homepage, projects, about, **services** |
+| `projects` | `src/content/projects/` | `src/pages/[lang]/projects/[slug].astro` + `[unitId].astro`; helpers in `src/lib/projects.ts`       |
+| `forms`    | `src/content/forms/`    | consumed by the `cta` block (`variant: form`) via `getEntry`                                        |
 
 All marketing pages run through the block-based `pages` collection and the single catch-all route. The legacy dedicated `services.astro` route has been removed.
 

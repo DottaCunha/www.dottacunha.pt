@@ -1,0 +1,17 @@
+# Build output / generated
+dist/
+.astro/
+.netlify/
+
+# Dependencies / lockfiles
+node_modules/
+package-lock.json
+
+# Static assets
+public/
+
+# Hand-crafted email HTML (whitespace-sensitive)
+email-signature/
+
+# Content data (frontmatter-only; avoid reformat churn)
+src/content/
