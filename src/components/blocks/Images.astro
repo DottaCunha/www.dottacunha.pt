@@ -13,7 +13,7 @@ const { images, variant = "primary" } = Astro.props;
       <div class="container">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:h-[50vh]">
           {images.map((src: string, i: number) => (
-            <div class="overflow-hidden aspect-[4/3] md:aspect-auto md:h-full">
+            <div class="overflow-hidden aspect-[4/3] md:aspect-auto md:h-full bg-base-300">
               <PublicPicture
                 src={src}
                 alt={`Image ${i + 1}`}
