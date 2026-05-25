@@ -506,6 +506,13 @@ export default {
             },
           ],
         },
+        {
+          name: "body",
+          label: "Body",
+          widget: "markdown",
+          required: false,
+          i18n: true,
+        },
       ],
     },
     {

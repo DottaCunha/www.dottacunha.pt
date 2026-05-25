@@ -96,7 +96,7 @@ export const translations: Record<Lang, Record<string, string>> = {
 
     // Footer
     "footer.description":
-      "Building exceptional residential spaces in Portugal. From concept to completion.",
+      "Building exceptional residential spaces, from concept to completion.",
     "footer.startConversation": "Start a Conversation",
     "footer.navigation": "Navigation",
     "footer.services": "Services",
@@ -199,7 +199,7 @@ export const translations: Record<Lang, Record<string, string>> = {
 
     // Footer
     "footer.description":
-      "Construímos espaços residenciais excecionais em Portugal. Do conceito à conclusão.",
+      "Construímos espaços residenciais excecionais, do conceito à conclusão.",
     "footer.startConversation": "Iniciar Conversa",
     "footer.navigation": "Navegação",
     "footer.services": "Serviços",

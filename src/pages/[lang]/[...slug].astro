@@ -1,9 +1,10 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 
 import type { Lang } from "../../i18n/translations";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Blocks from "../../components/blocks/Blocks.astro";
+import Prose from "../../components/Prose.astro";
 
 export async function getStaticPaths() {
   const pages = await getCollection("pages");
@@ -19,8 +20,23 @@ export async function getStaticPaths() {
 
 const { page } = Astro.props;
 const { lang } = Astro.params;
+
+// A page can be block-composed, a written markdown body, or both. Blocks
+// render first; the body (if any) is rendered after them via <Prose>.
+const blocks = page.data.blocks ?? [];
+const hasBlocks = blocks.length > 0;
+const hasBody = Boolean(page.body?.trim());
+
+const { Content } = hasBody ? await render(page) : { Content: null };
 ---
 
-<BaseLayout title={page.data.title} darkHeader={true} lang={lang}>
-  <Blocks blocks={page.data.blocks} />
+<BaseLayout title={page.data.title} darkHeader={hasBlocks} lang={lang}>
+  <Blocks blocks={blocks} />
+  {
+    Content && (
+      <Prose title={hasBlocks ? undefined : page.data.title}>
+        <Content />
+      </Prose>
+    )
+  }
 </BaseLayout>

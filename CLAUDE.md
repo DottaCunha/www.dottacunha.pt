@@ -50,6 +50,10 @@ src/sveltia.config.ts   ← THE source. Defines CMS collections + fields.
 
 The `pages` collection is **block-based**: each page is a `blocks` list rendered by `src/components/blocks/Blocks.astro`, which dispatches on `block.type`.
 
+A page may **also** carry a long-form markdown `body` — the content below the frontmatter. The `[...slug]` route renders the blocks first, then the body via `src/components/Prose.astro`. So a page can be block-composed (homepage, about), a written document (privacy, terms — body only, no blocks), or both. This is how non-block pages (legal text, a future careers or FAQ page) are authored — no separate collection needed.
+
+The `body` field is declared in `sveltia.config.ts` with `widget: markdown` and **`required: false`**: it maps to the markdown document body, not a frontmatter key, so the derived Zod schema must treat it as optional (it never appears in frontmatter). The route reads it via Astro's `render()`.
+
 Block component Props are **derived from the schema**, not hand-written. `src/lib/blocks.ts` exports:
 
 - `PageBlock` — the full discriminated union of page blocks (from the config).
@@ -67,17 +71,17 @@ Current block types: `hero`, `section`, `projects`, `list`, `images`, `services`
 
 `services` and `process` are bespoke to the services page (numbered service list with feature bullets, and the 4-step process grid). `services` items carry a `key` used as the section anchor id — the `list` block (variant `list`) links to `/services#<key>`, so keep keys stable.
 
-**Field naming (layered convention):** within blocks and their repeatable items use `label` (eyebrow) / `heading` (headline) / `body` (prose). Collection records (`pages`, `projects`, `forms`) use `title` (identity) / `description` (summary). Don't mix the two vocabularies.
+**Field naming (layered convention):** within blocks and their repeatable items use `label` (eyebrow) / `heading` (headline) / `body` (prose). Collection records (`pages`, `projects`, `forms`) use `title` (identity) / `description` (summary). Don't mix the two vocabularies. (The `pages` collection's top-level `body` is the one exception — it's not a metadata field but the markdown document body itself.)
 
 ## Content collections & routing
 
 | Collection | Content path            | Rendered by                                                                                         |
 | ---------- | ----------------------- | --------------------------------------------------------------------------------------------------- |
-| `pages`    | `src/content/pages/`    | `src/pages/[lang]/[...slug].astro` (catch-all, by `slug`) — homepage, projects, about, **services** |
+| `pages`    | `src/content/pages/`    | `src/pages/[lang]/[...slug].astro` (catch-all, by `slug`) — homepage, projects, about, services, privacy, terms |
 | `projects` | `src/content/projects/` | `src/pages/[lang]/projects/[slug].astro` + `[unitId].astro`; helpers in `src/lib/projects.ts`       |
 | `forms`    | `src/content/forms/`    | consumed by the `cta` block (`variant: form`) via `getEntry`                                        |
 
-All marketing pages run through the block-based `pages` collection and the single catch-all route. The legacy dedicated `services.astro` route has been removed.
+Every page — block-composed or prose-only — is a `pages` entry served by the single `[...slug]` catch-all route. There are no dedicated per-page routes; the legacy `services.astro`, `privacy.astro`, and `terms.astro` routes have been retired.
 
 ## Deploy
 
