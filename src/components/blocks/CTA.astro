@@ -119,6 +119,7 @@ const form = await getEntry("forms", `${lang}/${props.form}`); //, )
                         name={field.name}
                         required={field.required}
                         placeholder={field.placeholder}
+                        aria-label={field.placeholder}
                       />
                     );
                   } else if (field.type === "textarea") {
@@ -129,6 +130,7 @@ const form = await getEntry("forms", `${lang}/${props.form}`); //, )
                         rows={field.rows}
                         required={field.required}
                         placeholder={field.placeholder}
+                        aria-label={field.placeholder}
                       />
                     );
                   } else if (field.type === "select") {
@@ -137,6 +139,7 @@ const form = await getEntry("forms", `${lang}/${props.form}`); //, )
                         class="select text-info w-full"
                         name={field.name}
                         required={field.required}
+                        aria-label={field.placeholder}
                       >
                         {field.placeholder && (
                           <option value="">{field.placeholder}</option>

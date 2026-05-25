@@ -179,17 +179,17 @@
      ────────────────────────────── */
 
   .text-body {
-    @apply text-md leading-relaxed font-light;
+    @apply text-base leading-relaxed font-normal;
   }
   .text-body-sm {
-    @apply text-sm leading-relaxed font-light;
+    @apply text-sm leading-relaxed font-normal;
   }
   .text-body-xs {
-    @apply text-mid font-light;
+    @apply text-mid font-normal;
   }
 
   .text-meta {
-    @apply text-2xs text-info uppercase tracking-label;
+    @apply text-2xs text-secondary uppercase tracking-label;
   }
 
   .text-index {

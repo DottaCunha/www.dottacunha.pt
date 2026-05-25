@@ -16,7 +16,7 @@ const { images, variant = "primary" } = Astro.props;
             <div class="overflow-hidden aspect-[4/3] md:aspect-auto md:h-full bg-base-300">
               <PublicPicture
                 src={src}
-                alt={`Image ${i + 1}`}
+                alt=""
                 formats={["avif", "webp"]}
                 widths={[400, 800, 1200, 1600]}
                 sizes="(max-width: 768px) 100vw, (max-width: 1280px) 33vw, 415px"
