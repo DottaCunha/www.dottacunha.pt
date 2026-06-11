@@ -347,6 +347,13 @@ export default {
                     },
                     { name: "body", label: "Body", widget: "text", i18n: true },
                     {
+                      name: "image",
+                      label: "Image",
+                      widget: "image",
+                      required: false,
+                      i18n: "duplicate",
+                    },
+                    {
                       name: "features",
                       label: "Features",
                       widget: "list",
