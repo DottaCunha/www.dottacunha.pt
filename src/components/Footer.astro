@@ -16,17 +16,17 @@ const currentYear = new Date().getFullYear();
     <footer
       class="footer md:footer-horizontal justify-items-stretch md:justify-between items-center"
     >
-      <aside>
-        <div class="mb-3">
+      <aside class="gap-2">
+        <div class="mb-5">
           <Logo size="lg" color="white" />
         </div>
         <span
           class="font-sans font-semibold text-display-xs tracking-tight uppercase block"
-          >Dotta & Cunha, Lda</span
+          >Dotta & Cunha</span
         >
-        <p class="leading-relaxed mt-3 max-w-sm">
+        <span class="leading-relaxed max-w-sm text-md">
           {t("footer.description", lang)}
-        </p>
+        </span>
       </aside>
       <nav>
         <a href={localizedPath("/contact", lang)} class="btn btn-outline w-full"
@@ -71,9 +71,9 @@ const currentYear = new Date().getFullYear();
       </nav>
       <nav>
         <h4 class="footer-title text-info">{t("footer.contact", lang)}</h4>
-        <span class="">hello@dottacunha.pt</span>
-        <!-- <span class="">+351 XXX XXX XXX</span> -->
-        <span class="">Lisbon, Portugal</span>
+        <a class="link link-hover" href="mailto:hello@dottacunha.pt" target="_blank" rel="noopener noreferrer">
+          hello@dottacunha.pt
+        </a>
       </nav>
       <nav>
         <h4 class="footer-title text-info">{t("footer.social", lang)}</h4>

@@ -95,8 +95,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "contactPage.mapPlaceholder": "Map — Add Google Maps embed here",
 
     // Footer
-    "footer.description":
-      "Building exceptional residential spaces, from concept to completion.",
+    "footer.description": "Homes for better living.",
     "footer.startConversation": "Start a Conversation",
     "footer.navigation": "Navigation",
     "footer.services": "Services",
@@ -198,8 +197,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "contactPage.mapPlaceholder": "Mapa — Adicione o Google Maps aqui",
 
     // Footer
-    "footer.description":
-      "Construímos espaços residenciais excecionais, do conceito à conclusão.",
+    "footer.description": "Homes for better living.",
     "footer.startConversation": "Iniciar Conversa",
     "footer.navigation": "Navegação",
     "footer.services": "Serviços",
