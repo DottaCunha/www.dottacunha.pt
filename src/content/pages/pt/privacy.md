@@ -14,9 +14,9 @@ A entidade responsável pelo tratamento dos seus dados pessoais é a **Dotta & C
 - Sede: Rua Francisco Sanches 4, R/C Esq. – 1170-143 Lisboa, Portugal
 - Número de pessoa coletiva (NIPC): 515795577
 - Matriculada na Conservatória do Registo Comercial de Lisboa sob o mesmo número
-- Email: partners@dottacunha.pt
+- Email: hello@dottacunha.pt
 
-Para qualquer questão relacionada com esta política ou com os seus dados pessoais, contacte-nos através de **partners@dottacunha.pt**.
+Para qualquer questão relacionada com esta política ou com os seus dados pessoais, contacte-nos através de **hello@dottacunha.pt**.
 
 ## Âmbito
 
@@ -72,7 +72,7 @@ Ao abrigo do RGPD e da legislação portuguesa de proteção de dados, tem o dir
 - receber os seus dados num formato portável; e
 - quando o tratamento se baseie no seu consentimento, retirar esse consentimento a qualquer momento.
 
-Para exercer qualquer destes direitos, contacte-nos através de **partners@dottacunha.pt**. Responderemos dentro dos prazos previstos na lei.
+Para exercer qualquer destes direitos, contacte-nos através de **hello@dottacunha.pt**. Responderemos dentro dos prazos previstos na lei.
 
 Tem ainda o direito de apresentar reclamação junto da autoridade de controlo portuguesa, a **Comissão Nacional de Proteção de Dados (CNPD)** — [www.cnpd.pt](https://www.cnpd.pt).
 
@@ -88,4 +88,4 @@ Podemos atualizar esta Política de Privacidade periodicamente. A data de "últi
 
 Se tiver questões sobre esta política ou sobre a forma como tratamos os seus dados pessoais, contacte:
 
-**Dotta & Cunha, Lda** — partners@dottacunha.pt — Lisboa, Portugal
+**Dotta & Cunha, Lda** — hello@dottacunha.pt — Lisboa, Portugal

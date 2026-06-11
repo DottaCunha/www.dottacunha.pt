@@ -14,7 +14,7 @@ Este website é explorado pela **Dotta & Cunha, Lda**:
 - Sede: Rua Francisco Sanches 4, R/C Esq. – 1170-143 Lisboa, Portugal
 - Número de pessoa coletiva (NIPC): 515795577
 - Matriculada na Conservatória do Registo Comercial de Lisboa sob o mesmo número
-- Email: partners@dottacunha.pt
+- Email: hello@dottacunha.pt
 
 ## Utilização do website
 
@@ -69,4 +69,4 @@ Em caso de litígio de consumo, o consumidor pode ainda recorrer à resolução 
 
 Para qualquer questão relativa a estes Termos de Serviço, contacte:
 
-**Dotta & Cunha, Lda** — partners@dottacunha.pt — Lisboa, Portugal
+**Dotta & Cunha, Lda** — hello@dottacunha.pt — Lisboa, Portugal

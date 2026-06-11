@@ -14,9 +14,9 @@ The controller responsible for your personal data is **Dotta & Cunha, Lda**:
 - Registered office: Rua Francisco Sanches 4, R/C Esq. – 1170-143 Lisboa, Portugal
 - Tax and company number (NIPC): 515795577
 - Registered with the Commercial Registry of Lisbon under the same number
-- Email: partners@dottacunha.pt
+- Email: hello@dottacunha.pt
 
-For any question relating to this policy or your personal data, contact us at **partners@dottacunha.pt**.
+For any question relating to this policy or your personal data, contact us at **hello@dottacunha.pt**.
 
 ## Scope
 
@@ -72,7 +72,7 @@ Under the GDPR and Portuguese data protection law, you have the right to:
 - receive your data in a portable format; and
 - where processing is based on your consent, withdraw that consent at any time.
 
-To exercise any of these rights, contact us at **partners@dottacunha.pt**. We will respond within the time limits set by law.
+To exercise any of these rights, contact us at **hello@dottacunha.pt**. We will respond within the time limits set by law.
 
 You also have the right to lodge a complaint with the Portuguese supervisory authority, the **Comissão Nacional de Proteção de Dados (CNPD)** — [www.cnpd.pt](https://www.cnpd.pt).
 
@@ -88,4 +88,4 @@ We may update this Privacy Policy from time to time. The "last updated" date sho
 
 If you have any questions about this policy or how we handle your personal data, please contact:
 
-**Dotta & Cunha, Lda** — partners@dottacunha.pt — Lisbon, Portugal
+**Dotta & Cunha, Lda** — hello@dottacunha.pt — Lisbon, Portugal

@@ -14,7 +14,7 @@ This website is operated by **Dotta & Cunha, Lda**:
 - Registered office: Rua Francisco Sanches 4, R/C Esq. – 1170-143 Lisboa, Portugal
 - Tax and company number (NIPC): 515795577
 - Registered with the Commercial Registry of Lisbon under the same number
-- Email: partners@dottacunha.pt
+- Email: hello@dottacunha.pt
 
 ## Using this website
 
@@ -69,4 +69,4 @@ In the case of a consumer dispute, you may also resort to alternative dispute re
 
 For any question regarding these Terms of Service, please contact:
 
-**Dotta & Cunha, Lda** — partners@dottacunha.pt — Lisbon, Portugal
+**Dotta & Cunha, Lda** — hello@dottacunha.pt — Lisbon, Portugal
