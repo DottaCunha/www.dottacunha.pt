@@ -1,6 +1,7 @@
 ---
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import CookieConsent from "../components/CookieConsent.astro";
 import "../styles/global.css";
 import type { Lang } from "../i18n/translations";
 import { Font } from "astro:assets";
@@ -107,6 +108,7 @@ const fullTitle = `Dotta & Cunha | ${title}`;
       <slot />
     </main>
     <Footer lang={lang} />
+    <CookieConsent lang={lang} />
     <script is:inline define:vars={{ lang }}>
       try {
         localStorage.setItem("dc-lang", lang);

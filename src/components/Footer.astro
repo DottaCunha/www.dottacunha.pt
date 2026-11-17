@@ -2,6 +2,7 @@
 import type { Lang } from "../i18n/translations";
 import { t, localizedPath } from "../i18n/utils";
 import Logo from "./Logo.astro";
+import { TRACKING_ACTIVE } from "../lib/tracking";
 
 interface Props {
   lang: Lang;
@@ -118,6 +119,17 @@ const currentYear = new Date().getFullYear();
           class="link link-hover text-xxs text-info"
           href={localizedPath("/terms", lang)}>{t("footer.terms", lang)}</a
         >
+        {
+          TRACKING_ACTIVE && (
+            <a
+              class="link link-hover text-xxs text-info"
+              href="#"
+              data-cookie-preferences
+            >
+              {t("footer.cookies", lang)}
+            </a>
+          )
+        }
       </nav>
     </footer>
   </div>

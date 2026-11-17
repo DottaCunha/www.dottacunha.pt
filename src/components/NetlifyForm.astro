@@ -1,4 +1,7 @@
 ---
+import type { Lang } from "../i18n/translations";
+import { t, localizedPath } from "../i18n/utils";
+
 interface Props {
   name: string;
   class?: string;
@@ -10,6 +13,8 @@ const {
   class: className = "",
   successMessage = "Thank you! We'll be in touch soon.",
 } = Astro.props;
+
+const { lang } = Astro.params as { lang: Lang };
 ---
 
 <div class="netlify-form-wrapper" data-success-message={successMessage}>
@@ -38,6 +43,14 @@ const {
 
     <!-- Form fields via slot -->
     <slot />
+
+    <!-- Privacy information at the point of collection -->
+    <p class="text-xs opacity-70">
+      {t("form.privacyNote", lang)}{" "}
+      <a class="underline" href={localizedPath("/privacy", lang)}>
+        {t("footer.privacy", lang)}
+      </a>
+    </p>
   </form>
 
   <!-- Error state (hidden by default) -->
@@ -122,6 +135,12 @@ const {
         if (response.ok && !response.redirected) {
           form.classList.add("hidden");
           success.classList.remove("hidden");
+          // Lets CookieConsent.astro record the lead, if the visitor consented.
+          document.dispatchEvent(
+            new CustomEvent("dc:lead", {
+              detail: { form: form.getAttribute("name") },
+            }),
+          );
         } else {
           throw new Error("Form submission failed");
         }

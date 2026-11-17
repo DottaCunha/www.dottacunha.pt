@@ -1,0 +1,330 @@
+---
+import type { Lang } from "../i18n/translations";
+import { t, localizedPath } from "../i18n/utils";
+import {
+  TRACKING_ACTIVE,
+  GTM_ID,
+  GA4_ID,
+  META_PIXEL_ID,
+} from "../lib/tracking";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+---
+
+{
+  TRACKING_ACTIVE && (
+    <div
+      id="cookie-consent"
+      class="hidden fixed bottom-0 inset-x-0 z-[60] bg-neutral text-neutral-content border-t border-dark-800"
+      role="dialog"
+      aria-label={t("cookies.title", lang)}
+    >
+      <div class="container px-6 md:px-8 py-5">
+        <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
+          <p class="text-sm flex-1">
+            {t("cookies.text", lang)}{" "}
+            <a class="underline" href={localizedPath("/privacy", lang)}>
+              {t("cookies.more", lang)}
+            </a>
+          </p>
+          {/* Declining and accepting carry the same visual weight on purpose. */}
+          <div class="flex flex-wrap gap-3 shrink-0">
+            <button
+              type="button"
+              class="btn btn-outline btn-light btn-sm"
+              data-cookie-action="deny"
+            >
+              {t("cookies.decline", lang)}
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline btn-light btn-sm"
+              data-cookie-action="customize"
+            >
+              {t("cookies.customize", lang)}
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline btn-light btn-sm"
+              data-cookie-action="accept"
+            >
+              {t("cookies.accept", lang)}
+            </button>
+          </div>
+        </div>
+
+        {/* One choice per purpose. Boxes start unticked: consent is never pre-selected. */}
+        {/* Native checkboxes: DaisyUI's .checkbox draws a dark border, invisible on this dark banner. */}
+        <div id="cookie-consent-options" class="hidden">
+          <div class="flex flex-col gap-3 border-t border-dark-800 mt-5 pt-5">
+            <label class="flex items-start gap-3 text-sm">
+              <input
+                type="checkbox"
+                class="mt-1 h-4 w-4 shrink-0"
+                style="accent-color: #fff"
+                data-cookie-category="analytics"
+              />
+              <span>
+                <strong>{t("cookies.analytics", lang)}</strong> —{" "}
+                {t("cookies.analyticsDesc", lang)}
+              </span>
+            </label>
+            <label class="flex items-start gap-3 text-sm">
+              <input
+                type="checkbox"
+                class="mt-1 h-4 w-4 shrink-0"
+                style="accent-color: #fff"
+                data-cookie-category="marketing"
+              />
+              <span>
+                <strong>{t("cookies.marketing", lang)}</strong> —{" "}
+                {t("cookies.marketingDesc", lang)}
+              </span>
+            </label>
+            <div>
+              <button
+                type="button"
+                class="btn btn-outline btn-light btn-sm"
+                data-cookie-action="save"
+              >
+                {t("cookies.save", lang)}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+<script
+  is:inline
+  define:vars={{ TRACKING_ACTIVE, GTM_ID, GA4_ID, META_PIXEL_ID }}
+>
+  (function () {
+    if (!TRACKING_ACTIVE) return;
+
+    // Stored as "analytics,marketing", "analytics", "marketing" or "none".
+    var KEY = "dc-consent";
+    var CATEGORIES = ["analytics", "marketing"];
+    var banner = document.getElementById("cookie-consent");
+    var options = document.getElementById("cookie-consent-options");
+    var loaded = {};
+
+    // Returns null when the visitor has not chosen yet.
+    function read() {
+      var raw;
+      try {
+        raw = localStorage.getItem(KEY);
+      } catch (e) {
+        raw = null;
+      }
+      if (raw === null) return null;
+      var choice = {};
+      raw.split(",").forEach(function (name) {
+        if (CATEGORIES.indexOf(name) !== -1) choice[name] = true;
+      });
+      return choice;
+    }
+    function write(choice) {
+      var granted = CATEGORIES.filter(function (name) {
+        return choice[name];
+      });
+      try {
+        localStorage.setItem(KEY, granted.length ? granted.join(",") : "none");
+      } catch (e) {}
+    }
+    function boxes() {
+      return banner ? banner.querySelectorAll("[data-cookie-category]") : [];
+    }
+    function show(withOptions) {
+      if (!banner) return;
+      var current = read() || {};
+      Array.prototype.forEach.call(boxes(), function (box) {
+        box.checked = !!current[box.getAttribute("data-cookie-category")];
+      });
+      if (options) options.classList.toggle("hidden", !withOptions);
+      banner.classList.remove("hidden");
+    }
+    function hide() {
+      if (banner) banner.classList.add("hidden");
+    }
+    function addScript(src) {
+      var s = document.createElement("script");
+      s.async = true;
+      s.src = src;
+      document.head.appendChild(s);
+    }
+
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      window.dataLayer.push(arguments);
+    }
+
+    // Statistics: Google Analytics 4 (or a Tag Manager container).
+    // Google's advertising signals stay off: GA4 is used for statistics only.
+    function loadAnalytics() {
+      if (loaded.analytics) return;
+      loaded.analytics = true;
+
+      gtag("consent", "default", {
+        analytics_storage: "granted",
+        ad_storage: "denied",
+        ad_user_data: "denied",
+        ad_personalization: "denied",
+      });
+
+      if (GTM_ID) {
+        window.dataLayer.push({
+          "gtm.start": new Date().getTime(),
+          event: "gtm.js",
+        });
+        addScript("https://www.googletagmanager.com/gtm.js?id=" + GTM_ID);
+      }
+      if (GA4_ID) {
+        window.gtag = gtag;
+        gtag("js", new Date());
+        gtag("config", GA4_ID);
+        addScript("https://www.googletagmanager.com/gtag/js?id=" + GA4_ID);
+      }
+    }
+
+    // Advertising: Meta Pixel.
+    function loadMarketing() {
+      if (loaded.marketing) return;
+      loaded.marketing = true;
+
+      if (META_PIXEL_ID && !window.fbq) {
+        var fbq = (window.fbq = function () {
+          fbq.callMethod
+            ? fbq.callMethod.apply(fbq, arguments)
+            : fbq.queue.push(arguments);
+        });
+        if (!window._fbq) window._fbq = fbq;
+        fbq.push = fbq;
+        fbq.loaded = true;
+        fbq.version = "2.0";
+        fbq.queue = [];
+        addScript("https://connect.facebook.net/en_US/fbevents.js");
+        fbq("init", META_PIXEL_ID);
+        fbq("track", "PageView");
+      }
+    }
+
+    function apply(choice) {
+      if (choice.analytics) loadAnalytics();
+      if (choice.marketing) loadMarketing();
+    }
+
+    // One event, sent only to the tools the visitor agreed to.
+    function track(name, params, metaName) {
+      if (loaded.analytics) {
+        var payload = { event: name };
+        for (var key in params) payload[key] = params[key];
+        window.dataLayer.push(payload); // picked up by Tag Manager, if used
+        if (GA4_ID) gtag("event", name, params);
+      }
+      if (loaded.marketing && window.fbq && metaName) {
+        window.fbq("track", metaName);
+      }
+    }
+
+    // Best-effort removal of these tools' cookies when consent is withdrawn.
+    function clearCookies() {
+      var host = location.hostname;
+      var domains = [
+        "",
+        host,
+        "." + host,
+        "." + host.split(".").slice(-2).join("."),
+      ];
+      document.cookie.split(";").forEach(function (entry) {
+        var name = entry.split("=")[0].trim();
+        if (!/^(_ga|_gid|_gcl|_fbp|_fbc)/.test(name)) return;
+        domains.forEach(function (domain) {
+          document.cookie =
+            name +
+            "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/" +
+            (domain ? "; domain=" + domain : "");
+        });
+      });
+    }
+
+    function decide(choice) {
+      var previous = read() || {};
+      write(choice);
+      hide();
+      var withdrawn = CATEGORIES.some(function (name) {
+        return previous[name] && !choice[name];
+      });
+      if (withdrawn) {
+        // A loaded tag cannot be unloaded: clear its cookies and start clean.
+        clearCookies();
+        location.reload();
+        return;
+      }
+      apply(choice);
+    }
+
+    document.addEventListener("click", function (e) {
+      var target = e.target;
+      if (!target || !target.closest) return;
+
+      var button = target.closest("[data-cookie-action]");
+      if (button) {
+        var action = button.getAttribute("data-cookie-action");
+        if (action === "deny") {
+          decide({});
+        } else if (action === "accept") {
+          decide({ analytics: true, marketing: true });
+        } else if (action === "customize") {
+          if (options) options.classList.toggle("hidden");
+        } else if (action === "save") {
+          var choice = {};
+          Array.prototype.forEach.call(boxes(), function (box) {
+            if (box.checked) {
+              choice[box.getAttribute("data-cookie-category")] = true;
+            }
+          });
+          decide(choice);
+        }
+        return;
+      }
+
+      // "Cookie preferences" link in the footer: lets the visitor change their mind.
+      if (target.closest("[data-cookie-preferences]")) {
+        e.preventDefault();
+        show(true);
+        return;
+      }
+
+      var contact = target.closest(
+        'a[href^="tel:"], a[href^="mailto:"], a[href*="wa.me"], a[href*="api.whatsapp.com"]',
+      );
+      if (contact) {
+        var href = contact.getAttribute("href") || "";
+        var method =
+          href.indexOf("tel:") === 0
+            ? "phone"
+            : href.indexOf("mailto:") === 0
+              ? "email"
+              : "whatsapp";
+        track("contact_click", { method: method }, "Contact");
+      }
+    });
+
+    // Dispatched by NetlifyForm.astro once Netlify has accepted a submission.
+    document.addEventListener("dc:lead", function (e) {
+      var form = (e.detail && e.detail.form) || "";
+      track("generate_lead", { form_name: form }, "Lead");
+    });
+
+    var stored = read();
+    if (stored === null) show(false);
+    else apply(stored);
+  })();
+</script>

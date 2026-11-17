@@ -107,6 +107,27 @@ export const translations: Record<Lang, Record<string, string>> = {
     "footer.rights": "All rights reserved.",
     "footer.privacy": "Privacy Policy",
     "footer.terms": "Terms of Service",
+    "footer.cookies": "Cookie preferences",
+
+    // Forms
+    "form.privacyNote":
+      "We use your details only to respond to your inquiry. See our",
+
+    // Cookie consent banner
+    "cookies.title": "Cookies",
+    "cookies.text":
+      "We use cookies to understand how the site is used and whether our ads work. We only activate them with your permission.",
+    "cookies.more": "Privacy Policy",
+    "cookies.accept": "Accept all",
+    "cookies.decline": "Decline all",
+    "cookies.customize": "Customize",
+    "cookies.save": "Save choice",
+    "cookies.analytics": "Statistics",
+    "cookies.analyticsDesc":
+      "Pages viewed and where visits come from (Google Analytics).",
+    "cookies.marketing": "Advertising",
+    "cookies.marketingDesc":
+      "Results of our ads on Facebook and Instagram (Meta).",
   },
 
   pt: {
@@ -208,5 +229,26 @@ export const translations: Record<Lang, Record<string, string>> = {
     "footer.rights": "Todos os direitos reservados.",
     "footer.privacy": "Política de Privacidade",
     "footer.terms": "Termos de Serviço",
+    "footer.cookies": "Preferências de cookies",
+
+    // Forms
+    "form.privacyNote":
+      "Utilizamos os seus dados apenas para responder ao seu pedido. Consulte a nossa",
+
+    // Cookie consent banner
+    "cookies.title": "Cookies",
+    "cookies.text":
+      "Usamos cookies para perceber como o site é utilizado e se os nossos anúncios funcionam. Só os ativamos com a sua autorização.",
+    "cookies.more": "Política de Privacidade",
+    "cookies.accept": "Aceitar todos",
+    "cookies.decline": "Recusar todos",
+    "cookies.customize": "Personalizar",
+    "cookies.save": "Guardar escolha",
+    "cookies.analytics": "Estatísticas",
+    "cookies.analyticsDesc":
+      "Páginas vistas e origem das visitas (Google Analytics).",
+    "cookies.marketing": "Publicidade",
+    "cookies.marketingDesc":
+      "Resultados dos nossos anúncios no Facebook e Instagram (Meta).",
   },
 };

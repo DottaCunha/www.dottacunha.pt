@@ -99,4 +99,34 @@ const { title } = Astro.props;
   .prose-content :global(a:hover) {
     color: var(--color-secondary);
   }
+  .prose-content :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0 1.75rem;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    font-weight: 300;
+    color: var(--color-secondary);
+  }
+  .prose-content :global(th) {
+    text-align: left;
+    font-weight: 500;
+    color: var(--color-base-content);
+    padding: 0.6rem 0.9rem 0.6rem 0;
+    border-bottom: 1px solid var(--color-base-300);
+  }
+  .prose-content :global(td) {
+    padding: 0.6rem 0.9rem 0.6rem 0;
+    border-bottom: 1px solid var(--color-base-300);
+    vertical-align: top;
+  }
+  .prose-content :global(th:last-child),
+  .prose-content :global(td:last-child) {
+    padding-right: 0;
+    white-space: nowrap;
+  }
+  .prose-content :global(code) {
+    font-size: 0.875em;
+    color: var(--color-base-content);
+  }
 </style>
