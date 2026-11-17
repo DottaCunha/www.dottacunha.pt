@@ -30,6 +30,9 @@ const {
     <slot />
   </form>
 
+  <!-- Error state (hidden by default) -->
+  <p class="form-error hidden text-sm mt-4" role="alert"></p>
+
   <!-- Success state (hidden by default) -->
   <div class="form-success hidden" role="alert">
     <div
@@ -56,7 +59,13 @@ const {
   document.querySelectorAll(".netlify-form-wrapper").forEach((wrapper) => {
     const form = wrapper.querySelector("form");
     const success = wrapper.querySelector(".form-success");
+    const error = wrapper.querySelector(".form-error");
     if (!form || !success) return;
+
+    const errorText =
+      document.documentElement.lang === "pt"
+        ? "Não foi possível enviar a mensagem. Tente novamente ou escreva para hello@dottacunha.pt."
+        : "We couldn't send your message. Please try again or email hello@dottacunha.pt.";
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -65,17 +74,21 @@ const {
       ) as HTMLButtonElement | null;
       if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.textContent = "...";
       }
+      error?.classList.add("hidden");
 
       try {
-        const response = await fetch("/", {
+        // POST to this page's own path, which is a prerendered (static) file.
+        // "/" is an on-demand route, so Netlify Forms never sees a POST sent
+        // there: the request is answered by the language redirect instead.
+        const response = await fetch(window.location.pathname, {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
           body: new URLSearchParams(new FormData(form) as any).toString(),
         });
 
-        if (response.ok) {
+        // A redirected response means the POST was not handled by Netlify Forms.
+        if (response.ok && !response.redirected) {
           form.classList.add("hidden");
           success.classList.remove("hidden");
         } else {
@@ -84,16 +97,12 @@ const {
       } catch {
         if (submitBtn) {
           submitBtn.disabled = false;
-          submitBtn.textContent = submitBtn.dataset.originalText || "Submit";
         }
-        alert("Something went wrong. Please try again.");
+        if (error) {
+          error.textContent = errorText;
+          error.classList.remove("hidden");
+        }
       }
     });
-
-    // Store original button text
-    const btn = form.querySelector(
-      'button[type="submit"]',
-    ) as HTMLButtonElement | null;
-    if (btn) btn.dataset.originalText = btn.textContent || "";
   });
 </script>
