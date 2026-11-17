@@ -10,11 +10,11 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
-    "@astrojs/netlify": "^7.0.8",
+    "@astrojs/netlify": "^8.2.14",
     "@astrojs/sitemap": "^3.7.2",
     "@sveltia/cms": "^0.156.3",
     "@tailwindcss/vite": "^4.2.4",
-    "astro": "^6.1.9",
+    "astro": "^7.4.12",
     "daisyui": "^5.5.19",
     "tailwindcss": "^4.2.4"
   },
