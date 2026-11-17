@@ -75,11 +75,11 @@ Current block types: `hero`, `section`, `projects`, `list`, `images`, `services`
 
 ## Content collections & routing
 
-| Collection | Content path            | Rendered by                                                                                         |
-| ---------- | ----------------------- | --------------------------------------------------------------------------------------------------- |
+| Collection | Content path            | Rendered by                                                                                                     |
+| ---------- | ----------------------- | --------------------------------------------------------------------------------------------------------------- |
 | `pages`    | `src/content/pages/`    | `src/pages/[lang]/[...slug].astro` (catch-all, by `slug`) — homepage, projects, about, services, privacy, terms |
-| `projects` | `src/content/projects/` | `src/pages/[lang]/projects/[slug].astro` + `[unitId].astro`; helpers in `src/lib/projects.ts`       |
-| `forms`    | `src/content/forms/`    | consumed by the `cta` block (`variant: form`) via `getEntry`                                        |
+| `projects` | `src/content/projects/` | `src/pages/[lang]/projects/[slug].astro` + `[unitId].astro`; helpers in `src/lib/projects.ts`                   |
+| `forms`    | `src/content/forms/`    | consumed by the `cta` block (`variant: form`) via `getEntry`                                                    |
 
 Every page — block-composed or prose-only — is a `pages` entry served by the single `[...slug]` catch-all route. There are no dedicated per-page routes; the legacy `services.astro`, `privacy.astro`, and `terms.astro` routes have been retired.
 

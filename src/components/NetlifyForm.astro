@@ -94,9 +94,13 @@ const {
         page: window.location.pathname,
         referrer: document.referrer,
       };
-      ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"].forEach(
-        (key) => (source[key] = query.get(key) ?? ""),
-      );
+      [
+        "utm_source",
+        "utm_medium",
+        "utm_campaign",
+        "utm_content",
+        "utm_term",
+      ].forEach((key) => (source[key] = query.get(key) ?? ""));
       Object.entries(source).forEach(([key, value]) => {
         const input = form.querySelector(
           `input[type="hidden"][name="${key}"]`,

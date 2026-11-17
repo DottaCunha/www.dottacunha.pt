@@ -24,9 +24,7 @@ const { title } = Astro.props;
     <article
       class:list={[
         "prose-content",
-        title
-          ? "border-t border-base-300 pt-10 md:pt-12"
-          : "pt-10 md:pt-12",
+        title ? "border-t border-base-300 pt-10 md:pt-12" : "pt-10 md:pt-12",
       ]}
     >
       <slot />
