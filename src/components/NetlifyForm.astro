@@ -26,6 +26,16 @@ const {
       <label>Don't fill this out: <input name="bot-field" /></label>
     </p>
 
+    <!-- Lead source, filled in on submit (see script below). These must be in
+         the static HTML so Netlify registers them with the form. -->
+    <input type="hidden" name="page" />
+    <input type="hidden" name="referrer" />
+    <input type="hidden" name="utm_source" />
+    <input type="hidden" name="utm_medium" />
+    <input type="hidden" name="utm_campaign" />
+    <input type="hidden" name="utm_content" />
+    <input type="hidden" name="utm_term" />
+
     <!-- Form fields via slot -->
     <slot />
   </form>
@@ -76,6 +86,23 @@ const {
         submitBtn.disabled = true;
       }
       error?.classList.add("hidden");
+
+      // Record where this lead came from: the page it was sent from, the
+      // referrer, and any UTM parameters present in the current URL.
+      const query = new URLSearchParams(window.location.search);
+      const source: Record<string, string> = {
+        page: window.location.pathname,
+        referrer: document.referrer,
+      };
+      ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"].forEach(
+        (key) => (source[key] = query.get(key) ?? ""),
+      );
+      Object.entries(source).forEach(([key, value]) => {
+        const input = form.querySelector(
+          `input[type="hidden"][name="${key}"]`,
+        ) as HTMLInputElement | null;
+        if (input) input.value = value.slice(0, 300);
+      });
 
       try {
         // POST to this page's own path, which is a prerendered (static) file.

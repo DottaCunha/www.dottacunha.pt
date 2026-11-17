@@ -112,6 +112,38 @@ const fullTitle = `Dotta & Cunha | ${title}`;
         localStorage.setItem("dc-lang", lang);
       } catch (e) {}
     </script>
+    <script>
+      // Keep campaign parameters while the visitor moves around the site, so
+      // a lead sent from another page still carries the ad it came from.
+      // Done through the links themselves: nothing is stored on the device.
+      const UTM_KEYS = [
+        "utm_source",
+        "utm_medium",
+        "utm_campaign",
+        "utm_content",
+        "utm_term",
+      ];
+      const current = new URLSearchParams(window.location.search);
+      const present = UTM_KEYS.filter((key) => current.get(key));
+
+      if (present.length > 0) {
+        document
+          .querySelectorAll<HTMLAnchorElement>("a[href]")
+          .forEach((link) => {
+            const raw = link.getAttribute("href") ?? "";
+            if (raw.startsWith("#")) return;
+            const url = new URL(raw, window.location.href);
+            if (url.origin !== window.location.origin) return;
+            if (url.pathname.startsWith("/admin")) return;
+            present.forEach((key) => {
+              if (!url.searchParams.has(key)) {
+                url.searchParams.set(key, current.get(key) as string);
+              }
+            });
+            link.setAttribute("href", url.pathname + url.search + url.hash);
+          });
+      }
+    </script>
     <script
       defer
       src="https://static.cloudflareinsights.com/beacon.min.js"
