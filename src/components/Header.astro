@@ -92,7 +92,7 @@ const isActive = (match: string) => {
       <!-- Language Switcher -->
       <a
         href={`/${altLang}${basePath === "/" ? "" : basePath}`}
-        class="text-xxs font-medium uppercase tracking-[0.15em] transition-all duration-300 header-link opacity-60 hover:opacity-100 p-2 -m-2"
+        class="text-xxs font-medium uppercase tracking-[0.15em] transition-all duration-300 header-link p-2 -m-2"
         title={languages[altLang]}
       >
         {altLang.toUpperCase()}
@@ -182,11 +182,10 @@ const isActive = (match: string) => {
     color: white;
   }
   header[data-dark="true"] .header-link {
-    color: rgba(255, 255, 255, 0.6);
-  }
-  header[data-dark="true"] .header-link:hover,
-  header[data-dark="true"] .header-link.is-active {
     color: white;
+  }
+  header[data-dark="true"] .header-link:hover {
+    color: rgba(255, 255, 255, 0.6);
   }
   header[data-dark="true"] .header-cta {
     border-color: rgba(255, 255, 255, 0.3);
