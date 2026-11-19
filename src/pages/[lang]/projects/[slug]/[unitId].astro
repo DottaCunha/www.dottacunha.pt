@@ -3,9 +3,17 @@ import BaseLayout from "../../../../layouts/BaseLayout.astro";
 import { t, localizedPath } from "../../../../i18n/utils";
 import type { Lang } from "../../../../i18n/translations";
 import { getCollection } from "astro:content";
-import { getProjectSlug } from "../../../../lib/projects";
+import {
+  getProjectSlug,
+  unitLabel,
+  formatArea,
+} from "../../../../lib/projects";
 import { supportedLangs } from "../../../../i18n/translations";
-import { Picture } from "astro:assets";
+import PublicPicture from "../../../../components/PublicPicture.astro";
+import PhotoStrip from "../../../../components/PhotoStrip.astro";
+import UnitCard from "../../../../components/UnitCard.astro";
+import SectionHeader from "../../../../components/SectionHeader.astro";
+import ProjectInquiry from "../../../../components/ProjectInquiry.astro";
 
 export async function getStaticPaths() {
   const allProjects = await getCollection("projects");
@@ -37,23 +45,59 @@ const { lang, slug, unitId } = Astro.params as {
 };
 const { project, unit } = Astro.props;
 const d = project.data;
+const units = d.units ?? [];
+const otherUnits = units.filter((other) => other.id !== unit.id);
 const photos = unit.photos ?? [];
 const features = unit.features ?? [];
+const label = unitLabel(unit);
+const area = `${formatArea(unit.area, lang)} m²`;
+const floor = unit.floorLabel ?? String(unit.floor);
+const projectUrl = localizedPath(`/projects/${slug}`, lang);
+
+// Rooms are numbered across all the plans of the unit, like on the drawings
+// (the upper floor of the duplex continues from 9).
+let roomNumber = 0;
+const plans = (unit.plans ?? []).map((plan) => ({
+  ...plan,
+  rooms: (plan.rooms ?? []).map((room) => ({ ...room, number: ++roomNumber })),
+}));
+
+// "T2, 74,23 m², Piso 1. Duas varandas. Carrascal 168, Beato, Lisboa."
+const pageDescription = [
+  [unit.typology, area, floor].join(", "),
+  unit.highlight,
+  `${d.title}, ${d.location}`,
+]
+  .filter(Boolean)
+  .join(". ")
+  .concat(".");
+
+const facts = [
+  { label: t("unitDetail.grossAreaShort", lang), value: area },
+  { label: t("unitDetail.floor", lang), value: floor },
+  { label: t("unitDetail.bedrooms", lang), value: String(unit.bedrooms) },
+  { label: t("unitDetail.bathrooms", lang), value: String(unit.bathrooms) },
+  ...(unit.energyRating
+    ? [{ label: t("unitDetail.energy", lang), value: unit.energyRating }]
+    : []),
+];
 ---
 
-<BaseLayout title={`${unit.typology} — ${d.title}`} lang={lang}>
-  <!-- Breadcrumb -->
-  <section class="pt-32 pb-6 bg-base-100">
+<BaseLayout
+  title={`${label}, ${d.title}, ${d.location}`}
+  description={pageDescription}
+  ogImage={photos[0] ?? d.image}
+  footerNote={t("projectDetail.disclaimer", lang)}
+  lang={lang}
+>
+  <!-- Header -->
+  <section class="pt-32 pb-12 md:pb-16 bg-base-100">
     <div class="container">
       <a
-        href={localizedPath(`/projects/${slug}`, lang)}
+        href={projectUrl}
         class="inline-flex items-center gap-2 text-link text-info hover:text-base-content mb-10"
       >
-        <svg
-          class="w-4 h-4"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
           ><path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -63,267 +107,178 @@ const features = unit.features ?? [];
         {d.title}
       </a>
 
-      <div class="">
-        <h1
-          class="font-display text-3xl md:text-4xl xl:text-5xl font-extrabold text-primary tracking-tight uppercase mb-2"
-        >
-          {unit.typology}
-        </h1>
-        <p class="text-body-sm">{d.title} — {d.location}</p>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-20 items-end">
+        <div class="lg:col-span-6">
+          {
+            unit.letter && (
+              <span class="section-label mb-4">
+                {`${t("unitDetail.apartment", lang)} ${unit.letter}`}
+              </span>
+            )
+          }
+          <h1
+            class="font-display text-5xl md:text-7xl font-extrabold text-primary tracking-tight uppercase leading-[0.95] mb-5"
+          >
+            {unit.typology}
+          </h1>
+          <p class="text-body">{`${d.title}, ${d.location}`}</p>
+          {
+            unit.description && (
+              <p class="text-body text-prose mt-6">{unit.description}</p>
+            )
+          }
+          {
+            features.length > 0 && (
+              <ul class="mt-8 space-y-2">
+                {features.map((feature) => (
+                  <li class="flex items-center gap-3 text-body-sm text-dark-600">
+                    <span class="w-1.5 h-1.5 bg-neutral shrink-0" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            )
+          }
+          <a href="#contacto" class="btn btn-primary mt-10">
+            {t("unitDetail.inquire", lang)}
+          </a>
+        </div>
+
+        <div class="lg:col-span-6">
+          <dl
+            class="grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-8 border-t border-base-300 pt-8"
+          >
+            {
+              facts.map((fact) => (
+                <div>
+                  <dd class="text-stat text-2xl md:text-3xl">{fact.value}</dd>
+                  <dt class="text-meta mt-1">{fact.label}</dt>
+                </div>
+              ))
+            }
+          </dl>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Full-width carousel -->
+  <!-- Photos -->
   {
     photos.length > 0 && (
-      <section class="bg-base-100">
+      <section class="pb-24 md:pb-32 bg-base-100">
         <div class="container">
-          <div class="relative" id="carousel">
-            <div class="overflow-hidden aspect-[16/9]">
-              <div
-                class="flex transition-transform duration-500 ease-out h-full"
-                id="carousel-track"
-              >
-                {photos.map((photo: string, i: number) => (
-                  <div class="w-full flex-shrink-0 h-full bg-base-300">
-                    <Picture
-                      width={1446}
-                      height={1033}
-                      src={photo}
-                      formats={["avif", "webp"]}
-                      widths={[400, 800, 1200, 1600]}
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      inferSize
-                      alt={`${unit.typology} — ${i + 1}`}
-                      loading={i === 0 ? "eager" : "lazy"}
-                      class="w-full h-full object-cover"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
+          <PhotoStrip
+            lang={lang}
+            photos={photos}
+            alt={`${label}, ${d.title}`}
+          />
+        </div>
+      </section>
+    )
+  }
 
-            {photos.length > 1 && (
-              <>
-                <button
-                  id="carousel-prev"
-                  class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-base-100/90 hover:bg-base-100 flex items-center justify-center transition-colors"
-                  aria-label="Previous"
+  <!-- Floor plans and areas -->
+  {
+    plans.length > 0 && (
+      <section id="planta" class="section bg-base-200 scroll-mt-20">
+        <div class="container">
+          <SectionHeader
+            heading={t("unitDetail.plansHeading", lang)}
+            body={unit.areaNote}
+          />
+
+          <div class="space-y-16">
+            {plans.map((plan) => (
+              <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+                <a
+                  href={plan.image}
+                  target="_blank"
+                  rel="noopener"
+                  class="lg:col-span-7 block bg-white p-4 md:p-8"
                 >
-                  <svg
-                    class="w-5 h-5 text-base-content"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="1.5"
-                      d="M15 19l-7-7 7-7"
-                    />
-                  </svg>
-                </button>
-                <button
-                  id="carousel-next"
-                  class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-base-100/90 hover:bg-base-100 flex items-center justify-center transition-colors"
-                  aria-label="Next"
-                >
-                  <svg
-                    class="w-5 h-5 text-base-content"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="1.5"
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </button>
-                <div class="absolute bottom-3 right-3 bg-primary/80 px-3 py-1.5">
-                  <span
-                    class="text-xxs text-primary-content font-medium tabular-nums"
-                    id="carousel-counter"
-                  >
-                    1 / {photos.length}
-                  </span>
+                  <PublicPicture
+                    src={plan.image}
+                    alt={[t("unitDetail.floorPlan", lang), label, plan.label]
+                      .filter(Boolean)
+                      .join(", ")}
+                    formats={["avif", "webp"]}
+                    widths={[400, 800, 1200, 1600]}
+                    sizes="(max-width: 1024px) 100vw, 58vw"
+                    loading="lazy"
+                    class="w-full h-auto"
+                  />
+                </a>
+                <div class="lg:col-span-5">
+                  {plan.label && (
+                    <h3 class="heading-card-sm mb-4">{plan.label}</h3>
+                  )}
+                  <dl class="border-t border-base-300">
+                    {plan.rooms.map((room) => (
+                      <div class="flex items-baseline gap-4 py-3 border-b border-base-300">
+                        <span class="text-xs font-semibold tabular-nums w-5 shrink-0">
+                          {room.number}
+                        </span>
+                        <dt class="text-body-sm flex-1">{room.label}</dt>
+                        <dd class="text-body-sm tabular-nums whitespace-nowrap">
+                          {`${formatArea(room.area, lang)} m²`}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
                 </div>
-              </>
-            )}
+              </div>
+            ))}
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 mt-10">
+            <div class="lg:col-start-8 lg:col-span-5">
+              <div class="flex items-baseline justify-between gap-4 border-t border-base-content pt-4">
+                <span class="text-body font-semibold">
+                  {t("unitDetail.grossArea", lang)}
+                </span>
+                <span class="text-stat text-xl whitespace-nowrap">{area}</span>
+              </div>
+              <p class="text-footnote mt-4">
+                {t("unitDetail.areasNote", lang)}
+              </p>
+            </div>
           </div>
         </div>
       </section>
     )
   }
 
-  <!-- Details: Specs left, Description + Features right -->
-  <section class="pb-24 md:pb-32 bg-base-100">
-    <div class="container pt-10 md:pt-14">
-      <!-- Title -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
-        <!-- Left: Specs card -->
-        <div class="lg:col-span-4">
-          <div class="border border-base-300">
-            <div class="p-6 space-y-0">
-              <div
-                class="flex items-center justify-between py-4 border-b border-base-200"
-              >
-                <span class="text-meta text-xs"
-                  >{t("projectDetail.area", lang)}</span
-                >
-                <span class="text-stat text-base">{unit.area} m²</span>
-              </div>
-              <div
-                class="flex items-center justify-between py-4 border-b border-base-200"
-              >
-                <span class="text-meta text-xs"
-                  >{t("unitDetail.bedrooms", lang)}</span
-                >
-                <span class="text-spec">{unit.bedrooms}</span>
-              </div>
-              <div
-                class="flex items-center justify-between py-4 border-b border-base-200"
-              >
-                <span class="text-meta text-xs"
-                  >{t("unitDetail.bathrooms", lang)}</span
-                >
-                <span class="text-spec">{unit.bathrooms}</span>
-              </div>
-              <div
-                class="flex items-center justify-between py-4 border-b border-base-200"
-              >
-                <span class="text-meta text-xs"
-                  >{t("unitDetail.floor", lang)}</span
-                >
-                <span class="text-spec">{unit.floor}</span>
-              </div>
-              {
-                unit.orientation && (
-                  <div class="flex items-center justify-between py-4 border-b border-base-200">
-                    <span class="text-meta text-xs">
-                      {t("unitDetail.orientation", lang)}
-                    </span>
-                    <span class="text-spec">{unit.orientation}</span>
-                  </div>
-                )
-              }
-            </div>
-            <div class="p-6 pt-0">
-              <a
-                href={localizedPath("/contact", lang)}
-                class="btn btn-primary w-full mt-2"
-              >
-                {t("unitDetail.inquire", lang)}
-              </a>
-            </div>
+  <!-- Other units -->
+  {
+    otherUnits.length > 0 && (
+      <section class="section bg-base-100">
+        <div class="container">
+          <div class="flex flex-wrap items-end justify-between gap-6 mb-12">
+            <h2 class="section-heading">{t("unitDetail.others", lang)}</h2>
+            <a href={`${projectUrl}#acabamentos`} class="btn btn-outline">
+              {t("unitDetail.projectLink", lang)}
+            </a>
+          </div>
+          <div class="border-t border-base-300 lg:border-0 lg:grid lg:grid-cols-3 lg:gap-x-8 lg:gap-y-14">
+            {otherUnits.map((other) => (
+              <UnitCard
+                lang={lang}
+                slug={slug}
+                projectTitle={d.title}
+                unit={other}
+              />
+            ))}
           </div>
         </div>
+      </section>
+    )
+  }
 
-        <!-- Right: Description + Features + Floor Plan -->
-        <div class="lg:col-span-8">
-          {
-            unit.description && (
-              <p class="text-body text-secondary text-prose mb-10">
-                {unit.description}
-              </p>
-            )
-          }
-
-          {
-            features.length > 0 && (
-              <div class="mb-10">
-                <span class="section-label">
-                  {t("unitDetail.features", lang)}
-                </span>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
-                  {features.map((feature: string) => (
-                    <div class="flex items-center gap-3 text-body-sm text-dark-600">
-                      <span class="w-1.5 h-1.5 bg-neutral shrink-0" />
-                      {feature}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )
-          }
-
-          <!-- {unit.floorPlan && (
-            <div>
-              <span class="section-label">{t('unitDetail.floorPlan', lang)}</span>
-              <div class="border border-base-300 p-4">
-                <img src={unit.floorPlan} alt={`${t('unitDetail.floorPlan', lang)} — ${unit.typology}`} class="w-full" loading="lazy" />
-              </div>
-            </div>
-          )} -->
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="section bg-secondary text-secondary-content">
-    <div class="container text-center">
-      <h2 class="section-heading mb-5">{t("projectsPage.ctaHeading", lang)}</h2>
-      <p class="text-body max-w-md mx-auto mb-10">
-        {t("projectsPage.ctaDesc", lang)}
-      </p>
-      <a
-        href={localizedPath(`/projects/${slug}`, lang)}
-        class="btn btn-outline btn-light"
-      >
-        {t("unitDetail.back", lang)}
-      </a>
-    </div>
-  </section>
+  <ProjectInquiry
+    lang={lang}
+    project={d.title}
+    units={units}
+    selected={unitId}
+    background={otherUnits.length > 0 ? "bg-base-200" : "bg-base-100"}
+  />
 </BaseLayout>
-
-{/* Carousel script */}
-<script is:inline>
-  (function () {
-    var track = document.getElementById("carousel-track");
-    var counter = document.getElementById("carousel-counter");
-    var prev = document.getElementById("carousel-prev");
-    var next = document.getElementById("carousel-next");
-    if (!track || !prev || !next) return;
-
-    var slides = track.children.length;
-    var current = 0;
-
-    function go(index) {
-      if (index < 0) index = slides - 1;
-      if (index >= slides) index = 0;
-      current = index;
-      track.style.transform = "translateX(-" + current * 100 + "%)";
-      if (counter) counter.textContent = current + 1 + " / " + slides;
-    }
-
-    prev.addEventListener("click", function () {
-      go(current - 1);
-    });
-    next.addEventListener("click", function () {
-      go(current + 1);
-    });
-
-    // Swipe support
-    var startX = 0;
-    track.addEventListener(
-      "touchstart",
-      function (e) {
-        startX = e.touches[0].clientX;
-      },
-      { passive: true },
-    );
-    track.addEventListener(
-      "touchend",
-      function (e) {
-        var diff = startX - e.changedTouches[0].clientX;
-        if (Math.abs(diff) > 50) go(current + (diff > 0 ? 1 : -1));
-      },
-      { passive: true },
-    );
-  })();
-</script>

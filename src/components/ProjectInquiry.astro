@@ -1,0 +1,143 @@
+---
+import type { Lang } from "../i18n/translations";
+import { t } from "../i18n/utils";
+import NetlifyForm from "./NetlifyForm.astro";
+import { unitLabel } from "../lib/projects";
+
+interface Props {
+  lang: Lang;
+  /** Project title, sent with the form so each lead says what it is about. */
+  project: string;
+  units?: { id: string; letter?: string; typology: string }[];
+  /** Unit id to preselect, on a unit page. */
+  selected?: string;
+  /** Background class, so the form never repeats the section above it. */
+  background?: "bg-base-100" | "bg-base-200";
+}
+
+const {
+  lang,
+  project,
+  units = [],
+  selected,
+  background = "bg-base-200",
+} = Astro.props;
+---
+
+<section id="contacto" class:list={["section scroll-mt-20", background]}>
+  <div class="container">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+      <div class="lg:col-span-5">
+        <span class="section-label mb-3">{t("inquiry.label", lang)}</span>
+        <h2 class="section-heading">{t("inquiry.heading", lang)}</h2>
+        <p class="text-body text-dark-600 mt-5">{t("inquiry.body", lang)}</p>
+      </div>
+
+      <div class="lg:col-span-7">
+        <NetlifyForm
+          name="project-inquiry"
+          class="space-y-5"
+          successMessage={t("inquiry.success", lang)}
+        >
+          <input type="hidden" name="project" value={project} />
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+              <label for="inquiry-name" class="label">
+                <span class="label-text">{t("inquiry.name", lang)}</span>
+              </label>
+              <input
+                type="text"
+                id="inquiry-name"
+                name="name"
+                required
+                autocomplete="name"
+                class="input w-full"
+              />
+            </div>
+            <div>
+              <label for="inquiry-email" class="label">
+                <span class="label-text">{t("inquiry.email", lang)}</span>
+              </label>
+              <input
+                type="email"
+                id="inquiry-email"
+                name="email"
+                required
+                autocomplete="email"
+                class="input w-full"
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+              <label for="inquiry-phone" class="label">
+                <span class="label-text">
+                  {t("inquiry.phone", lang)}{" "}
+                  <span class="text-dark-300 normal-case tracking-normal">
+                    {t("inquiry.optional", lang)}
+                  </span>
+                </span>
+              </label>
+              <input
+                type="tel"
+                id="inquiry-phone"
+                name="phone"
+                autocomplete="tel"
+                class="input w-full"
+              />
+            </div>
+            {
+              units.length > 0 && (
+                <div>
+                  <label for="inquiry-unit" class="label">
+                    <span class="label-text">
+                      {t("inquiry.unit", lang)}{" "}
+                      <span class="text-dark-300 normal-case tracking-normal">
+                        {t("inquiry.optional", lang)}
+                      </span>
+                    </span>
+                  </label>
+                  <select id="inquiry-unit" name="unit" class="select w-full">
+                    <option value="" selected={!selected}></option>
+                    {units.map((unit) => (
+                      <option
+                        value={unitLabel(unit)}
+                        selected={unit.id === selected}
+                      >
+                        {unitLabel(unit)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )
+            }
+          </div>
+
+          <div>
+            <label for="inquiry-message" class="label">
+              <span class="label-text">
+                {t("inquiry.message", lang)}{" "}
+                <span class="text-dark-300 normal-case tracking-normal">
+                  {t("inquiry.optional", lang)}
+                </span>
+              </span>
+            </label>
+            <textarea
+              id="inquiry-message"
+              name="message"
+              rows="3"
+              class="textarea w-full resize-none"></textarea>
+          </div>
+
+          <div class="pt-2" slot="actions">
+            <button type="submit" class="btn btn-primary">
+              {t("inquiry.submit", lang)}
+            </button>
+          </div>
+        </NetlifyForm>
+      </div>
+    </div>
+  </div>
+</section>

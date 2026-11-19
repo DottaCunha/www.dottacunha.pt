@@ -4,6 +4,11 @@ import { t, localizedPath } from "../../../i18n/utils";
 import type { Lang } from "../../../i18n/translations";
 import { getCollection } from "astro:content";
 import { getProjectSlug, getStatusLabel } from "../../../lib/projects";
+import UnitCard from "../../../components/UnitCard.astro";
+import SectionHeader from "../../../components/SectionHeader.astro";
+import Icon from "../../../components/Icon.astro";
+import LocationMap from "../../../components/LocationMap.astro";
+import ProjectInquiry from "../../../components/ProjectInquiry.astro";
 import { supportedLangs } from "../../../i18n/translations";
 import PublicPicture from "../../../components/PublicPicture.astro";
 
@@ -32,37 +37,89 @@ const { project } = Astro.props;
 const d = project.data;
 const statusLabel = getStatusLabel(d.status, t, lang);
 const units = d.units ?? [];
+const sections = d.sections ?? [];
+const typeLabel = t(`projectType.${d.type}`, lang);
+// "Carrascal 168, Beato, Lisboa" (the layout puts the brand in front).
+const pageTitle = `${d.title}, ${d.location}`;
+
+// Structured data for search engines (not shown on the page).
+const place = (d.sections ?? []).find((section) => section.map)?.map;
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "ApartmentComplex",
+  name: d.title,
+  description: d.seoDescription ?? d.description,
+  url: new URL(Astro.url.pathname, "https://dottacunha.pt").href,
+  image: new URL(d.image, "https://dottacunha.pt").href,
+  numberOfAccommodationUnits: d.totalUnits,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: d.location,
+    addressCountry: "PT",
+  },
+  ...(place && {
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: place.lat,
+      longitude: place.lng,
+    },
+  }),
+};
+const facts = [
+  { label: t("projectDetail.totalUnits", lang), value: String(d.totalUnits) },
+  d.typologies
+    ? { label: t("projectDetail.typologies", lang), value: d.typologies }
+    : { label: t("projectDetail.area", lang), value: `${d.area} m²` },
+  d.completion
+    ? { label: t("projectDetail.completion", lang), value: d.completion }
+    : { label: t("projectsPage.year", lang), value: String(d.year) },
+];
 ---
 
-<BaseLayout title={d.title} darkHeader={true} lang={lang}>
-  <!-- Hero -->
+<BaseLayout
+  title={pageTitle}
+  description={d.seoDescription ?? d.description}
+  ogImage={d.image}
+  darkHeader={true}
+  footerNote={t("projectDetail.disclaimer", lang)}
+  lang={lang}
+>
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(structuredData)}
+  />
+  <!-- Header: the building as background, text on the left, facts on the right -->
   <section
     class="relative min-h-[70vh] flex items-end bg-neutral text-primary-content overflow-hidden"
   >
     <div class="absolute inset-0">
       <PublicPicture
         priority
-        quality={60}
-        sizes="100vw"
         src={d.image}
+        alt={d.title}
         formats={["avif", "webp"]}
         widths={[400, 800, 1200, 1600, 2000]}
-        alt={d.title}
-        class="w-full h-full object-cover opacity-50"
+        sizes="100vw"
+        pictureAttributes={{ class: "block w-full h-full" }}
+        class="w-full h-full object-cover"
       />
       <div
-        class="absolute inset-0 bg-gradient-to-t from-primary via-primary/30 to-primary/20"
+        class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-primary/85 via-primary/55 to-primary/10"
+      >
+      </div>
+      <div
+        class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-primary/70 to-transparent hidden lg:block"
       >
       </div>
     </div>
 
-    <div class="container relative z-10 px-6 md:px-8 pb-16 md:pb-24 pt-40">
+    <div class="container relative z-10 pt-40 pb-16 md:pb-24">
       <a
         href={localizedPath("/projects", lang)}
-        class="inline-flex items-center gap-2 text-link text-info hover:text-primary-content mb-8"
+        class="inline-flex items-center gap-2 text-meta text-primary-content/70 hover:text-primary-content transition-colors mb-10"
       >
         <svg
-          class="w-4 h-4"
+          class="w-3.5 h-3.5"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -75,196 +132,296 @@ const units = d.units ?? [];
         {t("projectDetail.back", lang)}
       </a>
 
-      <div class="flex items-center gap-4 mb-5">
-        <span
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-end">
+        <div class="lg:col-span-7">
+          <span class="badge bg-base-100 text-base-content flex w-fit mb-6">
+            {statusLabel}
+          </span>
+          <span class="section-label text-xxs md:text-sm leading-none text-primary-content/70 mb-4">
+            {`${typeLabel} · ${d.location}`}
+          </span>
+          <h1 class="heading-hero text-5xl md:text-6xl xl:text-7xl mb-5">
+            {d.title}
+          </h1>
+          <p class="text-body text-pretty text-primary-content/90">
+            {d.description}
+          </p>
+        </div>
+
+        <div class="lg:col-span-5 flex flex-col gap-3">
+          <a href="#contacto" class="btn btn-lg btn-inverted w-full text-mid">
+            {t("projectDetail.inquire", lang)}
+          </a>
+          {
+            d.brochure && (
+              <a
+                href={d.brochure}
+                target="_blank"
+                rel="noopener"
+                class="btn btn-lg btn-outline btn-light w-full text-mid bg-primary/30 hover:bg-base-100"
+              >
+                {t("projectDetail.brochure", lang)}
+              </a>
+            )
+          }
+        </div>
+      </div>
+
+      <dl
+        class="grid grid-cols-3 lg:grid-cols-12 gap-6 lg:gap-16 border-t border-primary-content/30 mt-10 md:mt-12 pt-6"
+      >
+        {
+          facts.map((fact, i) => (
+            <div
+              class:list={[
+                // Same 12 columns as the row above: the last fact starts
+                // where the button starts.
+                ["lg:col-span-4", "lg:col-span-3", "lg:col-span-5"][i],
+              ]}
+            >
+              <dd class="text-stat text-primary-content text-2xl md:text-3xl whitespace-nowrap">
+                {fact.value}
+              </dd>
+              <dt class="text-meta text-primary-content/70 mt-2">
+                {fact.label}
+              </dt>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <!-- Units -->
+  <section id="unidades" class="section bg-base-200 scroll-mt-20">
+    <div class="container">
+      <SectionHeader
+        label={d.unitsLabel}
+        heading={t("projectDetail.units", lang)}
+      />
+      {
+        units.length > 0 ? (
+          <div class="border-t border-base-300 lg:border-0 lg:grid lg:grid-cols-3 lg:gap-x-8 lg:gap-y-14">
+            {units.map((unit) => (
+              <UnitCard
+                lang={lang}
+                slug={slug}
+                projectTitle={d.title}
+                unit={unit}
+              />
+            ))}
+          </div>
+        ) : (
+          <p class="text-body">{t("projectDetail.noUnits", lang)}</p>
+        )
+      }
+    </div>
+  </section>
+
+  <!-- Sections: finishes (photo tiles + list), location (map + list), ... -->
+  {
+    sections.map((section, i) => {
+      const items = section.items ?? [];
+      const tiles = items.filter((item) => item.image);
+      const rows = items.filter((item) => !item.image);
+      const list = section.list ?? [];
+      return (
+        <section
+          id={section.key}
           class:list={[
-            "badge",
-            d.status === "completed"
-              ? "bg-base-100 text-base-content"
-              : d.status === "under_construction"
-                ? "bg-base-100 text-base-content"
-                : "bg-base-300 text-dark-600",
+            "section scroll-mt-20",
+            i % 2 === 0 ? "bg-base-100" : "bg-base-200",
           ]}
         >
-          {statusLabel}
-        </span>
-        <span class="text-meta text-xxs text-info">{d.type}</span>
-      </div>
+          <div class="container">
+            <SectionHeader
+              label={section.label}
+              heading={section.heading}
+            />
 
-      <h1 class="heading-hero text-4xl md:text-6xl lg:text-7xl mb-4">
-        {d.title}
-      </h1>
-      <p class="text-body">{d.location}</p>
-    </div>
-  </section>
-
-  <!-- Project Info -->
-  <section class="section bg-base-100">
-    <div class="container">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
-        <div class="lg:col-span-7">
-          <p class="text-body text-secondary text-prose">{d.description}</p>
-        </div>
-        <div class="lg:col-span-5">
-          <div class="grid grid-cols-2 gap-8 border-t border-base-300 pt-8">
-            <div>
-              <div
-                class="font-display text-3xl font-bold text-base-content tracking-tight"
-              >
-                {d.totalUnits}
-              </div>
-              <div class="text-meta mt-1">
-                {t("projectDetail.totalUnits", lang)}
-              </div>
-            </div>
-            <div>
-              <div
-                class="font-display text-3xl font-bold text-base-content tracking-tight"
-              >
-                {d.area} m²
-              </div>
-              <div class="text-meta mt-1">{t("projectDetail.area", lang)}</div>
-            </div>
-            <div>
-              <div
-                class="font-display text-3xl font-bold text-base-content tracking-tight"
-              >
-                {d.year}
-              </div>
-              <div class="text-meta mt-1">{t("projectsPage.year", lang)}</div>
-            </div>
-            <div>
-              <div
-                class="font-display text-lg font-bold text-base-content tracking-tight uppercase"
-              >
-                {statusLabel}
-              </div>
-              <div class="text-meta mt-1">
-                {t("projectDetail.status", lang)}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Units List -->
-  {
-    units.length > 0 && (
-      <section class="pb-24 md:pb-32 px-6 md:px-8 bg-base-100">
-        <div class="container">
-          <div class="border-t border-base-300 pt-16">
-            <span class="section-label">{t("projectDetail.units", lang)}</span>
-
-            <div class="border-t border-base-300">
-              {units.map((unit: any) => {
-                const unitUrl = localizedPath(
-                  `/projects/${slug}/${unit.id}`,
-                  lang,
-                );
-                const photo = unit.photos?.[0];
-                return (
-                  <a
-                    href={unitUrl}
-                    class="group flex flex-col md:flex-row md:items-center gap-5 md:gap-8 py-6 md:py-5 border-b border-base-300 hover:bg-base-200/50 transition-colors md:px-4"
-                  >
-                    {/* Thumbnail */}
-                    {photo && (
-                      <div class="w-full md:w-44 md:h-28 flex-shrink-0 overflow-hidden bg-base-300">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 xl:gap-16 items-start">
+              {tiles.length > 0 && (
+                <div
+                  class:list={[
+                    list.length > 0
+                      ? "lg:col-span-8 lg:order-2"
+                      : "lg:col-span-12",
+                  ]}
+                >
+                  {section.itemsHeading && (
+                    <h3 class="text-meta text-base-content pb-4 mb-6 border-b border-base-content">
+                      {section.itemsHeading}
+                    </h3>
+                  )}
+                  <div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 md:gap-x-6 gap-y-10 md:gap-y-12">
+                  {tiles.map((item) => (
+                    <figure>
+                      <div class="aspect-[4/3] overflow-hidden bg-base-300">
                         <PublicPicture
-                          src={photo}
-                          alt={unit.typology}
+                          src={item.image!}
+                          alt={`${item.label}: ${item.body ?? ""}`}
                           formats={["avif", "webp"]}
-                          widths={[400, 800, 1200, 1600]}
-                          sizes="(max-width: 768px) 100vw, 176px"
+                          widths={[400, 800]}
+                          sizes="(max-width: 768px) 50vw, 300px"
                           loading="lazy"
-                          class="w-full h-full object-cover aspect-[16/10] md:aspect-auto"
+                          pictureAttributes={{ class: "block w-full h-full" }}
+                          class="w-full h-full object-cover"
                         />
                       </div>
-                    )}
+                      <figcaption class="mt-4">
+                        <span class="text-meta text-base-content block">
+                          {item.label}
+                        </span>
+                        {item.body && (
+                          <span class="text-body-sm text-dark-600 block mt-1.5">
+                            {item.body}
+                          </span>
+                        )}
+                      </figcaption>
+                    </figure>
+                  ))}
+                  </div>
+                </div>
+              )}
 
-                    {/* Info */}
-                    <div class="flex-1 min-w-0">
-                      <h3 class="heading-card-sm group-hover:text-dark-600 transition-colors">
-                        {unit.typology}
-                      </h3>
-                      {unit.description && (
-                        <p class="text-body-xs mt-1 line-clamp-1 hidden md:block">
-                          {unit.description}
-                        </p>
+              {list.length > 0 && (
+                <div
+                  class:list={[
+                    tiles.length > 0
+                      ? "lg:col-span-4 lg:order-1"
+                      : "lg:col-span-12",
+                  ]}
+                >
+                  {section.listHeading && (
+                    <h3 class="text-meta text-base-content pb-4 border-b border-base-content">
+                      {section.listHeading}
+                    </h3>
+                  )}
+                  <ul>
+                    {list.map((entry) => (
+                      <li class="text-body-sm text-dark-600 py-3.5 border-b border-base-300">
+                        {entry}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {section.image && (
+                <div
+                  class:list={[
+                    // The map is as tall as the list beside it, and gives
+                    // the list half the width so its rows are not squeezed.
+                    section.map
+                      ? "lg:col-span-6 xl:col-span-7 lg:self-stretch"
+                      : "lg:col-span-7",
+                  ]}
+                >
+                  {section.map ? (
+                    <LocationMap
+                      lang={lang}
+                      image={section.image}
+                      alt={`${section.heading}, ${d.title}`}
+                      title={d.title}
+                      map={section.map}
+                      points={items.flatMap((item) =>
+                        (item.index || item.icon) && item.lat && item.lng
+                          ? [
+                              {
+                                id: (item.index ?? item.icon)!,
+                                index: item.index,
+                                icon: item.icon,
+                                label: item.label,
+                                lat: item.lat,
+                                lng: item.lng,
+                              },
+                            ]
+                          : [],
                       )}
-                    </div>
+                    />
+                  ) : (
+                    <PublicPicture
+                      src={section.image}
+                      alt={`${section.heading}, ${d.title}`}
+                      formats={["avif", "webp"]}
+                      widths={[400, 800, 1200, 1600]}
+                      sizes="(max-width: 1024px) 100vw, 58vw"
+                      loading="lazy"
+                      class="w-full h-auto"
+                    />
+                  )}
+                </div>
+              )}
 
-                    {/* Specs */}
-                    <div class="flex items-center gap-6 md:gap-8 flex-shrink-0">
-                      <div class="text-center">
-                        <div class="text-stat text-md">{unit.area} m²</div>
-                        <div class="text-meta text-3xs mt-0.5">
-                          {t("projectDetail.area", lang)}
-                        </div>
-                      </div>
-                      <div class="text-center">
-                        <div class="text-stat text-md">{unit.bedrooms}</div>
-                        <div class="text-meta text-3xs mt-0.5">
-                          {t("unitDetail.bedrooms", lang)}
-                        </div>
-                      </div>
-                      <div class="text-center hidden sm:block">
-                        <div class="text-stat text-md">{unit.floor}</div>
-                        <div class="text-meta text-3xs mt-0.5">
-                          {t("unitDetail.floor", lang)}
-                        </div>
-                      </div>
-                      <svg
-                        class="w-5 h-5 text-dark-300 group-hover:text-base-content group-hover:translate-x-1 transition-all flex-shrink-0"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="1.5"
-                          d="M17 8l4 4m0 0l-4 4m4-4H3"
-                        />
-                      </svg>
+              {rows.length > 0 && (
+                <dl
+                  class:list={[
+                    "border-t border-base-300",
+                    section.map
+                      ? "lg:col-span-6 xl:col-span-5"
+                      : section.image
+                        ? "lg:col-span-5"
+                        : "lg:col-span-12",
+                  ]}
+                >
+                  {rows.map((item) => (
+                    <div
+                      class="flex items-center gap-3 py-2.5 border-b border-base-300 transition-colors"
+                      data-point={
+                        item.lat && item.lng
+                          ? (item.index ?? item.icon)
+                          : undefined
+                      }
+                    >
+                      {(item.icon || item.index) && (
+                        <span class="w-6 shrink-0 flex justify-center">
+                          {item.icon ? (
+                            <Icon name={item.icon} class="w-5 h-5" />
+                          ) : (
+                            <span class="w-5 h-5 rounded-full bg-base-content text-base-100 text-2xs font-semibold tabular-nums flex items-center justify-center">
+                              {item.index}
+                            </span>
+                          )}
+                        </span>
+                      )}
+                      <dt class="text-body-sm font-medium text-base-content flex-1 min-w-0">
+                        {item.label}
+                      </dt>
+                      <dd class="flex items-center justify-end gap-2 text-body-sm text-dark-600 whitespace-nowrap">
+                        {(item.times ?? []).map((time) => (
+                          <span class="inline-flex items-center justify-end gap-1.5 w-[4.5rem] tabular-nums">
+                            {time.value}
+                            <span class="sr-only">
+                              {t(`travel.${time.mode}`, lang)}
+                            </span>
+                            <Icon
+                              name={time.mode}
+                              class="w-4 h-4 shrink-0"
+                            />
+                          </span>
+                        ))}
+                        {item.distance && (
+                          <span class="hidden sm:inline-block w-14 text-right tabular-nums">
+                            {item.distance}
+                          </span>
+                        )}
+                        {item.body}
+                      </dd>
                     </div>
-                  </a>
-                );
-              })}
+                  ))}
+                </dl>
+              )}
             </div>
           </div>
-        </div>
-      </section>
-    )
+        </section>
+      );
+    })
   }
 
-  {
-    units.length === 0 && (
-      <section class="pb-24 md:pb-32 px-6 md:px-8 bg-base-100">
-        <div class="container">
-          <div class="border-t border-base-300 pt-16">
-            <p class="text-body">{t("projectDetail.noUnits", lang)}</p>
-          </div>
-        </div>
-      </section>
-    )
-  }
-
-  <!-- CTA -->
-  <section class="section bg-secondary text-secondary-content">
-    <div class="container text-center">
-      <h2 class="section-heading mb-5">{t("projectsPage.ctaHeading", lang)}</h2>
-      <p class="text-body max-w-md mx-auto mb-10">
-        {t("projectsPage.ctaDesc", lang)}
-      </p>
-      <a
-        href={localizedPath("/contact", lang)}
-        class="btn btn-primary btn-inverted"
-      >
-        {t("projectDetail.inquire", lang)}
-      </a>
-    </div>
-  </section>
+  <ProjectInquiry
+    lang={lang}
+    project={d.title}
+    units={units}
+    background={sections.length % 2 === 0 ? "bg-base-100" : "bg-base-200"}
+  />
 </BaseLayout>
