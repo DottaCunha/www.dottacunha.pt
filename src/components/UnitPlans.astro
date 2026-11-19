@@ -1,0 +1,328 @@
+---
+import type { Lang } from "../i18n/translations";
+import { t } from "../i18n/utils";
+import { formatArea } from "../lib/projects";
+import PublicPicture from "./PublicPicture.astro";
+
+/**
+ * The floor plans of a unit and the table of its rooms.
+ *
+ * With more than one plan (a duplex) the drawings sit in a carousel with one
+ * tab per floor. A row of the table lights up its number on the drawing and
+ * brings the right floor into view, on hover as well as on click.
+ */
+interface Props {
+  lang: Lang;
+  /** Used in the alt text: "C · T2 Duplex". */
+  label: string;
+  plans: {
+    label?: string;
+    image: string;
+    rooms: {
+      number: number;
+      label: string;
+      area: number;
+      x?: number;
+      y?: number;
+    }[];
+  }[];
+  /** Gross area, already formatted: "96,48 m²". */
+  area: string;
+  note?: string;
+}
+
+const { lang, label, plans, area, note } = Astro.props;
+const altOf = (plan: Props["plans"][number]) =>
+  [t("unitDetail.floorPlan", lang), label, plan.label]
+    .filter(Boolean)
+    .join(", ");
+---
+
+<div
+  class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start"
+  data-plans
+>
+  <div class="lg:col-span-7 lg:sticky lg:top-28 min-w-0">
+    {
+      plans.length > 1 && (
+        <div class="flex gap-8 border-b border-base-300 mb-6" role="tablist">
+          {plans.map((plan, i) => (
+            <button
+              type="button"
+              role="tab"
+              class:list={["plan-tab", i === 0 && "is-active"]}
+              id={`plan-tab-${i}`}
+              aria-selected={i === 0 ? "true" : "false"}
+              aria-controls={`plan-panel-${i}`}
+              data-plan-tab={i}
+            >
+              {plan.label}
+            </button>
+          ))}
+        </div>
+      )
+    }
+    <div
+      class="plan-track flex overflow-x-auto snap-x snap-mandatory scroll-smooth"
+      data-plan-track
+    >
+      {
+        plans.map((plan, i) => (
+          <figure
+            class="relative shrink-0 w-full snap-start"
+            id={`plan-panel-${i}`}
+            role={plans.length > 1 ? "tabpanel" : undefined}
+            aria-labelledby={plans.length > 1 ? `plan-tab-${i}` : undefined}
+          >
+            <button
+              type="button"
+              class="block w-full cursor-zoom-in"
+              aria-label={`${t("lightbox.open", lang)}: ${altOf(plan)}`}
+              data-lightbox-src={plan.image}
+              data-lightbox-group="plans"
+              data-lightbox-alt={altOf(plan)}
+            >
+              <PublicPicture
+                src={plan.image}
+                alt={altOf(plan)}
+                formats={["avif", "webp"]}
+                widths={[400, 800, 1200, 1600]}
+                sizes="(max-width: 1024px) 100vw, 58vw"
+                loading="lazy"
+                class="w-full h-auto"
+              />
+            </button>
+            {plan.rooms.map(
+              (room) =>
+                room.x !== undefined &&
+                room.y !== undefined && (
+                  <span
+                    class="plan-marker"
+                    style={`left:${room.x}%;top:${room.y}%`}
+                    data-plan-marker={room.number}
+                    aria-hidden="true"
+                  />
+                ),
+            )}
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="lg:col-span-5" data-plan-table>
+    {
+      plans.map((plan, i) => (
+        <div class:list={[i > 0 && "mt-8"]}>
+          <div class="flex items-baseline justify-between gap-4 border-b border-base-content pb-3">
+            <h3 class="heading-card-sm">
+              {plan.label ?? t("unitDetail.areas", lang)}
+            </h3>
+            {i === 0 && <span class="text-meta">m²</span>}
+          </div>
+          <dl>
+            {plan.rooms.map((room) => (
+              <div
+                class="plan-row flex items-center gap-4 py-2.5 border-b border-base-300"
+                role="button"
+                tabindex="0"
+                aria-pressed="false"
+                data-plan-room={room.number}
+                data-plan-index={i}
+              >
+                <span class="plan-number w-5 h-5 shrink-0 rounded-full bg-base-content text-base-100 text-[10px] font-semibold tabular-nums flex items-center justify-center">
+                  {room.number}
+                </span>
+                <dt class="text-body-sm flex-1">{room.label}</dt>
+                <dd class="text-body-sm font-medium tabular-nums whitespace-nowrap">
+                  {formatArea(room.area, lang)}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      ))
+    }
+    <div class="flex items-baseline justify-between gap-4 pt-4">
+      <span class="text-body-sm font-semibold">
+        {t("unitDetail.grossArea", lang)}
+      </span>
+      <span class="text-stat text-xl whitespace-nowrap">{area}</span>
+    </div>
+    <p class="text-footnote mt-4">
+      {[note, t("unitDetail.areasNote", lang)].filter(Boolean).join(" ")}
+    </p>
+  </div>
+</div>
+
+<style>
+  .plan-track {
+    scrollbar-width: none;
+  }
+  .plan-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .plan-tab {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-secondary);
+    padding-bottom: 0.75rem;
+    margin-bottom: -1px;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition:
+      color 0.2s ease,
+      border-color 0.2s ease;
+  }
+  .plan-tab:hover {
+    color: var(--color-base-content);
+  }
+  .plan-tab.is-active {
+    color: var(--color-base-content);
+    border-color: var(--color-base-content);
+  }
+
+  /* A ring around the number printed on the drawing. It is sized against the
+     drawing, so it keeps its place at any width. */
+  .plan-marker {
+    position: absolute;
+    width: 5.5%;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%) scale(0.6);
+    border-radius: 9999px;
+    border: 2px solid var(--color-base-content);
+    background: rgb(10 10 10 / 0.08);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+  }
+  .plan-marker.is-hover,
+  .plan-marker.is-active {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  .plan-marker.is-active {
+    animation: plan-pulse 1.6s ease-out infinite;
+  }
+  @keyframes plan-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgb(10 10 10 / 0.3);
+    }
+    100% {
+      box-shadow: 0 0 0 14px rgb(10 10 10 / 0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .plan-marker.is-active {
+      animation: none;
+    }
+  }
+
+  /* The highlight reaches a little past the row on both sides, while the
+     rules between rows stay aligned with the heading above. */
+  .plan-row {
+    position: relative;
+    isolation: isolate;
+    cursor: pointer;
+  }
+  .plan-row::before {
+    content: "";
+    position: absolute;
+    inset: 0 -0.75rem;
+    z-index: -1;
+    background: transparent;
+    transition: background-color 0.15s ease;
+  }
+  .plan-row:hover::before,
+  .plan-row.is-active::before {
+    background: var(--color-base-200);
+  }
+  .plan-row.is-active dt {
+    font-weight: 600;
+  }
+  .plan-row:focus-visible {
+    outline: 2px solid var(--color-base-content);
+    outline-offset: -2px;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-plans]").forEach((root) => {
+    const track = root.querySelector<HTMLElement>("[data-plan-track]");
+    if (!track) return;
+    const tabs = [...root.querySelectorAll<HTMLElement>("[data-plan-tab]")];
+    const rows = [...root.querySelectorAll<HTMLElement>("[data-plan-room]")];
+    const markerOf = (row: HTMLElement) =>
+      root.querySelector<HTMLElement>(
+        `[data-plan-marker="${row.dataset.planRoom}"]`,
+      );
+
+    const current = () => Math.round(track.scrollLeft / track.clientWidth);
+    const showPlan = (index: number) =>
+      track.scrollTo({ left: index * track.clientWidth });
+    const markTabs = () => {
+      const index = current();
+      tabs.forEach((tab, i) => {
+        tab.classList.toggle("is-active", i === index);
+        tab.setAttribute("aria-selected", String(i === index));
+      });
+    };
+
+    track.addEventListener("scroll", markTabs, { passive: true });
+    tabs.forEach((tab, i) => tab.addEventListener("click", () => showPlan(i)));
+
+    const select = (row: HTMLElement) => {
+      const wasActive = row.classList.contains("is-active");
+      rows.forEach((other) => {
+        other.classList.remove("is-active");
+        other.setAttribute("aria-pressed", "false");
+        markerOf(other)?.classList.remove("is-active");
+      });
+      if (wasActive) return;
+      row.classList.add("is-active");
+      row.setAttribute("aria-pressed", "true");
+      markerOf(row)?.classList.add("is-active");
+      showPlan(Number(row.dataset.planIndex));
+      // On a phone the drawing is above the table: bring it back into view.
+      const box = track.getBoundingClientRect();
+      if (box.top < 80 || box.bottom > window.innerHeight) {
+        track.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    };
+
+    // When the pointer leaves the table, go back to the floor of the row
+    // that is selected, so its ring is on screen again.
+    rows[0]?.closest("[data-plan-table]")?.addEventListener("pointerleave", () => {
+      const active = rows.find((row) => row.classList.contains("is-active"));
+      if (!active) return;
+      const index = Number(active.dataset.planIndex);
+      if (index !== current()) showPlan(index);
+    });
+
+    rows.forEach((row) => {
+      row.addEventListener("click", () => select(row));
+      row.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          select(row);
+        }
+      });
+      row.addEventListener("pointerenter", (event) => {
+        if (event.pointerType === "mouse") {
+          markerOf(row)?.classList.add("is-hover");
+          // With two floors, the drawing follows the pointer down the table.
+          const index = Number(row.dataset.planIndex);
+          if (index !== current()) showPlan(index);
+        }
+      });
+      row.addEventListener("pointerleave", () => {
+        markerOf(row)?.classList.remove("is-hover");
+      });
+    });
+  });
+</script>

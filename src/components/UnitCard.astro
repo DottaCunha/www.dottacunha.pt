@@ -19,9 +19,17 @@ interface Props {
     highlight?: string;
     photos?: string[];
   };
+  /** Keep the small row layout at every width (used under "Other units"). */
+  compact?: boolean;
 }
 
-const { lang, slug, projectTitle, unit } = Astro.props;
+const { lang, slug, projectTitle, unit, compact = false } = Astro.props;
+// Classes for the parts that only exist in one of the two layouts.
+const cardOnly = compact ? "hidden" : "max-lg:hidden";
+const rowOnly = compact ? "" : "lg:hidden";
+const split = compact
+  ? ""
+  : "lg:flex lg:items-baseline lg:justify-between lg:gap-4";
 const photo = unit.photos?.[0];
 const area = `${formatArea(unit.area, lang)} m²`;
 const floor = unit.floorLabel ?? String(unit.floor);
@@ -35,10 +43,16 @@ const name = unit.letter
     columns (what it is on the left, the numbers on the right). */}
 <a
   href={localizedPath(`/projects/${slug}/${unit.id}`, lang)}
-  class="group flex items-center gap-4 py-4 border-b border-base-300 lg:block lg:py-0 lg:border-0"
+  class:list={[
+    "group flex items-center gap-4 py-4 border-b border-base-300",
+    !compact && "lg:block lg:py-0 lg:border-0",
+  ]}
 >
   <div
-    class="relative overflow-hidden bg-base-300 w-24 sm:w-32 shrink-0 aspect-[3/4] lg:w-auto lg:mb-5"
+    class:list={[
+      "relative overflow-hidden bg-base-300 shrink-0 aspect-[3/4]",
+      compact ? "w-20 sm:w-24" : "w-24 sm:w-32 lg:w-auto lg:mb-5",
+    ]}
   >
     {
       photo && (
@@ -47,7 +61,7 @@ const name = unit.letter
           alt={`${unitLabel(unit)}, ${projectTitle}`}
           formats={["avif", "webp"]}
           widths={[200, 400, 800, 1200]}
-          sizes="(max-width: 1023px) 128px, 33vw"
+          sizes={compact ? "96px" : "(max-width: 1023px) 128px, 33vw"}
           loading="lazy"
           class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700"
         />
@@ -56,10 +70,18 @@ const name = unit.letter
   </div>
 
   <div class="flex-1 min-w-0">
-    <div class="flex items-center justify-between gap-4 mb-1 lg:mb-2">
+    <div
+      class:list={[
+        "flex items-center justify-between gap-4 mb-1",
+        !compact && "lg:mb-2",
+      ]}
+    >
       <p class="text-meta">{name}</p>
       <svg
-        class="w-4 h-4 shrink-0 -mr-0.5 text-secondary max-lg:hidden group-hover:translate-x-1 transition-transform"
+        class:list={[
+          "w-4 h-4 shrink-0 -mr-0.5 text-secondary group-hover:translate-x-1 transition-transform",
+          cardOnly,
+        ]}
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -72,20 +94,20 @@ const name = unit.letter
           d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
       </svg>
     </div>
-    <div class="lg:flex lg:items-baseline lg:justify-between lg:gap-4">
+    <div class={split}>
       <h3 class="heading-card group-hover:text-dark-600 transition-colors">
         {unit.typology}
       </h3>
-      <span class="text-stat text-md whitespace-nowrap max-lg:hidden">
+      <span class:list={["text-stat text-md whitespace-nowrap", cardOnly]}>
         {area}
       </span>
     </div>
-    <p class="text-body-sm text-base-content mt-1 lg:hidden">
+    <p class:list={["text-body-sm text-base-content mt-1", rowOnly]}>
       {`${area} · ${floor}`}
     </p>
-    <div class="lg:flex lg:items-baseline lg:justify-between lg:gap-3 lg:mt-1">
+    <div class:list={[split, !compact && "lg:mt-1"]}>
       <p class="text-body-sm text-dark-600">{unit.highlight}</p>
-      <p class="text-body-sm text-dark-600 whitespace-nowrap max-lg:hidden">
+      <p class:list={["text-body-sm text-dark-600 whitespace-nowrap", cardOnly]}>
         {floor}
       </p>
     </div>
@@ -93,7 +115,10 @@ const name = unit.letter
 
   {/* Below 1024px the arrow sits at the end of the row, centred. */}
   <svg
-    class="w-4 h-4 shrink-0 text-secondary lg:hidden"
+    class:list={[
+      "w-4 h-4 shrink-0 text-secondary group-hover:translate-x-1 transition-transform",
+      rowOnly,
+    ]}
     fill="none"
     stroke="currentColor"
     viewBox="0 0 24 24"

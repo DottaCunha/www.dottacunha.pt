@@ -14,6 +14,9 @@ import PhotoStrip from "../../../../components/PhotoStrip.astro";
 import UnitCard from "../../../../components/UnitCard.astro";
 import SectionHeader from "../../../../components/SectionHeader.astro";
 import ProjectInquiry from "../../../../components/ProjectInquiry.astro";
+import Lightbox from "../../../../components/Lightbox.astro";
+import UnitPlans from "../../../../components/UnitPlans.astro";
+import Icon from "../../../../components/Icon.astro";
 
 export async function getStaticPaths() {
   const allProjects = await getCollection("projects");
@@ -49,10 +52,16 @@ const units = d.units ?? [];
 const otherUnits = units.filter((other) => other.id !== unit.id);
 const photos = unit.photos ?? [];
 const features = unit.features ?? [];
+const finishes = unit.finishes ?? [];
 const label = unitLabel(unit);
 const area = `${formatArea(unit.area, lang)} m²`;
 const floor = unit.floorLabel ?? String(unit.floor);
 const projectUrl = localizedPath(`/projects/${slug}`, lang);
+const unitName = unit.letter
+  ? `${t("unitDetail.apartment", lang)} ${unit.letter}`
+  : unit.typology;
+// "Pisos 2 e 3" under the label "Piso" says it twice: keep the numbers.
+const floorValue = floor.replace(/^\D+(?=\d)/, "");
 
 // Rooms are numbered across all the plans of the unit, like on the drawings
 // (the upper floor of the duplex continues from 9).
@@ -62,115 +71,232 @@ const plans = (unit.plans ?? []).map((plan) => ({
   rooms: (plan.rooms ?? []).map((room) => ({ ...room, number: ++roomNumber })),
 }));
 
-// "T2, 74,23 m², Piso 1. Duas varandas. Carrascal 168, Beato, Lisboa."
+// The unit's own sentence, then where it is: "T2 no piso 1. A sala e a
+// cozinha… 74,23 m², Carrascal 168, Beato, Lisboa."
 const pageDescription = [
-  [unit.typology, area, floor].join(", "),
-  unit.highlight,
-  `${d.title}, ${d.location}`,
+  unit.description,
+  `${area}, ${d.title}, ${d.location}.`,
 ]
   .filter(Boolean)
-  .join(". ")
-  .concat(".");
+  .join(" ");
+const pageUrl = new URL(Astro.url.pathname, "https://dottacunha.pt").href;
+const absolute = (path: string) => new URL(path, "https://dottacunha.pt").href;
+
+// Structured data for search engines (not shown on the page): the home
+// itself, and where the page sits in the site.
+const structuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Apartment",
+    name: `${unitName}, ${d.title}`,
+    description: unit.description,
+    url: pageUrl,
+    image: photos.map(absolute),
+    floorSize: {
+      "@type": "QuantitativeValue",
+      value: unit.area,
+      unitCode: "MTK",
+    },
+    numberOfBedrooms: unit.bedrooms,
+    numberOfBathroomsTotal: unit.bathrooms,
+    floorLevel: floor,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: d.streetAddress,
+      postalCode: d.postalCode,
+      addressLocality: d.location,
+      addressCountry: "PT",
+    },
+    containedInPlace: {
+      "@type": "ApartmentComplex",
+      name: d.title,
+      url: absolute(projectUrl),
+    },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        name: t("nav.projects", lang),
+        item: absolute(localizedPath("/projects", lang)),
+      },
+      { name: d.title, item: absolute(projectUrl) },
+      { name: unitName, item: pageUrl },
+    ].map((crumb, i) => ({ "@type": "ListItem", position: i + 1, ...crumb })),
+  },
+];
 
 const facts = [
-  { label: t("unitDetail.grossAreaShort", lang), value: area },
-  { label: t("unitDetail.floor", lang), value: floor },
-  { label: t("unitDetail.bedrooms", lang), value: String(unit.bedrooms) },
-  { label: t("unitDetail.bathrooms", lang), value: String(unit.bathrooms) },
-  ...(unit.energyRating
-    ? [{ label: t("unitDetail.energy", lang), value: unit.energyRating }]
-    : []),
-];
+  { icon: "area", label: t("unitDetail.grossAreaShort", lang), value: area },
+  { icon: "floor", label: t("unitDetail.floor", lang), value: floorValue },
+  {
+    icon: "bed",
+    label: t("unitDetail.bedrooms", lang),
+    value: String(unit.bedrooms),
+  },
+  {
+    icon: "bath",
+    label: t("unitDetail.bathrooms", lang),
+    value: String(unit.bathrooms),
+  },
+] as const;
 ---
 
 <BaseLayout
-  title={`${label}, ${d.title}, ${d.location}`}
+  title={`${d.title}, ${d.location} - ${unit.seoTitle ?? unit.typology}`}
   description={pageDescription}
   ogImage={photos[0] ?? d.image}
   footerNote={t("projectDetail.disclaimer", lang)}
   lang={lang}
 >
-  <!-- Header -->
-  <section class="pt-32 pb-12 md:pb-16 bg-base-100">
-    <div class="container">
+  {
+    structuredData.map((data) => (
+      <script type="application/ld+json" set:html={JSON.stringify(data)} />
+    ))
+  }
+  <!-- Header: text and buttons, the facts, then the photos. On phones the
+       photos come right after the text. -->
+  <section
+    class="pt-32 md:pt-36 pb-14 md:pb-16 bg-base-100 md:flex md:items-end md:min-h-[max(70vh,57rem)] lg:min-h-[max(70vh,43.75rem)]"
+  >
+    <div class="container w-full">
       <a
         href={projectUrl}
-        class="inline-flex items-center gap-2 text-link text-info hover:text-base-content mb-10"
+        class="inline-flex items-center gap-2 text-meta hover:text-base-content transition-colors py-2 -mt-2 mb-8"
       >
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+        <svg
+          class="w-3.5 h-3.5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
           ><path
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="1.5"
             d="M7 16l-4-4m0 0l4-4m-4 4h18"></path></svg
         >
-        {d.title}
+        {`${d.title}, ${d.location}`}
       </a>
 
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-20 items-end">
-        <div class="lg:col-span-6">
-          {
-            unit.letter && (
-              <span class="section-label mb-4">
-                {`${t("unitDetail.apartment", lang)} ${unit.letter}`}
-              </span>
-            )
-          }
+      {/* Below 1024px everything stacks, and the facts come before the
+          highlights: text, facts, highlights. */}
+      <div class="flex flex-col lg:block">
+      <div class="contents lg:grid lg:grid-cols-12 lg:gap-x-16">
+        <div class="order-1 lg:col-span-8">
+          <span class="section-label text-xxs md:text-sm leading-none text-secondary mb-4">
+            {unitName}
+          </span>
           <h1
-            class="font-display text-5xl md:text-7xl font-extrabold text-primary tracking-tight uppercase leading-[0.95] mb-5"
+            class="heading-hero text-base-content text-5xl md:text-6xl xl:text-7xl mb-5"
           >
             {unit.typology}
           </h1>
-          <p class="text-body">{`${d.title}, ${d.location}`}</p>
           {
             unit.description && (
-              <p class="text-body text-prose mt-6">{unit.description}</p>
+              <p class="text-body text-pretty max-w-2xl">{unit.description}</p>
             )
           }
           {
-            features.length > 0 && (
-              <ul class="mt-8 space-y-2">
+            unit.energyRating && (
+              <p class="flex items-center gap-2.5 mt-5">
+                {/* The arrow-shaped tag used for the rating in the brochure,
+                    at the size of the status chip on the project page. */}
+                <svg viewBox="0 0 50 30" class="h-6 w-auto" aria-hidden="true">
+                  <path
+                    d="M1 1h33l15 14-15 14H1z"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linejoin="round"
+                  />
+                  <text
+                    x="19"
+                    y="21.5"
+                    text-anchor="middle"
+                    font-size="18"
+                    class="font-display font-bold"
+                    fill="currentColor"
+                  >
+                    {unit.energyRating}
+                  </text>
+                </svg>
+                <span class="sr-only">{unit.energyRating}</span>
+                <span class="text-meta">{t("unitDetail.energy", lang)}</span>
+              </p>
+            )
+          }
+          <div class="flex flex-col sm:flex-row gap-3 mt-8">
+            <a href="#contacto" class="btn btn-lg btn-primary text-mid">
+              {t("unitDetail.inquire", lang)}
+            </a>
+            {
+              d.brochure && (
+                <a
+                  href={d.brochure}
+                  target="_blank"
+                  rel="noopener"
+                  class="btn btn-lg btn-outline text-mid"
+                >
+                  {t("projectDetail.brochure", lang)}
+                </a>
+              )
+            }
+          </div>
+        </div>
+
+        {
+          features.length > 0 && (
+            <div class="order-3 mt-10 lg:mt-0 lg:col-span-4 lg:col-start-9 lg:self-end">
+              <h2 class="text-meta text-base-content pb-4 border-b border-base-content">
+                {t("unitDetail.features", lang)}
+              </h2>
+              <ul>
                 {features.map((feature) => (
-                  <li class="flex items-center gap-3 text-body-sm text-dark-600">
-                    <span class="w-1.5 h-1.5 bg-neutral shrink-0" />
+                  <li class="text-body py-3 border-b border-base-300">
                     {feature}
                   </li>
                 ))}
               </ul>
-            )
-          }
-          <a href="#contacto" class="btn btn-primary mt-10">
-            {t("unitDetail.inquire", lang)}
-          </a>
-        </div>
+            </div>
+          )
+        }
+      </div>
 
-        <div class="lg:col-span-6">
-          <dl
-            class="grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-8 border-t border-base-300 pt-8"
-          >
-            {
-              facts.map((fact) => (
-                <div>
-                  <dd class="text-stat text-2xl md:text-3xl">{fact.value}</dd>
-                  <dt class="text-meta mt-1">{fact.label}</dt>
-                </div>
-              ))
-            }
-          </dl>
-        </div>
+      <!-- After the title block: the facts in a row. -->
+      <dl
+        class="order-2 grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-8 border-t border-base-300 mt-10 md:mt-12 pt-6"
+      >
+        {
+          facts.map((fact) => (
+            // The label comes first for screen readers; on screen the
+            // value stays on top.
+            <div class="flex flex-col-reverse">
+              <dt class="text-meta flex items-center gap-2 mt-2 whitespace-nowrap">
+                <Icon name={fact.icon} class="w-4 h-4 shrink-0" />
+                {fact.label}
+              </dt>
+              <dd class="text-stat text-2xl md:text-3xl whitespace-nowrap">
+                {fact.value}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
       </div>
     </div>
   </section>
 
-  <!-- Photos -->
+  <!-- Photos, on the grey band between the header and the plans -->
   {
     photos.length > 0 && (
-      <section class="pb-24 md:pb-32 bg-base-100">
+      <section class="py-16 md:py-24 bg-base-200">
         <div class="container">
           <PhotoStrip
             lang={lang}
             photos={photos}
-            alt={`${label}, ${d.title}`}
+            alt={`${unitName}, ${d.title}`}
+            captions={unit.photoCaptions}
           />
         </div>
       </section>
@@ -180,67 +306,89 @@ const facts = [
   <!-- Floor plans and areas -->
   {
     plans.length > 0 && (
-      <section id="planta" class="section bg-base-200 scroll-mt-20">
+      <section id="planta" class="section bg-base-100 scroll-mt-20">
         <div class="container">
           <SectionHeader
+            label={floor}
             heading={t("unitDetail.plansHeading", lang)}
-            body={unit.areaNote}
           />
 
-          <div class="space-y-16">
-            {plans.map((plan) => (
-              <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
-                <a
-                  href={plan.image}
-                  target="_blank"
-                  rel="noopener"
-                  class="lg:col-span-7 block bg-white p-4 md:p-8"
-                >
-                  <PublicPicture
-                    src={plan.image}
-                    alt={[t("unitDetail.floorPlan", lang), label, plan.label]
-                      .filter(Boolean)
-                      .join(", ")}
-                    formats={["avif", "webp"]}
-                    widths={[400, 800, 1200, 1600]}
-                    sizes="(max-width: 1024px) 100vw, 58vw"
-                    loading="lazy"
-                    class="w-full h-auto"
-                  />
-                </a>
-                <div class="lg:col-span-5">
-                  {plan.label && (
-                    <h3 class="heading-card-sm mb-4">{plan.label}</h3>
-                  )}
-                  <dl class="border-t border-base-300">
-                    {plan.rooms.map((room) => (
-                      <div class="flex items-baseline gap-4 py-3 border-b border-base-300">
-                        <span class="text-xs font-semibold tabular-nums w-5 shrink-0">
-                          {room.number}
-                        </span>
-                        <dt class="text-body-sm flex-1">{room.label}</dt>
-                        <dd class="text-body-sm tabular-nums whitespace-nowrap">
-                          {`${formatArea(room.area, lang)} m²`}
-                        </dd>
-                      </div>
-                    ))}
-                  </dl>
-                </div>
-              </div>
-            ))}
-          </div>
+          <UnitPlans
+            lang={lang}
+            label={label}
+            plans={plans}
+            area={area}
+            note={unit.areaNote}
+          />
+        </div>
+      </section>
+    )
+  }
 
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 mt-10">
-            <div class="lg:col-start-8 lg:col-span-5">
-              <div class="flex items-baseline justify-between gap-4 border-t border-base-content pt-4">
-                <span class="text-body font-semibold">
-                  {t("unitDetail.grossArea", lang)}
-                </span>
-                <span class="text-stat text-xl whitespace-nowrap">{area}</span>
-              </div>
-              <p class="text-footnote mt-4">
-                {t("unitDetail.areasNote", lang)}
+  <!-- Finishes that change from unit to unit: kitchen and bathrooms -->
+  {
+    finishes.length > 0 && (
+      <section id="acabamentos" class="section bg-base-200 scroll-mt-20">
+        <div class="container">
+          <SectionHeader
+            label={unit.letter
+              ? `${t("unitDetail.apartment", lang)} ${unit.letter}`
+              : undefined}
+            heading={t("unitDetail.finishes", lang)}
+          />
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+            <div class="lg:col-span-8 lg:order-2 grid grid-cols-2 gap-x-4 md:gap-x-6 gap-y-10">
+              {finishes.map((item) => (
+                <figure>
+                  <div class="aspect-[4/3] overflow-hidden bg-base-300">
+                    <PublicPicture
+                      src={item.image}
+                      alt={`${item.label}: ${item.body ?? ""}`}
+                      formats={["avif", "webp"]}
+                      widths={[400, 800]}
+                      sizes="(max-width: 1024px) 50vw, 400px"
+                      loading="lazy"
+                      pictureAttributes={{ class: "block w-full h-full" }}
+                      class="w-full h-full object-cover"
+                    />
+                  </div>
+                  <figcaption class="mt-4">
+                    <span class="text-meta text-base-content block">
+                      {item.label}
+                    </span>
+                    {item.body && (
+                      <span class="text-body-sm text-dark-600 block mt-1.5">
+                        {item.body}
+                      </span>
+                    )}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+            <div class="lg:col-span-4 lg:order-1">
+              <p class="text-body-sm text-dark-600">
+                {t("unitDetail.finishesBody", lang)}
               </p>
+              <a
+                href={`${projectUrl}#acabamentos`}
+                class="inline-flex items-center gap-2 text-link text-base-content hover:text-dark-600 py-2 mt-4 -mb-2"
+              >
+                {t("unitDetail.finishesLink", lang)}
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </a>
             </div>
           </div>
         </div>
@@ -251,17 +399,21 @@ const facts = [
   <!-- Other units -->
   {
     otherUnits.length > 0 && (
-      <section class="section bg-base-100">
+      <section class={`py-16 md:py-24 ${finishes.length > 0 ? "bg-base-100" : "bg-base-200"}`}>
         <div class="container">
-          <div class="flex flex-wrap items-end justify-between gap-6 mb-12">
-            <h2 class="section-heading">{t("unitDetail.others", lang)}</h2>
-            <a href={`${projectUrl}#acabamentos`} class="btn btn-outline">
+          <div class="flex flex-wrap items-end justify-between gap-6 mb-8">
+            <h2 class="heading-card">{t("unitDetail.others", lang)}</h2>
+            <a
+              href={`${projectUrl}#localizacao`}
+              class="text-link text-secondary hover:text-base-content inline-block py-2 -my-2"
+            >
               {t("unitDetail.projectLink", lang)}
             </a>
           </div>
-          <div class="border-t border-base-300 lg:border-0 lg:grid lg:grid-cols-3 lg:gap-x-8 lg:gap-y-14">
+          <div class="border-t border-base-300 md:grid md:grid-cols-2 md:gap-x-16">
             {otherUnits.map((other) => (
               <UnitCard
+                compact
                 lang={lang}
                 slug={slug}
                 projectTitle={d.title}
@@ -279,6 +431,12 @@ const facts = [
     project={d.title}
     units={units}
     selected={unitId}
-    background={otherUnits.length > 0 ? "bg-base-200" : "bg-base-100"}
+    background={
+      (otherUnits.length > 0) !== (finishes.length > 0)
+        ? "bg-base-100"
+        : "bg-base-200"
+    }
   />
+
+  <Lightbox lang={lang} />
 </BaseLayout>

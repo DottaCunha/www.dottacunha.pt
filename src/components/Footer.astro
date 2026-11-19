@@ -126,13 +126,13 @@ import { PHONE_DISPLAY, PHONE_HREF } from "../lib/contact";
         >
         {
           TRACKING_ACTIVE && (
-            <a
-              class="link link-hover text-xxs text-info"
-              href="#"
+            <button
+              type="button"
+              class="link link-hover text-xxs text-info cursor-pointer"
               data-cookie-preferences
             >
               {t("footer.cookies", lang)}
-            </a>
+            </button>
           )
         }
       </nav>

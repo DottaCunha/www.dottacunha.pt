@@ -54,6 +54,8 @@ const structuredData = {
   numberOfAccommodationUnits: d.totalUnits,
   address: {
     "@type": "PostalAddress",
+    streetAddress: d.streetAddress,
+    postalCode: d.postalCode,
     addressLocality: d.location,
     addressCountry: "PT",
   },
@@ -64,6 +66,18 @@ const structuredData = {
       longitude: place.lng,
     },
   }),
+};
+const breadcrumbs = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      name: t("nav.projects", lang),
+      item: new URL(localizedPath("/projects", lang), "https://dottacunha.pt")
+        .href,
+    },
+    { name: d.title, item: structuredData.url },
+  ].map((crumb, i) => ({ "@type": "ListItem", position: i + 1, ...crumb })),
 };
 const facts = [
   { label: t("projectDetail.totalUnits", lang), value: String(d.totalUnits) },
@@ -88,9 +102,10 @@ const facts = [
     type="application/ld+json"
     set:html={JSON.stringify(structuredData)}
   />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbs)} />
   <!-- Header: the building as background, text on the left, facts on the right -->
   <section
-    class="relative min-h-[70vh] flex items-end bg-neutral text-primary-content overflow-hidden"
+    class="relative min-h-[70vh] md:min-h-[max(70vh,57rem)] lg:min-h-[max(70vh,43.75rem)] flex items-end bg-neutral text-primary-content overflow-hidden"
   >
     <div class="absolute inset-0">
       <PublicPicture
@@ -116,7 +131,7 @@ const facts = [
     <div class="container relative z-10 pt-40 pb-16 md:pb-24">
       <a
         href={localizedPath("/projects", lang)}
-        class="inline-flex items-center gap-2 text-meta text-primary-content/70 hover:text-primary-content transition-colors mb-10"
+        class="inline-flex items-center gap-2 text-meta text-primary-content/70 hover:text-primary-content transition-colors py-2 -mt-2 mb-8"
       >
         <svg
           class="w-3.5 h-3.5"
@@ -174,17 +189,20 @@ const facts = [
           facts.map((fact, i) => (
             <div
               class:list={[
+                // The label comes first for screen readers; on screen the
+                // value stays on top.
+                "flex flex-col-reverse",
                 // Same 12 columns as the row above: the last fact starts
                 // where the button starts.
                 ["lg:col-span-4", "lg:col-span-3", "lg:col-span-5"][i],
               ]}
             >
-              <dd class="text-stat text-primary-content text-2xl md:text-3xl whitespace-nowrap">
-                {fact.value}
-              </dd>
               <dt class="text-meta text-primary-content/70 mt-2">
                 {fact.label}
               </dt>
+              <dd class="text-stat text-primary-content text-2xl md:text-3xl whitespace-nowrap">
+                {fact.value}
+              </dd>
             </div>
           ))
         }
@@ -237,6 +255,7 @@ const facts = [
             <SectionHeader
               label={section.label}
               heading={section.heading}
+              body={section.body}
             />
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 xl:gap-16 items-start">
@@ -354,14 +373,25 @@ const facts = [
               )}
 
               {rows.length > 0 && (
-                <dl
+                <div
                   class:list={[
-                    "border-t border-base-300",
                     section.map
                       ? "lg:col-span-6 xl:col-span-5"
                       : section.image
                         ? "lg:col-span-5"
                         : "lg:col-span-12",
+                  ]}
+                >
+                  {/* The table can carry a heading of its own (here, the
+                      address), like the lists in the other sections. */}
+                  {section.itemsHeading && (
+                    <h3 class="text-meta text-base-content pb-4 border-b border-base-content">
+                      {section.itemsHeading}
+                    </h3>
+                  )}
+                <dl
+                  class:list={[
+                    !section.itemsHeading && "border-t border-base-300",
                   ]}
                 >
                   {rows.map((item) => (
@@ -410,6 +440,7 @@ const facts = [
                     </div>
                   ))}
                 </dl>
+                </div>
               )}
             </div>
           </div>

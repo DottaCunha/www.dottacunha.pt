@@ -6,6 +6,8 @@ year: 2027
 completion: "Final de 2027"
 typologies: T1 · T2
 location: Beato, Lisboa
+streetAddress: "Calçada do Carrascal 168"
+postalCode: "1900-134"
 area: 250
 totalUnits: 3
 description: "Um edifício construído de raiz na Calçada do Carrascal, com três apartamentos: um por piso, todos com espaço exterior. Jardim privativo no rés-do-chão, varandas nos pisos superiores."
@@ -49,6 +51,8 @@ sections:
       - "Águas quentes sanitárias elétricas"
   - key: localizacao
     label: "Beato, Lisboa"
+    body: "Calçada do Carrascal 168, 1900-134 Lisboa"
+    itemsHeading: "Pontos de interesse"
     heading: "Localização"
     image: /images/uploads/carrascal-168/mapa.jpg
     map:
@@ -187,6 +191,7 @@ units:
     floor: 0
     floorLabel: "Piso 0"
     highlight: "Jardim privativo com deck"
+    seoTitle: "T1 com jardim"
     energyRating: C
     description: "T1 no rés-do-chão. A sala e a cozinha abrem para um jardim privativo com deck, e o quarto fica do lado da rua, em open space."
     areaNote: "A área bruta de construção não inclui o jardim com deck."
@@ -194,21 +199,40 @@ units:
       - "Jardim privativo com deck"
       - "Sala aberta para o jardim"
       - "Um quarto em open space"
+    finishes:
+      - label: "Cozinha"
+        body: "Frentes em madeira branca"
+        image: /images/uploads/carrascal-168/acabamento-a-cozinha.jpg
+      - label: "Casa de banho"
+        body: "Paredes em tom areia"
+        image: /images/uploads/carrascal-168/acabamento-a-casa-de-banho.jpg
     plans:
       - image: /images/uploads/carrascal-168/planta-a.png
         rooms:
           - label: "Sala"
             area: 18.45
+            x: 49.06
+            y: 80.69
           - label: "Cozinha"
             area: 5.58
+            x: 49.06
+            y: 44.55
           - label: "Quarto"
             area: 15.05
+            x: 24.54
+            y: 85.07
           - label: "Casa de banho"
             area: 5.0
+            x: 51.14
+            y: 23.44
           - label: "Hall"
             area: 4.28
+            x: 38.61
+            y: 29.57
           - label: "Jardim com deck"
             area: 39.74
+            x: 76.68
+            y: 54.09
     photos:
       - /images/uploads/carrascal-168/a-01.jpg
       - /images/uploads/carrascal-168/a-02.jpg
@@ -218,6 +242,15 @@ units:
       - /images/uploads/carrascal-168/jardim-01.jpg
       - /images/uploads/carrascal-168/jardim-02.jpg
       - /images/uploads/carrascal-168/tardoz.jpg
+    photoCaptions:
+      - "Sala e cozinha"
+      - "Sala e quarto"
+      - "Sala"
+      - "Quarto"
+      - "Casa de banho"
+      - "Jardim e deck"
+      - "Jardim e deck"
+      - "Fachada do lado do jardim"
   - id: b
     letter: B
     area: 74.23
@@ -227,31 +260,55 @@ units:
     floor: 1
     floorLabel: "Piso 1"
     highlight: "Duas varandas"
+    seoTitle: "T2 com varandas"
     energyRating: B
     description: "T2 no piso 1. A sala e a cozinha ficam do lado do jardim e os dois quartos do lado da rua, com uma varanda em cada fachada."
     areaNote: "A área bruta de construção inclui as varandas."
     features:
       - "Duas varandas"
       - "Luz natural dos dois lados da casa"
+    finishes:
+      - label: "Cozinha"
+        body: "Frentes brancas e inox"
+        image: /images/uploads/carrascal-168/acabamento-b-cozinha.jpg
+      - label: "Casa de banho"
+        body: "Paredes claras, painel em carvalho"
+        image: /images/uploads/carrascal-168/acabamento-b-casa-de-banho.jpg
     plans:
       - image: /images/uploads/carrascal-168/planta-b.png
         rooms:
           - label: "Sala"
             area: 15.24
+            x: 65.01
+            y: 81.57
           - label: "Cozinha"
             area: 7.52
+            x: 65.01
+            y: 40.37
           - label: "Quarto"
             area: 11.58
+            x: 34.17
+            y: 40.56
           - label: "Quarto"
             area: 11.66
+            x: 25.56
+            y: 72.18
           - label: "Casa de banho"
             area: 5.0
+            x: 59.55
+            y: 19.75
           - label: "Hall e corredor"
             area: 8.42
+            x: 52.23
+            y: 49.42
           - label: "Varanda frente"
             area: 3.49
+            x: 17.21
+            y: 70.72
           - label: "Varanda tardoz"
             area: 5.36
+            x: 81.76
+            y: 41.49
     photos:
       - /images/uploads/carrascal-168/b-01.jpg
       - /images/uploads/carrascal-168/b-02.jpg
@@ -264,6 +321,18 @@ units:
       - /images/uploads/carrascal-168/b-09.jpg
       - /images/uploads/carrascal-168/b-10.jpg
       - /images/uploads/carrascal-168/b-11.jpg
+    photoCaptions:
+      - "Sala e cozinha"
+      - "Sala e cozinha"
+      - "Sala"
+      - "Sala"
+      - "Cozinha e refeições"
+      - "Cozinha"
+      - "Sala e refeições"
+      - "Quarto"
+      - "Quarto"
+      - "Quarto"
+      - "Casa de banho"
   - id: c
     letter: C
     area: 96.48
@@ -273,6 +342,7 @@ units:
     floor: 2
     floorLabel: "Pisos 2 e 3"
     highlight: "Vista de rio, três varandas"
+    seoTitle: "T2 duplex"
     energyRating: B
     description: "T2 duplex nos pisos 2 e 3. No piso 2 ficam a sala, a cozinha, um quarto e uma casa de banho; no piso 3, a suite com varanda."
     areaNote: "A área bruta de construção inclui as varandas."
@@ -280,37 +350,68 @@ units:
       - "Vista de rio"
       - "Três varandas"
       - "Suite no piso superior"
+    finishes:
+      - label: "Cozinha"
+        body: "Frentes em carvalho"
+        image: /images/uploads/carrascal-168/acabamento-c-cozinha.jpg
+      - label: "Casas de banho"
+        body: "Azulejo branco, painel em carvalho"
+        image: /images/uploads/carrascal-168/c-09.jpg
     plans:
       - label: "Piso 2"
         image: /images/uploads/carrascal-168/planta-c-piso-2.png
         rooms:
           - label: "Sala"
             area: 25.27
+            x: 65.13
+            y: 77.14
           - label: "Cozinha"
             area: 6.67
+            x: 32.4
+            y: 81.57
           - label: "Quarto"
             area: 11.54
+            x: 33.56
+            y: 40.95
           - label: "Casa de banho"
             area: 4.92
+            x: 62.97
+            y: 21.79
           - label: "Corredor"
             area: 3.11
+            x: 51.31
+            y: 44.31
           - label: "Escada interior"
             area: 3.73
+            x: 72.94
+            y: 33.66
           - label: "Varanda frente"
             area: 3.49
+            x: 17.21
+            y: 70.72
           - label: "Varanda tardoz"
             area: 5.36
+            x: 81.76
+            y: 41.49
       - label: "Piso 3"
         image: /images/uploads/carrascal-168/planta-c-piso-3.png
         rooms:
           - label: "Quarto"
             area: 17.31
+            x: 45.94
+            y: 55.32
           - label: "Casa de banho"
             area: 4.48
+            x: 43.01
+            y: 23.6
           - label: "Circulação"
             area: 4.62
+            x: 35.72
+            y: 37.33
           - label: "Varanda"
             area: 1.8
+            x: 64.06
+            y: 76.64
     photos:
       - /images/uploads/carrascal-168/c-01.jpg
       - /images/uploads/carrascal-168/c-02.jpg
@@ -321,4 +422,14 @@ units:
       - /images/uploads/carrascal-168/c-07.jpg
       - /images/uploads/carrascal-168/c-08.jpg
       - /images/uploads/carrascal-168/c-09.jpg
+    photoCaptions:
+      - "Sala"
+      - "Sala e cozinha"
+      - "Refeições e cozinha"
+      - "Cozinha"
+      - "Quarto, piso 3"
+      - "Quarto, piso 3"
+      - "Quarto, piso 3"
+      - "Quarto, piso 3"
+      - "Casa de banho, piso 3"
 ---

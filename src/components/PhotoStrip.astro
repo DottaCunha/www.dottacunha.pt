@@ -6,32 +6,45 @@ import PublicPicture from "./PublicPicture.astro";
 interface Props {
   lang: Lang;
   photos: string[];
-  /** Used for the alt text of each photo, followed by its number. */
+  /** The home the photos belong to: "Apartamento C, Carrascal 168". */
   alt: string;
+  /** What each photo shows ("Sala e cozinha"), in the order of the photos. */
+  captions?: string[];
 }
 
-const { lang, photos, alt } = Astro.props;
+const { lang, photos, alt, captions = [] } = Astro.props;
+// "Sala e cozinha, Apartamento C, Carrascal 168"; a photo without a caption
+// falls back to its number.
+const altOf = (i: number) =>
+  captions[i] ? `${captions[i]}, ${alt}` : `${alt} (${i + 1})`;
 ---
 
 <div class="relative" data-photo-strip>
   <div
-    class="photo-strip-track flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth"
+    class="photo-strip-track flex items-start gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth"
     data-photo-track
   >
     {
       photos.map((photo, i) => (
-        <div class="snap-start shrink-0 h-[60vh] min-h-[320px] max-h-[640px] bg-base-300">
+        <button
+          type="button"
+          class="snap-start shrink-0 bg-base-300 cursor-zoom-in w-[82vw] sm:w-auto sm:h-[60vh] sm:min-h-[320px] sm:max-h-[640px]"
+          aria-label={`${t("lightbox.open", lang)}: ${altOf(i)}`}
+          data-lightbox-src={photo}
+          data-lightbox-group="photos"
+          data-lightbox-alt={altOf(i)}
+        >
           <PublicPicture
             src={photo}
-            alt={`${alt} (${i + 1})`}
+            alt={altOf(i)}
             formats={["avif", "webp"]}
             widths={[400, 800, 1200, 1600]}
             sizes="(max-width: 768px) 85vw, 640px"
             loading={i < 2 ? "eager" : "lazy"}
-            pictureAttributes={{ class: "block h-full" }}
-            class="h-full w-auto max-w-none"
+            pictureAttributes={{ class: "block sm:h-full" }}
+            class="w-full h-auto sm:h-full sm:w-auto sm:max-w-none"
           />
-        </div>
+        </button>
       ))
     }
   </div>
@@ -41,7 +54,7 @@ const { lang, photos, alt } = Astro.props;
       <div class="flex justify-end gap-2 mt-4">
         <button
           type="button"
-          class="w-10 h-10 border border-base-300 hover:bg-base-200 flex items-center justify-center transition-colors"
+          class="w-10 h-10 border border-base-content/25 hover:bg-base-100 flex items-center justify-center transition-colors"
           aria-label={t("carousel.previous", lang)}
           data-photo-prev
         >
@@ -61,7 +74,7 @@ const { lang, photos, alt } = Astro.props;
         </button>
         <button
           type="button"
-          class="w-10 h-10 border border-base-300 hover:bg-base-200 flex items-center justify-center transition-colors"
+          class="w-10 h-10 border border-base-content/25 hover:bg-base-100 flex items-center justify-center transition-colors"
           aria-label={t("carousel.next", lang)}
           data-photo-next
         >
@@ -94,18 +107,96 @@ const { lang, photos, alt } = Astro.props;
 </style>
 
 <script>
+  // The strip moves on by itself, one photo at a time, until the visitor
+  // takes over. It waits while it is off screen, under the pointer or behind
+  // the enlarged view, and never starts for people who asked for less motion.
+  const INTERVAL = 4000;
+  const stillMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
   document
     .querySelectorAll<HTMLElement>("[data-photo-strip]")
     .forEach((strip) => {
       const track = strip.querySelector<HTMLElement>("[data-photo-track]");
       if (!track) return;
+
+      const atEnd = () =>
+        track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
       const step = (direction: number) =>
         track.scrollBy({ left: direction * track.clientWidth * 0.8 });
-      strip
-        .querySelector("[data-photo-prev]")
-        ?.addEventListener("click", () => step(-1));
-      strip
-        .querySelector("[data-photo-next]")
-        ?.addEventListener("click", () => step(1));
+      const advance = () => {
+        if (atEnd()) {
+          track.scrollTo({ left: 0 });
+          return;
+        }
+        const items = [...track.children] as HTMLElement[];
+        const origin = track.getBoundingClientRect().left;
+        const upcoming = items.find(
+          (item) => item.getBoundingClientRect().left - origin > 4,
+        );
+        if (upcoming) {
+          track.scrollBy({
+            left: upcoming.getBoundingClientRect().left - origin,
+          });
+        }
+      };
+
+      let stopped = stillMotion.matches || track.children.length < 2;
+      let visible = false;
+      let hovered = false;
+      let timer: number | undefined;
+
+      const update = () => {
+        const run =
+          !stopped &&
+          visible &&
+          !hovered &&
+          !document.hidden &&
+          !document.querySelector("dialog[open]");
+        if (run && timer === undefined) {
+          timer = window.setInterval(advance, INTERVAL);
+        } else if (!run && timer !== undefined) {
+          window.clearInterval(timer);
+          timer = undefined;
+        }
+      };
+      const stop = () => {
+        stopped = true;
+        update();
+      };
+
+      strip.querySelector("[data-photo-prev]")?.addEventListener("click", () => {
+        stop();
+        step(-1);
+      });
+      strip.querySelector("[data-photo-next]")?.addEventListener("click", () => {
+        stop();
+        step(1);
+      });
+      // "focusin" covers people who reach the photos with the keyboard.
+      for (const type of [
+        "pointerdown",
+        "touchstart",
+        "wheel",
+        "keydown",
+        "focusin",
+      ]) {
+        strip.addEventListener(type, stop, { passive: true });
+      }
+      strip.addEventListener("pointerenter", () => {
+        hovered = true;
+        update();
+      });
+      strip.addEventListener("pointerleave", () => {
+        hovered = false;
+        update();
+      });
+      document.addEventListener("visibilitychange", update);
+      new IntersectionObserver(
+        ([entry]) => {
+          visible = entry.isIntersecting;
+          update();
+        },
+        { threshold: 0.5 },
+      ).observe(track);
     });
 </script>

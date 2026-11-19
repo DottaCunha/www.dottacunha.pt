@@ -5,7 +5,9 @@ status: under_construction
 year: 2027
 completion: "Late 2027"
 typologies: 1 & 2 bed
-location: Beato, Lisboa
+location: Beato, Lisbon
+streetAddress: "Calçada do Carrascal 168"
+postalCode: "1900-134"
 area: 250
 totalUnits: 3
 description: "A new-build on Calçada do Carrascal with three apartments: one per floor, each with outdoor space. A private garden on the ground floor, balconies on the upper floors."
@@ -48,7 +50,9 @@ sections:
       - "Air conditioning pre-installation"
       - "Electric water heating"
   - key: localizacao
-    label: "Beato, Lisboa"
+    label: "Beato, Lisbon"
+    body: "Calçada do Carrascal 168, 1900-134 Lisbon"
+    itemsHeading: "Points of interest"
     heading: "Location"
     image: /images/uploads/carrascal-168/mapa.jpg
     map:
@@ -181,34 +185,54 @@ units:
   - id: a
     letter: A
     area: 59.3
-    typology: 1-bedroom open plan
+    typology: 1-bed open plan
     bedrooms: 1
     bathrooms: 1
     floor: 0
     floorLabel: "Ground floor"
     highlight: "Private garden with deck"
+    seoTitle: "1-bed with garden"
     energyRating: C
-    description: "One-bedroom apartment on the ground floor. The living room and kitchen open onto a private garden with a deck, and the open-plan bedroom is on the street side."
+    description: "Ground-floor one-bedroom. The living room and kitchen open onto a private garden with a deck; the open-plan bedroom faces the street."
     areaNote: "Gross built area excludes the garden with deck."
     features:
       - "Private garden with deck"
       - "Living room opening onto the garden"
       - "Open-plan bedroom"
+    finishes:
+      - label: "Kitchen"
+        body: "White wood fronts"
+        image: /images/uploads/carrascal-168/acabamento-a-cozinha.jpg
+      - label: "Bathroom"
+        body: "Sand-coloured walls"
+        image: /images/uploads/carrascal-168/acabamento-a-casa-de-banho.jpg
     plans:
       - image: /images/uploads/carrascal-168/planta-a.png
         rooms:
           - label: "Living room"
             area: 18.45
+            x: 49.06
+            y: 80.69
           - label: "Kitchen"
             area: 5.58
+            x: 49.06
+            y: 44.55
           - label: "Bedroom"
             area: 15.05
+            x: 24.54
+            y: 85.07
           - label: "Bathroom"
             area: 5.0
+            x: 51.14
+            y: 23.44
           - label: "Hall"
             area: 4.28
+            x: 38.61
+            y: 29.57
           - label: "Garden with deck"
             area: 39.74
+            x: 76.68
+            y: 54.09
     photos:
       - /images/uploads/carrascal-168/a-01.jpg
       - /images/uploads/carrascal-168/a-02.jpg
@@ -218,40 +242,73 @@ units:
       - /images/uploads/carrascal-168/jardim-01.jpg
       - /images/uploads/carrascal-168/jardim-02.jpg
       - /images/uploads/carrascal-168/tardoz.jpg
+    photoCaptions:
+      - "Living room and kitchen"
+      - "Living room and bedroom"
+      - "Living room"
+      - "Bedroom"
+      - "Bathroom"
+      - "Garden and deck"
+      - "Garden and deck"
+      - "Garden-side façade"
   - id: b
     letter: B
     area: 74.23
-    typology: 2-bedroom
+    typology: 2-bed
     bedrooms: 2
     bathrooms: 1
     floor: 1
-    floorLabel: "First floor"
+    floorLabel: "Floor 1"
     highlight: "Two balconies"
+    seoTitle: "2-bed with balconies"
     energyRating: B
-    description: "Two-bedroom apartment on the first floor. The living room and kitchen are on the garden side and the two bedrooms on the street side, with a balcony on each façade."
+    description: "Two-bedroom apartment on floor 1. Living room and kitchen on the garden side, two bedrooms on the street side, and a balcony on each façade."
     areaNote: "Gross built area includes the balconies."
     features:
       - "Two balconies"
       - "Natural light on both sides"
+    finishes:
+      - label: "Kitchen"
+        body: "White fronts and stainless steel"
+        image: /images/uploads/carrascal-168/acabamento-b-cozinha.jpg
+      - label: "Bathroom"
+        body: "Light walls, oak panel"
+        image: /images/uploads/carrascal-168/acabamento-b-casa-de-banho.jpg
     plans:
       - image: /images/uploads/carrascal-168/planta-b.png
         rooms:
           - label: "Living room"
             area: 15.24
+            x: 65.01
+            y: 81.57
           - label: "Kitchen"
             area: 7.52
+            x: 65.01
+            y: 40.37
           - label: "Bedroom"
             area: 11.58
+            x: 34.17
+            y: 40.56
           - label: "Bedroom"
             area: 11.66
+            x: 25.56
+            y: 72.18
           - label: "Bathroom"
             area: 5.0
+            x: 59.55
+            y: 19.75
           - label: "Hall and corridor"
             area: 8.42
+            x: 52.23
+            y: 49.42
           - label: "Front balcony"
             area: 3.49
+            x: 17.21
+            y: 70.72
           - label: "Rear balcony"
             area: 5.36
+            x: 81.76
+            y: 41.49
     photos:
       - /images/uploads/carrascal-168/b-01.jpg
       - /images/uploads/carrascal-168/b-02.jpg
@@ -264,15 +321,28 @@ units:
       - /images/uploads/carrascal-168/b-09.jpg
       - /images/uploads/carrascal-168/b-10.jpg
       - /images/uploads/carrascal-168/b-11.jpg
+    photoCaptions:
+      - "Living room and kitchen"
+      - "Living room and kitchen"
+      - "Living room"
+      - "Living room"
+      - "Kitchen and dining area"
+      - "Kitchen"
+      - "Living and dining area"
+      - "Bedroom"
+      - "Bedroom"
+      - "Bedroom"
+      - "Bathroom"
   - id: c
     letter: C
     area: 96.48
-    typology: 2-bedroom duplex
+    typology: 2-bed duplex
     bedrooms: 2
     bathrooms: 2
     floor: 2
     floorLabel: "Floors 2 and 3"
     highlight: "River view, three balconies"
+    seoTitle: "2-bed duplex"
     energyRating: B
     description: "Two-bedroom duplex on floors 2 and 3. Floor 2 has the living room, kitchen, a bedroom and a bathroom; floor 3 has the en-suite bedroom with a balcony."
     areaNote: "Gross built area includes the balconies."
@@ -280,37 +350,68 @@ units:
       - "River view"
       - "Three balconies"
       - "En-suite bedroom on the top floor"
+    finishes:
+      - label: "Kitchen"
+        body: "Oak fronts"
+        image: /images/uploads/carrascal-168/acabamento-c-cozinha.jpg
+      - label: "Bathrooms"
+        body: "White tiles, oak panel"
+        image: /images/uploads/carrascal-168/c-09.jpg
     plans:
       - label: "Floor 2"
         image: /images/uploads/carrascal-168/planta-c-piso-2.png
         rooms:
           - label: "Living room"
             area: 25.27
+            x: 65.13
+            y: 77.14
           - label: "Kitchen"
             area: 6.67
+            x: 32.4
+            y: 81.57
           - label: "Bedroom"
             area: 11.54
+            x: 33.56
+            y: 40.95
           - label: "Bathroom"
             area: 4.92
+            x: 62.97
+            y: 21.79
           - label: "Corridor"
             area: 3.11
+            x: 51.31
+            y: 44.31
           - label: "Internal stairs"
             area: 3.73
+            x: 72.94
+            y: 33.66
           - label: "Front balcony"
             area: 3.49
+            x: 17.21
+            y: 70.72
           - label: "Rear balcony"
             area: 5.36
+            x: 81.76
+            y: 41.49
       - label: "Floor 3"
         image: /images/uploads/carrascal-168/planta-c-piso-3.png
         rooms:
           - label: "Bedroom"
             area: 17.31
+            x: 45.94
+            y: 55.32
           - label: "Bathroom"
             area: 4.48
+            x: 43.01
+            y: 23.6
           - label: "Landing"
             area: 4.62
+            x: 35.72
+            y: 37.33
           - label: "Balcony"
             area: 1.8
+            x: 64.06
+            y: 76.64
     photos:
       - /images/uploads/carrascal-168/c-01.jpg
       - /images/uploads/carrascal-168/c-02.jpg
@@ -321,4 +422,14 @@ units:
       - /images/uploads/carrascal-168/c-07.jpg
       - /images/uploads/carrascal-168/c-08.jpg
       - /images/uploads/carrascal-168/c-09.jpg
+    photoCaptions:
+      - "Living room"
+      - "Living room and kitchen"
+      - "Dining area and kitchen"
+      - "Kitchen"
+      - "Bedroom, floor 3"
+      - "Bedroom, floor 3"
+      - "Bedroom, floor 3"
+      - "Bedroom, floor 3"
+      - "Bathroom, floor 3"
 ---
