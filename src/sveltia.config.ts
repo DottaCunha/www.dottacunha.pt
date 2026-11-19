@@ -572,7 +572,7 @@ export default {
         },
         {
           name: "completion",
-          label: "Completion (e.g. 4T 2027 / Q4 2027)",
+          label: "Completion (e.g. Final de 2027 / Late 2027)",
           widget: "string",
           required: false,
           i18n: true,

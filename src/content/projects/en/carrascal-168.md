@@ -3,13 +3,13 @@ title: Carrascal 168
 type: Apartments
 status: under_construction
 year: 2027
-completion: "Q4 2027"
+completion: "Late 2027"
 typologies: 1 & 2 bed
 location: Beato, Lisboa
 area: 250
 totalUnits: 3
 description: "A new-build on Calçada do Carrascal with three apartments: one per floor, each with outdoor space. A private garden on the ground floor, balconies on the upper floors."
-seoDescription: "Three new apartments in Beato, Lisbon: a 1-bedroom with a garden, a 2-bedroom and a 2-bedroom duplex with a river view. Completion in Q4 2027."
+seoDescription: "Three new apartments in Beato, Lisbon: a 1-bedroom with a garden, a 2-bedroom and a 2-bedroom duplex with a river view. Completion in late 2027."
 image: /images/uploads/carrascal-168/fachada.jpg
 brochure: /downloads/carrascal-168-brochura.pdf
 visible: true

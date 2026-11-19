@@ -3,13 +3,13 @@ title: Carrascal 168
 type: Apartments
 status: under_construction
 year: 2027
-completion: "4T 2027"
+completion: "Final de 2027"
 typologies: T1 · T2
 location: Beato, Lisboa
 area: 250
 totalUnits: 3
 description: "Um edifício construído de raiz na Calçada do Carrascal, com três apartamentos: um por piso, todos com espaço exterior. Jardim privativo no rés-do-chão, varandas nos pisos superiores."
-seoDescription: "Três apartamentos novos no Beato, Lisboa: um T1 com jardim, um T2 e um T2 duplex com vista de rio. Construção de raiz, conclusão no 4.º trimestre de 2027."
+seoDescription: "Três apartamentos novos no Beato, Lisboa: um T1 com jardim, um T2 e um T2 duplex com vista de rio. Construção de raiz, conclusão no final de 2027."
 image: /images/uploads/carrascal-168/fachada.jpg
 brochure: /downloads/carrascal-168-brochura.pdf
 visible: true
