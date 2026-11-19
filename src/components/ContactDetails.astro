@@ -1,0 +1,61 @@
+---
+import type { Lang } from "../i18n/translations";
+import { t } from "../i18n/utils";
+import {
+  EMAIL,
+  PHONE_DISPLAY,
+  PHONE_HREF,
+  WHATSAPP_HREF,
+} from "../lib/contact";
+import Icon from "./Icon.astro";
+
+/**
+ * Email and phone, for the people who would sooner write or call than fill
+ * in a form. Used on the contact page and beside the form on the project
+ * and unit pages.
+ */
+interface Props {
+  lang: Lang;
+  class?: string;
+}
+
+const { lang, class: className } = Astro.props;
+---
+
+<div class:list={["space-y-6", className]}>
+  <div>
+    <div class="text-body-sm font-medium text-base-content mb-1">
+      {t("contactPage.email", lang)}
+    </div>
+    <a
+      href={`mailto:${EMAIL}`}
+      class="text-body hover:text-base-content transition-colors"
+      >{EMAIL}</a
+    >
+  </div>
+  {/* One number: the number itself starts a call, the icon beside it opens
+      WhatsApp. The icon's link is larger than the drawing (44px), so it is
+      easy to hit with a finger. */}
+  <div>
+    <div class="text-body-sm font-medium text-base-content mb-1">
+      {t("contactPage.phone", lang)}
+    </div>
+    <div class="flex items-center gap-1">
+      <a
+        href={PHONE_HREF}
+        class="text-body hover:text-base-content transition-colors"
+        >{PHONE_DISPLAY}</a
+      >
+      <a
+        href={WHATSAPP_HREF}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="WhatsApp"
+        title="WhatsApp"
+        class="p-[13px] -my-[13px] text-secondary hover:text-base-content transition-colors"
+      >
+        <Icon name="whatsapp" class="w-[18px] h-[18px]" />
+      </a>
+    </div>
+  </div>
+</div>

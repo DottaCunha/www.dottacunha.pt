@@ -37,6 +37,10 @@ const fullTitle = `Dotta & Cunha | ${title}`;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {/* The colour of the browser's own bars on phones (the strip around the
+        iPhone's island). Dark on pages that open with a photo; the header
+        script turns it white once the page is scrolled. */}
+    <meta name="theme-color" content={darkHeader ? "#0a0a0a" : "#ffffff"} />
     <meta name="description" content={description} />
     <title>{fullTitle}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -105,9 +109,14 @@ const fullTitle = `Dotta & Cunha | ${title}`;
       })}
     />
   </head>
-  <body class="min-h-screen flex flex-col">
+  {/* Newer iPhones take the colour of that strip from the page background,
+      so pages that open with a photo get a dark one. The content area keeps
+      its own white background, so nothing else changes. */}
+  <body
+    class:list={["min-h-screen flex flex-col", darkHeader && "bg-primary"]}
+  >
     <Header darkHeader={darkHeader} lang={lang} />
-    <main class="flex-1">
+    <main class="flex-1 bg-base-100">
       <slot />
     </main>
     <Footer lang={lang} note={footerNote} />

@@ -1,7 +1,9 @@
 ---
 import type { Lang } from "../i18n/translations";
 import { t } from "../i18n/utils";
+import ContactDetails from "./ContactDetails.astro";
 import NetlifyForm from "./NetlifyForm.astro";
+import SectionHeader from "./SectionHeader.astro";
 import { unitLabel } from "../lib/projects";
 
 interface Props {
@@ -24,16 +26,35 @@ const {
 } = Astro.props;
 ---
 
-<section id="contacto" class:list={["section scroll-mt-20", background]}>
+{/* The section's own top padding already clears the fixed header, so the
+    anchor stops with the section's top edge at (or just under) the top of
+    the screen. Stopping it below the header left the header's height and
+    the padding as one tall blank band above the title. */}
+<section
+  id="contacto"
+  class:list={["section scroll-mt-4 md:scroll-mt-0", background]}
+>
   <div class="container">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+    {/* Three blocks: the introduction, the form and the direct contacts. On
+        phones and tablets they stack in that order, so the contacts come
+        after the form. From 1024px the contacts sit under the introduction,
+        in the left column, and the form takes the right column over both
+        rows (the first row is only as tall as the introduction). */}
+    <div
+      class="grid grid-cols-1 lg:grid-cols-12 lg:grid-rows-[auto_1fr] gap-12 lg:gap-x-20 lg:gap-y-10"
+    >
+      {/* The same header as every other section; its own bottom margin is
+          dropped because the grid already spaces the blocks. */}
       <div class="lg:col-span-5">
-        <span class="section-label mb-3">{t("inquiry.label", lang)}</span>
-        <h2 class="section-heading">{t("inquiry.heading", lang)}</h2>
-        <p class="text-body text-dark-600 mt-5">{t("inquiry.body", lang)}</p>
+        <SectionHeader
+          label={t("inquiry.label", lang)}
+          heading={t("inquiry.heading", lang)}
+          body={t("inquiry.body", lang)}
+          spacing=""
+        />
       </div>
 
-      <div class="lg:col-span-7">
+      <div class="lg:col-span-7 lg:row-span-2">
         <NetlifyForm
           name="project-inquiry"
           class="space-y-5"
@@ -138,6 +159,11 @@ const {
           </div>
         </NetlifyForm>
       </div>
+
+      <ContactDetails
+        lang={lang}
+        class="lg:col-span-5 lg:col-start-1 lg:row-start-2"
+      />
     </div>
   </div>
 </section>

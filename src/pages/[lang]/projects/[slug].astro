@@ -1,4 +1,5 @@
 ---
+import { opticalStart } from "../../../lib/optical";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { t, localizedPath } from "../../../i18n/utils";
 import type { Lang } from "../../../i18n/translations";
@@ -7,6 +8,8 @@ import { getProjectSlug, getStatusLabel } from "../../../lib/projects";
 import UnitCard from "../../../components/UnitCard.astro";
 import SectionHeader from "../../../components/SectionHeader.astro";
 import Icon from "../../../components/Icon.astro";
+import HeroStats from "../../../components/HeroStats.astro";
+import Carrascal168Cornice from "../../../components/projects/Carrascal168Cornice.astro";
 import LocationMap from "../../../components/LocationMap.astro";
 import ProjectInquiry from "../../../components/ProjectInquiry.astro";
 import { supportedLangs } from "../../../i18n/translations";
@@ -33,6 +36,7 @@ export async function getStaticPaths() {
 }
 
 const { lang, slug } = Astro.params as { lang: Lang; slug: string };
+const isCarrascal = slug === "carrascal-168";
 const { project } = Astro.props;
 const d = project.data;
 const statusLabel = getStatusLabel(d.status, t, lang);
@@ -80,14 +84,34 @@ const breadcrumbs = {
   ].map((crumb, i) => ({ "@type": "ListItem", position: i + 1, ...crumb })),
 };
 const facts = [
-  { label: t("projectDetail.totalUnits", lang), value: String(d.totalUnits) },
+  {
+    icon: "units",
+    label: t("projectDetail.totalUnits", lang),
+    value: String(d.totalUnits),
+  },
   d.typologies
-    ? { label: t("projectDetail.typologies", lang), value: d.typologies }
-    : { label: t("projectDetail.area", lang), value: `${d.area} m²` },
+    ? {
+        icon: "bed",
+        label: t("projectDetail.typologies", lang),
+        value: d.typologies,
+      }
+    : {
+        icon: "area",
+        label: t("projectDetail.area", lang),
+        value: `${d.area} m²`,
+      },
   d.completion
-    ? { label: t("projectDetail.completion", lang), value: d.completion }
-    : { label: t("projectsPage.year", lang), value: String(d.year) },
-];
+    ? {
+        icon: "calendar",
+        label: t("projectDetail.completion", lang),
+        value: d.completion,
+      }
+    : {
+        icon: "calendar",
+        label: t("projectsPage.year", lang),
+        value: String(d.year),
+      },
+] as const;
 ---
 
 <BaseLayout
@@ -105,8 +129,10 @@ const facts = [
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbs)} />
   <!-- Header: the building as background, text on the left, facts on the right -->
   <section
-    class="relative min-h-[70vh] md:min-h-[max(70vh,57rem)] lg:min-h-[max(70vh,43.75rem)] flex items-end bg-neutral text-primary-content overflow-hidden"
+    class="hero-detail hero-behind-bar relative flex items-end bg-neutral text-primary-content overflow-hidden"
   >
+    {/* Below 1024px the text sits on top of the whole photo, so the photo is
+        darkened more there than on desktop, where the text has its own side. */}
     <div class="absolute inset-0">
       <PublicPicture
         priority
@@ -119,7 +145,7 @@ const facts = [
         class="w-full h-full object-cover"
       />
       <div
-        class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-primary/85 via-primary/55 to-primary/10"
+        class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-primary/90 via-primary/75 to-primary/50 lg:from-primary/85 lg:via-primary/55 lg:to-primary/10"
       >
       </div>
       <div
@@ -128,10 +154,17 @@ const facts = [
       </div>
     </div>
 
-    <div class="container relative z-10 pt-40 pb-16 md:pb-24">
+    {/* On phones the photo runs past the bottom of the screen, behind the
+        browser's address bar, while the text stops above the bar (see the
+        hero classes in global.css). On tablets this header keeps more room
+        under the figures than the unit header, which has the highlights
+        there. */}
+    <div
+      class="container relative z-10 hero-detail-pad hero-detail-above-bar md:max-lg:pb-24"
+    >
       <a
         href={localizedPath("/projects", lang)}
-        class="inline-flex items-center gap-2 text-meta text-primary-content/70 hover:text-primary-content transition-colors py-2 -mt-2 mb-8"
+        class="hero-detail-back text-meta text-primary-content/70 hover:text-primary-content"
       >
         <svg
           class="w-3.5 h-3.5"
@@ -147,24 +180,56 @@ const facts = [
         {t("projectDetail.back", lang)}
       </a>
 
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-end">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10 lg:gap-16 items-end">
         <div class="lg:col-span-7">
-          <span class="badge bg-base-100 text-base-content flex w-fit mb-6">
+          <span class="badge bg-base-100 text-base-content flex w-fit mb-4 sm:mb-6">
             {statusLabel}
           </span>
-          <span class="section-label text-xxs md:text-sm leading-none text-primary-content/70 mb-4">
+          {/* Carrascal 168 carries its own identity from the brochure: the
+              cornice mark above the eyebrow (as on the unit pages) and the
+              number in the facade's blue. On short phone screens the mark is
+              left out, so the header still fits the first screen. */}
+          {
+            isCarrascal && (
+              <Carrascal168Cornice
+                tone="onPhoto"
+                class="w-[4.5rem] mb-3.5 max-md:[@media(max-height:640px)]:hidden"
+              />
+            )
+          }
+          <span
+            class="section-label-sm text-primary-content/70 mb-4"
+            style={opticalStart(typeLabel, "sans")}
+          >
             {`${typeLabel} · ${d.location}`}
           </span>
-          <h1 class="heading-hero text-5xl md:text-6xl xl:text-7xl mb-5">
-            {d.title}
+          <h1
+            class="heading-hero hero-detail-title"
+            style={opticalStart(d.title, "display")}
+          >
+            {
+              isCarrascal ? (
+                <>
+                  {d.title.replace(/\s*168$/, "")}{" "}
+                  <span class="text-[#acceda]">168</span>
+                </>
+              ) : (
+                d.title
+              )
+            }
           </h1>
           <p class="text-body text-pretty text-primary-content/90">
             {d.description}
           </p>
         </div>
 
-        <div class="lg:col-span-5 flex flex-col gap-3">
-          <a href="#contacto" class="btn btn-lg btn-inverted w-full text-mid">
+        {/* On phones the two buttons share a row, so the whole header fits
+            on the first screen. */}
+        <div class="lg:col-span-5 grid grid-cols-[1fr_auto] sm:flex sm:flex-col gap-3">
+          <a
+            href="#contacto"
+            class="btn btn-lg btn-inverted w-full text-mid max-sm:px-3"
+          >
             {t("projectDetail.inquire", lang)}
           </a>
           {
@@ -182,31 +247,16 @@ const facts = [
         </div>
       </div>
 
-      <dl
-        class="grid grid-cols-3 lg:grid-cols-12 gap-6 lg:gap-16 border-t border-primary-content/30 mt-10 md:mt-12 pt-6"
-      >
-        {
-          facts.map((fact, i) => (
-            <div
-              class:list={[
-                // The label comes first for screen readers; on screen the
-                // value stays on top.
-                "flex flex-col-reverse",
-                // Same 12 columns as the row above: the last fact starts
-                // where the button starts.
-                ["lg:col-span-4", "lg:col-span-3", "lg:col-span-5"][i],
-              ]}
-            >
-              <dt class="text-meta text-primary-content/70 mt-2">
-                {fact.label}
-              </dt>
-              <dd class="text-stat text-primary-content text-2xl md:text-3xl whitespace-nowrap">
-                {fact.value}
-              </dd>
-            </div>
-          ))
-        }
-      </dl>
+      {/* Same 12 columns as the row above: the last figure starts where
+          the button starts. */}
+      <HeroStats
+        tone="onPhoto"
+        class="sm:grid-cols-3 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-16"
+        facts={facts.map((fact, i) => ({
+          ...fact,
+          class: ["lg:col-span-4", "lg:col-span-3", "lg:col-span-5"][i],
+        }))}
+      />
     </div>
   </section>
 

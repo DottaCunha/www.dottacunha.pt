@@ -19,6 +19,11 @@ const altOf = (i: number) =>
   captions[i] ? `${captions[i]}, ${alt}` : `${alt} (${i + 1})`;
 ---
 
+{/* From tablets up every photo has the same height and its own width. On
+    phones every photo has the same frame instead (upright, 3:4, the shape of
+    most of the photos): a photo of another shape fills the frame and is
+    trimmed at the sides, so the row has one height. The enlarged view shows
+    it whole. */}
 <div class="relative" data-photo-strip>
   <div
     class="photo-strip-track flex items-start gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth"
@@ -28,7 +33,7 @@ const altOf = (i: number) =>
       photos.map((photo, i) => (
         <button
           type="button"
-          class="snap-start shrink-0 bg-base-300 cursor-zoom-in w-[82vw] sm:w-auto sm:h-[60vh] sm:min-h-[320px] sm:max-h-[640px]"
+          class="snap-start shrink-0 bg-base-300 cursor-zoom-in w-[82vw] max-sm:aspect-[3/4] sm:w-auto sm:h-[60vh] sm:min-h-[320px] sm:max-h-[640px]"
           aria-label={`${t("lightbox.open", lang)}: ${altOf(i)}`}
           data-lightbox-src={photo}
           data-lightbox-group="photos"
@@ -41,8 +46,8 @@ const altOf = (i: number) =>
             widths={[400, 800, 1200, 1600]}
             sizes="(max-width: 768px) 85vw, 640px"
             loading={i < 2 ? "eager" : "lazy"}
-            pictureAttributes={{ class: "block sm:h-full" }}
-            class="w-full h-auto sm:h-full sm:w-auto sm:max-w-none"
+            pictureAttributes={{ class: "block h-full" }}
+            class="w-full h-full max-sm:object-cover sm:w-auto sm:max-w-none"
           />
         </button>
       ))

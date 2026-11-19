@@ -153,8 +153,12 @@
   .textarea {
     @apply text-base-content placeholder-dark-300;
   }
+  /* No vertical padding on the select: its height is fixed (40px), and with
+     the 12px above and below there were only 15px left for a 20px line, so
+     Safari cut off the bottom of the chosen option. The text is centred in
+     the field's height instead, as it already is in the inputs. */
   .select {
-    @apply text-info;
+    @apply text-info py-0;
   }
 
   /* Dark background form fields (custom variant, not in DaisyUI) */
@@ -239,6 +243,61 @@
   }
   .section-label {
     @apply text-sm font-medium uppercase tracking-label block;
+  }
+  /* ──────────────────────────────
+     Page headers (project and unit pages)
+     The two headers look different (one sits on a photograph, the other is
+     white with the highlights beside the title) but share their frame. It
+     is defined here, once, so that their heights and the position of the
+     figures at the bottom stay the same on both. These classes only set
+     what the two have in common; anything a page adds must not repeat a
+     property set here (a plain utility would override it at every width).
+     ────────────────────────────── */
+
+  /* Height, from tablets up. */
+  .hero-detail {
+    @apply md:min-h-[max(70vh,57rem)] lg:min-h-[max(70vh,43.75rem)];
+  }
+  /* Room for the fixed site header above, and the space under the figures
+     from tablets up. On phones each header sets its own bottom edge, with
+     one of the two classes below. */
+  .hero-detail-pad {
+    @apply pt-24 md:pt-28 md:pb-16;
+  }
+  /* Phones. Both headers end with the figures 2rem above the bottom of the
+     visible screen; they get there differently.
+     - "screen": the white header's first block is as tall as the screen,
+       less the 6rem of top padding and those 2rem.
+     - "above-bar": the photo header is taller than the screen (see
+       .hero-behind-bar), so its content is pushed up by the height of the
+       browser's bar (large minus small viewport), the photo's extra 5rem
+       and the same 2rem. */
+  .hero-detail-screen {
+    @apply max-md:min-h-[calc(100svh-8rem)];
+  }
+  .hero-detail-above-bar {
+    @apply max-md:pb-[calc(100lvh-100svh+7rem)];
+  }
+  /* A header photograph that runs on below the visible screen on phones, so
+     that it also fills the area behind the iPhone's see-through address bar.
+     The "large viewport" alone stops short of the very bottom there (the
+     photo ended halfway down the bar), hence the extra 5rem. */
+  .hero-behind-bar {
+    @apply max-md:min-h-[calc(100lvh+5rem)];
+  }
+  /* The link back, above the title. */
+  .hero-detail-back {
+    @apply inline-flex items-center gap-2 transition-colors py-2 -mt-2 mb-5 sm:mb-8;
+  }
+  /* Size of the title (used with .heading-hero). */
+  .hero-detail-title {
+    @apply text-5xl md:text-6xl xl:text-7xl mb-5;
+  }
+
+  /* The eyebrow over a page header's title: smaller on phones, where the
+     header has to fit one screen, and without the line's extra height. */
+  .section-label-sm {
+    @apply text-xxs md:text-sm leading-none font-medium uppercase tracking-label block;
   }
   .section-heading {
     @apply font-display text-3xl md:text-5xl font-bold tracking-tight leading-[1.1] uppercase;

@@ -1,10 +1,11 @@
 ---
 import Hero from "../../components/blocks/Hero.astro";
+import ContactDetails from "../../components/ContactDetails.astro";
+import SectionHeader from "../../components/SectionHeader.astro";
 import NetlifyForm from "../../components/NetlifyForm.astro";
 import type { Lang } from "../../i18n/translations";
 import { getI18nPaths, t } from "../../i18n/utils";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { PHONE_DISPLAY, PHONE_HREF } from "../../lib/contact";
 
 export function getStaticPaths() {
   return getI18nPaths();
@@ -25,51 +26,47 @@ const successMsg =
     image={"/images/architecture-05.jpg"}
   />
 
+  {/* Laid out like the contact section of the project and unit pages:
+      the introduction and the direct contacts on the left, the form on the
+      right. On phones and tablets they stack as introduction, form,
+      contacts. */}
   <section class="section bg-base-100">
     <div class="container">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
-        <!-- Form -->
-        <div class="lg:col-span-7">
-          <h2 class="heading-card mb-10">
-            {t("contactPage.formTitle", lang)}
-          </h2>
+      <div
+        class="grid grid-cols-1 lg:grid-cols-12 lg:grid-rows-[auto_1fr] gap-12 lg:gap-x-20 lg:gap-y-10"
+      >
+        <div class="lg:col-span-5">
+          <SectionHeader
+            label={t("inquiry.label", lang)}
+            heading={t("inquiry.heading", lang)}
+            body={t("inquiry.body", lang)}
+            spacing=""
+          />
+        </div>
 
-          <NetlifyForm
-            name="contact"
-            class="space-y-6"
-            successMessage={successMsg}
-          >
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label for="first-name" class="label">
-                  <span class="label-text"
-                    >{t("contactPage.firstName", lang)}</span
-                  >
-                </label>
-                <input
-                  type="text"
-                  id="first-name"
-                  name="first-name"
-                  required
-                  class="input w-full"
-                />
-              </div>
-              <div>
-                <label for="last-name" class="label">
-                  <span class="label-text"
-                    >{t("contactPage.lastName", lang)}</span
-                  >
-                </label>
-                <input
-                  type="text"
-                  id="last-name"
-                  name="last-name"
-                  required
-                  class="input w-full"
-                />
-              </div>
+        <div class="lg:col-span-7 lg:row-span-2">
+        <NetlifyForm
+          name="contact"
+          class="space-y-5"
+          successMessage={successMsg}
+        >
+          {/* Same fields in the same order as the form on the project
+              pages: name and email, then phone and one choice, then the
+              message. */}
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+              <label for="name" class="label">
+                <span class="label-text">{t("inquiry.name", lang)}</span>
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                autocomplete="name"
+                class="input w-full"
+              />
             </div>
-
             <div>
               <label for="email" class="label">
                 <span class="label-text">{t("contactPage.email", lang)}</span>
@@ -79,172 +76,109 @@ const successMsg =
                 id="email"
                 name="email"
                 required
+                autocomplete="email"
                 class="input w-full"
               />
             </div>
+          </div>
 
-            <div>
-              <label for="phone" class="label">
-                <span class="label-text"
-                  >{t("contactPage.phone", lang)}
-                  <span class="text-dark-300 normal-case tracking-normal"
-                    >{t("contactPage.phoneOptional", lang)}</span
-                  ></span
-                >
-              </label>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                class="input w-full"
-              />
-            </div>
-
-            <div>
-              <label for="subject" class="label">
-                <span class="label-text">{t("contactPage.subject", lang)}</span>
-              </label>
-              <select
-                id="subject"
-                name="subject"
-                class="select w-full text-info"
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div>
+            <label for="phone" class="label">
+              <span class="label-text"
+                >{t("contactPage.phone", lang)}
+                <span class="text-dark-300 normal-case tracking-normal"
+                  >{t("contactPage.phoneOptional", lang)}</span
+                ></span
               >
-                <option value="">{t("contactPage.selectTopic", lang)}</option>
-                <option value="buying"
-                  >{t("contactPage.topicBuying", lang)}</option
-                >
-                <option value="investing"
-                  >{t("contactPage.topicInvesting", lang)}</option
-                >
-                <option value="partnership"
-                  >{t("contactPage.topicPartnership", lang)}</option
-                >
-                <option value="careers"
-                  >{t("contactPage.topicCareers", lang)}</option
-                >
-                <option value="general"
-                  >{t("contactPage.topicGeneral", lang)}</option
-                >
-              </select>
-            </div>
+            </label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              autocomplete="tel"
+              class="input w-full"
+            />
+          </div>
 
-            <div>
-              <label for="message" class="label">
-                <span class="label-text">{t("contactPage.message", lang)}</span>
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                rows="4"
-                required
-                class="textarea w-full resize-none"
-                placeholder={t("contactPage.messagePlaceholder", lang)}
-              ></textarea>
-            </div>
+          <div>
+            <label for="subject" class="label">
+              <span class="label-text"
+                >{t("contactPage.subject", lang)}
+                <span class="text-dark-300 normal-case tracking-normal"
+                  >{t("contactPage.phoneOptional", lang)}</span
+                ></span
+              >
+            </label>
+            <select
+              id="subject"
+              name="subject"
+              class="select w-full text-info"
+            >
+              <option value="">{t("contactPage.selectTopic", lang)}</option>
+              <option value="buying"
+                >{t("contactPage.topicBuying", lang)}</option
+              >
+              <option value="investing"
+                >{t("contactPage.topicInvesting", lang)}</option
+              >
+              <option value="partnership"
+                >{t("contactPage.topicPartnership", lang)}</option
+              >
+              <option value="careers"
+                >{t("contactPage.topicCareers", lang)}</option
+              >
+              <option value="general"
+                >{t("contactPage.topicGeneral", lang)}</option
+              >
+            </select>
+          </div>
+          </div>
 
-            <div class="pt-4">
-              <button type="submit" class="btn btn-primary">
-                {t("contactPage.submit", lang)}
-                <svg
-                  class="w-4 h-4 ml-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  ><path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.5"
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg
-                >
-              </button>
-            </div>
-          </NetlifyForm>
+          <div>
+            <label for="message" class="label">
+              <span class="label-text">{t("contactPage.message", lang)}</span>
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              rows="3"
+              required
+              class="textarea w-full resize-none"
+            ></textarea>
+          </div>
+
+          <div class="pt-2" slot="actions">
+            <button type="submit" class="btn btn-primary">
+              {t("contactPage.submit", lang)}
+            </button>
+          </div>
+        </NetlifyForm>
         </div>
 
-        <!-- Sidebar -->
-        <div class="lg:col-span-5">
-          <div class="space-y-12">
-            <div>
-              <h3 class="label-text mb-6">
-                {t("contactPage.officeLabel", lang)}
-              </h3>
-              <div class="space-y-6">
-                <div>
-                  <div class="text-body-sm font-medium text-base-content mb-1">
-                    {t("contactPage.address", lang)}
-                  </div>
-                  <div class="text-body-sm">Lisbon, Portugal</div>
-                </div>
-                <div>
-                  <div class="text-body-sm font-medium text-base-content mb-1">
-                    {t("contactPage.email", lang)}
-                  </div>
-                  <a
-                    href="mailto:hello@dottacunha.pt"
-                    class="text-body-sm hover:text-base-content transition-colors"
-                    >hello@dottacunha.pt</a
-                  >
-                </div>
-                <div>
-                  <div class="text-body-sm font-medium text-base-content mb-1">
-                    {t("contactPage.phone", lang)}
-                  </div>
-                  <a
-                    href={PHONE_HREF}
-                    class="text-body-sm hover:text-base-content transition-colors"
-                    >{PHONE_DISPLAY}</a
-                  >
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h3 class="label-text mb-6">
-                {t("contactPage.hoursLabel", lang)}
-              </h3>
-              <div class="space-y-3">
-                <div class="flex justify-between text-body-sm">
-                  <span class="text-secondary font-light"
-                    >{t("contactPage.monFri", lang)}</span
-                  >
-                  <span class="text-base-content font-medium">9:00 – 18:00</span
-                  >
-                </div>
-                <div class="flex justify-between text-body-sm">
-                  <span class="text-secondary font-light"
-                    >{t("contactPage.sat", lang)}</span
-                  >
-                  <span class="text-base-content font-medium"
-                    >{t("contactPage.byAppointment", lang)}</span
-                  >
-                </div>
-                <div class="flex justify-between text-body-sm">
-                  <span class="text-secondary font-light"
-                    >{t("contactPage.sun", lang)}</span
-                  >
-                  <span class="text-base-content font-medium"
-                    >{t("contactPage.closed", lang)}</span
-                  >
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h3 class="label-text mb-6">
-                {t("contactPage.followLabel", lang)}
-              </h3>
-              <div class="flex gap-4">
-                <a
-                  href="https://www.linkedin.com/company/dottacunha"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-body-xs hover:text-base-content transition-colors uppercase tracking-wider"
-                  >LinkedIn</a
-                >
-                <!-- <span class="text-dark-200">·</span> -->
-                <!-- <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="text-body-xs hover:text-base-content transition-colors uppercase tracking-wider">Instagram</a> -->
-              </div>
-            </div>
+        {/* The direct contacts, then the social links. From 1024px this
+            column is as tall as the form beside it and the social links sit
+            at its foot, level with the form's button, so both columns end
+            together. */}
+        <div
+          class="lg:col-span-5 lg:col-start-1 lg:row-start-2 flex flex-col"
+        >
+          <ContactDetails lang={lang} />
+          <div class="flex gap-4 mt-8 lg:mt-auto lg:pt-4 lg:pb-2.5">
+            <a
+              href="https://www.linkedin.com/company/dottacunha"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-body-xs hover:text-base-content transition-colors uppercase tracking-wider"
+              >LinkedIn</a
+            >
+            <a
+              href="https://instagram.com/dottacunha"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-body-xs hover:text-base-content transition-colors uppercase tracking-wider"
+              >Instagram</a
+            >
           </div>
         </div>
       </div>

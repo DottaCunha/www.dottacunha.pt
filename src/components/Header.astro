@@ -51,6 +51,28 @@ const isActive = (match: string) => {
 };
 ---
 
+{/* The colour of the browser's own bars on recent iPhones (the strip around
+    the island). Safari 26 ignores the theme-color tag: it looks at the middle
+    of the top edge of the screen, takes whatever fixed element is on top
+    there, and copies its background colour if that colour is solid. With a
+    see-through element (this site's header at the top of a page) it samples
+    pixels instead and keeps the sample, which is how the bar got stuck on
+    the wrong colour. So this strip sits on top at that spot, always in a
+    solid colour. It is 12px tall, the least Safari will read, with 5px on
+    screen and the rest above the edge; a short fade hides its lower edge.
+    The script below swaps in a fresh copy whenever the colour changes,
+    because Safari reads a new element more reliably than a change to one it
+    has already seen. It only exists in Safari on phones (see the styles):
+    other browsers have no such bar to colour and would just show the strip.
+    It must stay outside the header, whose backdrop blur would hide it from
+    Safari. */}
+<div
+  id="browser-bar-tint"
+  class="browser-bar-tint"
+  style={`--tint: ${darkHeader ? "#0a0a0a" : "#ffffff"}`}
+  aria-hidden="true"
+>
+</div>
 <header
   id="site-header"
   class="navbar fixed top-0 left-0 right-0 z-50 transition-all duration-500"
@@ -115,13 +137,20 @@ const isActive = (match: string) => {
   </div>
 </header>
 
-<!-- Mobile Menu (outside header: backdrop-filter on header creates a containing block that would squash a fixed descendant) -->
+<!-- Mobile Menu (outside header: backdrop-filter on header would trap it
+     inside the bar). It is laid out as part of the page, not fixed to the
+     screen: on recent iPhones a fixed layer reaching the bottom edge makes
+     Safari paint its see-through address bar in a solid colour and keep it
+     that way after the menu closes. As page content the menu simply shows
+     through the bar, like the rest of the page. The script places it at the
+     current scroll position when it opens; it is taller than the screen so
+     that it also fills the area behind the address bar. -->
 <div
   id="mobile-menu"
-  class="md:hidden fixed inset-0 bg-primary z-40 -translate-y-full transition-transform duration-500 ease-in-out"
+  class="md:hidden absolute inset-x-0 top-0 h-[calc(100lvh+5rem)] bg-primary z-40 -translate-y-full"
   aria-hidden="true"
 >
-  <nav class="flex flex-col items-center justify-center h-full gap-8">
+  <nav class="flex flex-col items-center justify-center h-svh gap-8">
     {
       navLinks.map((link) => (
         <a
@@ -150,6 +179,38 @@ const isActive = (match: string) => {
     </a>
   </nav>
 </div>
+
+<style is:global>
+  .browser-bar-tint {
+    display: none;
+    position: fixed;
+    top: -7px;
+    left: 0;
+    right: 0;
+    height: 12px;
+    z-index: 60;
+    pointer-events: none;
+    background-color: var(--tint);
+  }
+  .browser-bar-tint::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 28px;
+    background: linear-gradient(var(--tint), transparent);
+    opacity: 0.5;
+  }
+  /* -webkit-touch-callout only exists in Safari on iPhone and iPad. */
+  @supports (-webkit-touch-callout: none) {
+    @media (max-width: 767px) {
+      .browser-bar-tint {
+        display: block;
+      }
+    }
+  }
+</style>
 
 <style>
   /* Default state: transparent, dark text (for light pages) */
@@ -251,9 +312,30 @@ const isActive = (match: string) => {
   }
 
   /* When menu is open, force bars + logo white (menu has dark primary bg) and keep header transparent */
+  /* Closed, the menu is parked above where it last opened, which can be
+     inside the page: it is hidden once it has slid away so that it cannot
+     be scrolled to (or reached with the keyboard). */
+  /* "translate", not "transform": that is the property the Tailwind
+     translate classes on the menu set. */
+  #mobile-menu {
+    transition:
+      translate 500ms ease-in-out,
+      visibility 0s;
+  }
+  #mobile-menu[aria-hidden="true"] {
+    visibility: hidden;
+    transition:
+      translate 500ms ease-in-out,
+      visibility 0s 500ms;
+  }
+
+  /* The menu slides down from the top edge, so the bar's white has to be
+     gone by the time the menu's leading edge passes it: at the normal
+     500ms the bar was still fading with half the screen already dark. */
   header.menu-open {
     background: transparent !important;
     backdrop-filter: none !important;
+    transition-duration: 150ms;
   }
   header.menu-open .header-bar {
     background: white !important;
@@ -268,23 +350,70 @@ const isActive = (match: string) => {
   const toggle = document.getElementById("mobile-toggle");
   const menu = document.getElementById("mobile-menu");
 
+  const themeColor = document.querySelector<HTMLMetaElement>(
+    'meta[name="theme-color"]',
+  );
+  let barTints = [...document.querySelectorAll<HTMLElement>(".browser-bar-tint")];
+  let barColour = barTints[0]?.style.getPropertyValue("--tint").trim();
+
   function updateHeader() {
     if (!header) return;
-    if (window.scrollY > 50) {
-      header.classList.add("is-scrolled");
-    } else {
-      header.classList.remove("is-scrolled");
+    const scrolled = window.scrollY > 50;
+    header.classList.toggle("is-scrolled", scrolled);
+    syncBrowserBars();
+  }
+
+  // The browser's own bars (the strip around the iPhone's island) follow the
+  // header: dark over the photo at the top of the page or under the open
+  // menu, white once the header turns white. Browsers that honour the
+  // theme-color tag read it from there; recent iPhones read it from the
+  // strip at the top of the page (see the markup above). The page
+  // background, which those iPhones fall back to, is set once in the layout
+  // and left alone: changing it at run time was followed late or not at all.
+  function syncBrowserBars() {
+    if (!header) return;
+    const dark =
+      header.classList.contains("menu-open") ||
+      document.querySelector("dialog[open]") !== null ||
+      (header.dataset.dark === "true" &&
+        !header.classList.contains("is-scrolled"));
+    const colour = dark ? "#0a0a0a" : "#ffffff";
+    if (themeColor) themeColor.content = colour;
+    if (barTints.length > 0 && colour !== barColour) {
+      barTints = barTints.map((strip) => {
+        const fresh = strip.cloneNode() as HTMLElement;
+        fresh.style.setProperty("--tint", colour);
+        strip.replaceWith(fresh);
+        return fresh;
+      });
+      barColour = colour;
     }
   }
 
   window.addEventListener("scroll", updateHeader, { passive: true });
   updateHeader();
 
+  // The enlarged photo view is dark: the bars go dark while it is open and
+  // back to the header's colour when it closes.
+  document.addEventListener("lightbox:open", syncBrowserBars);
+  document.addEventListener("lightbox:close", syncBrowserBars);
+
+  const pageIsDark = document.body.classList.contains("bg-primary");
+
   toggle?.addEventListener("click", () => {
     const isOpen = toggle.classList.toggle("is-open");
+    if (isOpen && menu) menu.style.top = `${window.scrollY}px`;
+    // On an iPhone, at the very top of a page, Safari fades the page's
+    // background colour in behind its address bar. On a white page that put
+    // a white haze over the dark menu, so the page background goes dark
+    // while the menu is open. (Pages that open with a photo already have a
+    // dark background, set in the layout, and are left alone.) Nothing else
+    // changes on screen: the page's content covers this background.
+    if (!pageIsDark) document.body.classList.toggle("bg-primary", isOpen);
     menu?.classList.toggle("-translate-y-full", !isOpen);
     menu?.classList.toggle("translate-y-0", isOpen);
     header?.classList.toggle("menu-open", isOpen);
+    syncBrowserBars();
     toggle.setAttribute("aria-expanded", String(isOpen));
     menu?.setAttribute("aria-hidden", String(!isOpen));
     document.body.style.overflow = isOpen ? "hidden" : "";

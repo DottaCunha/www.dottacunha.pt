@@ -1,0 +1,29 @@
+---
+/**
+ * The cornice of Carrascal 168 as a graphic mark: the building's own
+ * mouldings in section, with the band that is painted blue on the facade.
+ * It is the motif of the project's brochure (above every title there), used
+ * on the project's own pages so the two read as the same thing.
+ *
+ * From top to bottom: a line, a gap, a line, the blue band, a line, a gap,
+ * a line. 20px tall; the width comes from `class`.
+ */
+interface Props {
+  /** "onPhoto" draws the lines in white, for the header over a photograph. */
+  tone?: "default" | "onPhoto";
+  class?: string;
+}
+
+const { tone = "default", class: className } = Astro.props;
+const line = tone === "onPhoto" ? "bg-white" : "bg-base-content";
+---
+
+<div aria-hidden="true" class:list={["flex flex-col", className]}>
+  <div class:list={["h-px", line]}></div>
+  <div class="h-2"></div>
+  <div class:list={["h-px", line]}></div>
+  <div class="h-1 bg-[#acceda]"></div>
+  <div class:list={["h-px", line]}></div>
+  <div class="h-1"></div>
+  <div class:list={["h-px", line]}></div>
+</div>

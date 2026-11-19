@@ -1,17 +1,32 @@
 ---
+import { opticalStart } from "../lib/optical";
 interface Props {
   /** Eyebrow: a short label above the heading. */
   label?: string;
   heading: string;
   /** Subheading: one short sentence under the heading. */
   body?: string;
+  /** Space under the header, where the default does not fit (a header
+      that sits in a column beside its content, for instance). */
+  spacing?: string;
 }
 
-const { label, heading, body } = Astro.props;
+const { label, heading, body, spacing = "mb-12 md:mb-16" } = Astro.props;
 ---
 
-<div class="max-w-2xl mb-12 md:mb-16">
-  {label && <span class="section-label mb-3">{label}</span>}
-  <h2 class="section-heading">{heading}</h2>
-  {body && <p class="text-body text-dark-600 mt-3">{body}</p>}
+<div class:list={["max-w-2xl", spacing]}>
+  {
+    label && (
+      <span class="section-label mb-3" style={opticalStart(label, "sans")}>
+        {label}
+      </span>
+    )
+  }
+  <h2 class="section-heading" style={opticalStart(heading, "display")}>
+    {heading}
+  </h2>
+  {/* "Pretty" leaves the lines as they fall and only steps in when the
+      last one would be a single stray word (as the header texts of the
+      project and unit pages do). */}
+  {body && <p class="text-body text-pretty text-dark-600 mt-3">{body}</p>}
 </div>

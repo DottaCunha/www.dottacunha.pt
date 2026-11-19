@@ -66,9 +66,6 @@ export const translations: Record<Lang, Record<string, string>> = {
     // Contact page
     "contactPage.label": "Get in Touch",
     "contactPage.heading": "Contact",
-    "contactPage.formTitle": "Send a Message",
-    "contactPage.firstName": "First Name",
-    "contactPage.lastName": "Last Name",
     "contactPage.email": "Email",
     "contactPage.phone": "Phone",
     "contactPage.phoneOptional": "(optional)",
@@ -80,21 +77,11 @@ export const translations: Record<Lang, Record<string, string>> = {
     "contactPage.topicCareers": "Careers",
     "contactPage.topicGeneral": "General inquiry",
     "contactPage.message": "Message",
-    "contactPage.messagePlaceholder": "Tell us about your project...",
-    "contactPage.submit": "Send Message",
-    "contactPage.officeLabel": "Office",
-    "contactPage.address": "Address",
-    "contactPage.hoursLabel": "Hours",
-    "contactPage.monFri": "Monday – Friday",
-    "contactPage.sat": "Saturday",
-    "contactPage.sun": "Sunday",
-    "contactPage.byAppointment": "By appointment",
-    "contactPage.closed": "Closed",
-    "contactPage.followLabel": "Follow",
+    "contactPage.submit": "Send message",
 
     // Footer
     "footer.description": "Homes for better living.",
-    "footer.startConversation": "Start a Conversation",
+    "footer.startConversation": "Get in Touch",
     "footer.navigation": "Navigation",
     "footer.services": "Services",
     "footer.contact": "Contact",
@@ -121,6 +108,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "unitDetail.apartment": "Unit",
     "unitDetail.energy": "Energy rating",
     "unitDetail.plansHeading": "Floor plan and areas",
+    "unitDetail.elevation": "Front of the building, with this apartment's floors highlighted",
     "unitDetail.areasNote":
       "Areas are approximate and for information only. Furniture is illustrative, follows the interior design project and is not included.",
     "unitDetail.others": "Other units",
@@ -129,7 +117,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "projectType.Commercial": "Commercial",
     "projectDetail.typologies": "Typologies",
     "projectDetail.completion": "Completion",
-    "projectDetail.brochure": "Download brochure",
+    "projectDetail.brochure": "View brochure",
     "unitDetail.grossArea": "Gross built area",
     "unitDetail.areas": "Areas",
     "unitDetail.details": "Details",
@@ -146,18 +134,18 @@ export const translations: Record<Lang, Record<string, string>> = {
     "lightbox.next": "Next",
 
     // Project inquiry form
-    "inquiry.label": "More information",
-    "inquiry.heading": "Contact",
+    "inquiry.label": "Send a message",
+    "inquiry.heading": "More information",
     "inquiry.body":
-      "Leave us your contact details and we'll get back to you soon.",
+      "Leave us your contact details and we'll get back to you as soon as possible.",
     "inquiry.name": "Name",
     "inquiry.email": "Email",
     "inquiry.phone": "Phone",
     "inquiry.optional": "(optional)",
     "inquiry.unit": "Unit of interest",
     "inquiry.message": "Message",
-    "inquiry.submit": "Send request",
-    "inquiry.success": "We have received your request. Thank you.",
+    "inquiry.submit": "Send message",
+    "inquiry.success": "We have received your message. Thank you.",
 
     // Forms
     "form.privacyNote":
@@ -238,9 +226,6 @@ export const translations: Record<Lang, Record<string, string>> = {
     // Contact page
     "contactPage.label": "Fale Connosco",
     "contactPage.heading": "Contacto",
-    "contactPage.formTitle": "Envie uma Mensagem",
-    "contactPage.firstName": "Primeiro Nome",
-    "contactPage.lastName": "Apelido",
     "contactPage.email": "Email",
     "contactPage.phone": "Telefone",
     "contactPage.phoneOptional": "(opcional)",
@@ -252,21 +237,11 @@ export const translations: Record<Lang, Record<string, string>> = {
     "contactPage.topicCareers": "Carreiras",
     "contactPage.topicGeneral": "Inquérito geral",
     "contactPage.message": "Mensagem",
-    "contactPage.messagePlaceholder": "Fale-nos do seu projeto...",
-    "contactPage.submit": "Enviar Mensagem",
-    "contactPage.officeLabel": "Escritório",
-    "contactPage.address": "Morada",
-    "contactPage.hoursLabel": "Horário",
-    "contactPage.monFri": "Segunda – Sexta",
-    "contactPage.sat": "Sábado",
-    "contactPage.sun": "Domingo",
-    "contactPage.byAppointment": "Com marcação",
-    "contactPage.closed": "Encerrado",
-    "contactPage.followLabel": "Siga-nos",
+    "contactPage.submit": "Enviar mensagem",
 
     // Footer
     "footer.description": "Homes for better living.",
-    "footer.startConversation": "Iniciar Conversa",
+    "footer.startConversation": "Fale Connosco",
     "footer.navigation": "Navegação",
     "footer.services": "Serviços",
     "footer.contact": "Contacto",
@@ -293,6 +268,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "unitDetail.apartment": "Apartamento",
     "unitDetail.energy": "Classe energética",
     "unitDetail.plansHeading": "Planta e áreas",
+    "unitDetail.elevation": "Alçado frontal, com os pisos deste apartamento assinalados",
     "unitDetail.areasNote":
       "As áreas são aproximadas e meramente indicativas. O mobiliário é ilustrativo, segue o projeto de interiores e não está incluído.",
     "unitDetail.others": "Outras unidades",
@@ -301,7 +277,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "projectType.Commercial": "Comercial",
     "projectDetail.typologies": "Tipologias",
     "projectDetail.completion": "Conclusão",
-    "projectDetail.brochure": "Descarregar brochura",
+    "projectDetail.brochure": "Ver brochura",
     "unitDetail.grossArea": "Área bruta de construção",
     "unitDetail.areas": "Áreas",
     "unitDetail.details": "Características",
@@ -318,18 +294,18 @@ export const translations: Record<Lang, Record<string, string>> = {
     "lightbox.next": "Seguinte",
 
     // Project inquiry form
-    "inquiry.label": "Mais informações",
-    "inquiry.heading": "Contacto",
+    "inquiry.label": "Envie uma mensagem",
+    "inquiry.heading": "Mais informações",
     "inquiry.body":
-      "Deixe-nos o seu contacto e respondemos em breve.",
+      "Deixe-nos o seu contacto e respondemos assim que possível.",
     "inquiry.name": "Nome",
     "inquiry.email": "Email",
     "inquiry.phone": "Telefone",
     "inquiry.optional": "(opcional)",
     "inquiry.unit": "Unidade de interesse",
     "inquiry.message": "Mensagem",
-    "inquiry.submit": "Enviar pedido",
-    "inquiry.success": "Recebemos o seu pedido. Obrigado.",
+    "inquiry.submit": "Enviar mensagem",
+    "inquiry.success": "Recebemos a sua mensagem. Obrigado.",
 
     // Forms
     "form.privacyNote":

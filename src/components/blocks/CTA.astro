@@ -1,4 +1,5 @@
 ---
+import { opticalStart } from "../../lib/optical";
 import { getEntry } from "astro:content";
 
 import { localizedPath } from "../../i18n/utils";
@@ -33,8 +34,8 @@ const form = await getEntry("forms", `${lang}/${props.form}`); //, )
       <div class="container section relative z-10">
         <div class="max-w-2xl">
           <div class="flex flex-col gap-6">
-            <span class="section-label">{label}</span>
-            <h2 class="section-heading">{heading}</h2>
+            <span class="section-label" style={opticalStart(label, "sans")}>{label}</span>
+            <h2 class="section-heading" style={opticalStart(heading, "display")}>{heading}</h2>
             <p class="max-w-md">{body}</p>
           </div>
           <div class="flex flex-wrap gap-4 mt-10">
@@ -86,8 +87,8 @@ const form = await getEntry("forms", `${lang}/${props.form}`); //, )
       <div class="container">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           <div class="flex flex-col gap-6">
-            {props.label && <span class="section-label">{props.label}</span>}
-            {props.heading && <h2 class="section-heading">{props.heading}</h2>}
+            {props.label && <span class="section-label" style={opticalStart(props.label, "sans")}>{props.label}</span>}
+            {props.heading && <h2 class="section-heading" style={opticalStart(props.heading, "display")}>{props.heading}</h2>}
             {props.body && <p class="max-w-md">{props.body}</p>}
             {/* {props.benefits && (
           <ul class="space-y-4">
@@ -162,6 +163,7 @@ const form = await getEntry("forms", `${lang}/${props.form}`); //, )
             <textarea name="message" rows="3" placeholder={page.form.messagePlaceholder} class="textarea input-dark resize-none w-full"></textarea> */}
                 <button
                   type="submit"
+                  slot="actions"
                   class="btn btn-primary btn-inverted w-full"
                 >
                   {form.data.submit_label}

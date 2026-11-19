@@ -1,0 +1,139 @@
+---
+/**
+ * The street front of Carrascal 168 as a small line drawing, with the floors
+ * of one apartment filled in. It is the drawing used beside each plan in the
+ * brochure, in the project's own colours (the blue of the facade).
+ *
+ * This drawing is of this one building: the unit page shows it only for this
+ * project (see the page).
+ */
+interface Props {
+  /** Floors to fill in, counted from the ground floor (0) to the attic (3). */
+  floors: number[];
+  label: string;
+  class?: string;
+}
+
+const { floors, label, class: className } = Astro.props;
+
+// Each floor's band on the facade, from the ground floor up.
+const bands = [
+  { y: 74.5, height: 24.4 },
+  { y: 53.1, height: 18.4 },
+  { y: 31.8, height: 18.4 },
+  { y: 5.1, height: 19.9 },
+];
+const line = "#5c5c5c";
+const blue = "#acceda";
+const blueDark = "#2b5564";
+const ink = "#0a0a0a";
+
+// The balcony railings of floors 1 and 2: 23 uprights and a handrail.
+const uprights = Array.from({ length: 23 }, (_, i) =>
+  (6.2 + (i * 51.2) / 22).toFixed(1),
+);
+const railing = (top: number, bottom: number) =>
+  uprights.map((x) => `M${x} ${top}V${bottom}`).join("") +
+  `M6.2 ${top}H57.4`;
+---
+
+<svg
+  viewBox="-3.8 0 71 100.9"
+  role="img"
+  aria-label={label}
+  class={className}
+>
+  {/* The four floors, the chosen ones in blue */}
+  {
+    bands.map((band, floor) => (
+      <rect
+        x="0"
+        y={band.y}
+        width="63.5"
+        height={band.height}
+        fill={floors.includes(floor) ? blue : "#ffffff"}
+        stroke={line}
+        stroke-width="0.7"
+      />
+    ))
+  }
+  {/* Chimneys */}
+  <rect x="0" y="1.4" width="5.5" height="3.8" fill="#ffffff" stroke={line} stroke-width="0.7"></rect>
+  <rect x="58.1" y="1.4" width="5.5" height="3.8" fill="#ffffff" stroke={line} stroke-width="0.7"></rect>
+
+  {/* Ground floor: two windows and the door */}
+  <g fill="#ffffff" stroke={line} stroke-width="0.6">
+    <rect x="6.8" y="80.5" width="9.7" height="8.7"></rect>
+    <rect x="5.9" y="79.2" width="11.3" height="1.3"></rect>
+    <rect x="5.9" y="89.2" width="11.3" height="1.3"></rect>
+    <rect x="8" y="80.5" width="7.1" height="8.7"></rect>
+    <rect x="46" y="80.5" width="9.6" height="8.7"></rect>
+    <rect x="45.2" y="79.2" width="11.3" height="1.3"></rect>
+    <rect x="45.2" y="89.2" width="11.3" height="1.3"></rect>
+    <rect x="47.3" y="80.5" width="7.1" height="8.7"></rect>
+    <rect x="26.8" y="80.5" width="9.8" height="18.4"></rect>
+    <rect x="24.5" y="79.2" width="14.4" height="1.3"></rect>
+    <rect x="28.1" y="80.5" width="7.1" height="18.4"></rect>
+  </g>
+  {/* Floors 1 and 2: three balcony doors each */}
+  <g fill="#ffffff" stroke={line} stroke-width="0.7">
+    <rect x="8" y="56.3" width="7.1" height="15.2"></rect>
+    <rect x="28.1" y="56.3" width="7.1" height="15.2"></rect>
+    <rect x="47.3" y="56.3" width="7.1" height="15.2"></rect>
+    <rect x="8" y="34.9" width="7.1" height="15.2"></rect>
+    <rect x="28.1" y="34.9" width="7.1" height="15.2"></rect>
+    <rect x="47.3" y="34.9" width="7.1" height="15.2"></rect>
+  </g>
+  <path
+    d="M11.6 80.5V89.2M50.8 80.5V89.2M11.6 56.3V71.5M31.7 56.3V71.5M50.8 56.3V71.5M11.6 34.9V50.1M31.7 34.9V50.1M50.8 34.9V50.1"
+    fill="none"
+    stroke={line}
+    stroke-width="0.5"></path>
+  <g fill="none" stroke={line} stroke-width="0.45">
+    <rect x="30.5" y="92.7" width="2.3" height="4.5"></rect>
+    <rect x="30.5" y="87.2" width="2.3" height="4.5"></rect>
+    <rect x="30.5" y="81.8" width="2.3" height="4.5"></rect>
+  </g>
+
+  {/* A darker outline around the chosen floors */}
+  {
+    bands.map(
+      (band, floor) =>
+        floors.includes(floor) && (
+          <rect
+            x="0"
+            y={band.y}
+            width="63.5"
+            height={band.height}
+            fill="none"
+            stroke={blueDark}
+            stroke-width="1.4"
+          />
+        ),
+    )
+  }
+
+  {/* The string courses between floors and the cornice, with their blue
+      bands */}
+  <g fill="#ffffff" stroke={line} stroke-width="0.6">
+    <rect x="0" y="71.5" width="63.5" height="3"></rect>
+    <rect x="0" y="50.1" width="63.5" height="3"></rect>
+    <rect x="0" y="25" width="63.5" height="6.8"></rect>
+  </g>
+  <g fill={blue}>
+    <rect x="0" y="73" width="63.5" height="0.75"></rect>
+    <rect x="0" y="51.6" width="63.5" height="0.75"></rect>
+    <rect x="0" y="30.3" width="63.5" height="0.75"></rect>
+    <rect x="0" y="28" width="63.5" height="0.75"></rect>
+    <rect x="0" y="25.8" width="63.5" height="0.75"></rect>
+  </g>
+
+  {/* Balcony railings */}
+  <path d={railing(63.3, 71.5)} fill="none" stroke={ink} stroke-width="0.45"></path>
+  <path d="M6.2 71.5V73M57.4 71.5V73M6.2 71.5H57.4" fill="none" stroke={ink} stroke-width="0.6"></path>
+  <path d={railing(41.9, 50.1)} fill="none" stroke={ink} stroke-width="0.45"></path>
+  <path d="M6.2 50.1V51.6M57.4 50.1V51.6M6.2 50.1H57.4" fill="none" stroke={ink} stroke-width="0.6"></path>
+
+  {/* The street */}
+  <path d="M-3.8 98.9H67.3" fill="none" stroke={ink} stroke-width="1.1"></path>
+</svg>

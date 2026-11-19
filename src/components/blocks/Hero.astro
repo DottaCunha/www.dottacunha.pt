@@ -1,4 +1,5 @@
 ---
+import { opticalStart } from "../../lib/optical";
 import { localizedPath } from "../../i18n/utils";
 import type { Lang } from "../../i18n/translations";
 import type { BlockProps } from "../../lib/blocks";
@@ -13,7 +14,11 @@ const props = Astro.props;
 
 {
   props.variant === "full" && (
-    <section class="section relative min-h-screen flex items-center bg-neutral text-neutral-content overflow-hidden">
+    <section class="section hero-behind-bar max-md:pb-[calc(100lvh-100svh+11rem)] md:min-h-screen relative flex items-center bg-neutral text-neutral-content overflow-hidden">
+      {/* On phones the photo runs on below the visible screen, so that it also
+          fills the area behind the iPhone's see-through address bar (same as
+          the project hero); the extra bottom padding keeps the text centred
+          in the part of the screen that is actually visible. */}
       <div class="absolute inset-0">
         {props.image && (
           <PublicPicture
@@ -32,9 +37,12 @@ const props = Astro.props;
 
       <div class="container relative z-10">
         <div class="max-w-4xl">
-          {props.label && <p class="section-label mb-4">{props.label}</p>}
+          {props.label && <p class="section-label mb-4" style={opticalStart(props.label, "sans")}>{props.label}</p>}
           {props.heading && (
-            <h1 class="heading-hero text-5xl md:text-7xl lg:text-display-lg mb-8">
+            <h1
+              class="heading-hero text-5xl md:text-7xl lg:text-display-lg mb-8"
+              style={opticalStart(props.heading, "display")}
+            >
               {props.heading}
             </h1>
           )}
@@ -87,9 +95,12 @@ const props = Astro.props;
         <div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/40 to-primary/60" />
       </div>
       <div class="container relative z-10">
-        {props.label && <span class="section-label mb-4">{props.label}</span>}
+        {props.label && <span class="section-label mb-4" style={opticalStart(props.label, "sans")}>{props.label}</span>}
         {props.heading && (
-          <h1 class="heading-hero text-5xl md:text-7xl lg:text-display">
+          <h1
+            class="heading-hero text-5xl md:text-7xl lg:text-display"
+            style={opticalStart(props.heading, "display")}
+          >
             {props.heading}
           </h1>
         )}

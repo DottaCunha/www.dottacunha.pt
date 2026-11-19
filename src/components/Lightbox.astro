@@ -4,9 +4,10 @@ import { t } from "../i18n/utils";
 
 /**
  * One enlarged view for the whole page. Any button with `data-lightbox-src`
- * opens it; buttons that share a `data-lightbox-group` can be stepped through
- * with the arrows. An image larger than the screen (a floor plan on a phone)
- * can be tapped to see it at full size and dragged around.
+ * opens it; buttons that share a `data-lightbox-group` become a row of
+ * slides that can be swiped through, or stepped through with the arrows. An
+ * image larger than the screen (a floor plan on a phone) can be tapped to
+ * see it at full size and dragged around.
  */
 interface Props {
   lang: Lang;
@@ -15,10 +16,14 @@ interface Props {
 const { lang } = Astro.props;
 ---
 
-<dialog class="lightbox" data-lightbox aria-label={t("lightbox.open", lang)}>
-  <div class="lightbox-stage" data-lightbox-stage>
-    <img data-lightbox-image alt="" />
-  </div>
+<dialog
+  class="lightbox"
+  data-lightbox
+  tabindex="-1"
+  aria-label={t("lightbox.open", lang)}
+>
+  {/* The slides are added when the view opens, one per picture. */}
+  <div class="lightbox-stage" data-lightbox-stage></div>
   <p class="lightbox-count" data-lightbox-count aria-live="polite"></p>
   <button
     type="button"
@@ -64,7 +69,9 @@ const { lang } = Astro.props;
   </button>
 </dialog>
 
-<style>
+<style is:global>
+  /* Global, not scoped to the component: the slides are created by the
+     script, and scoped styles would not reach them. */
   .lightbox {
     position: fixed;
     inset: 0;
@@ -77,37 +84,74 @@ const { lang } = Astro.props;
     border: 0;
     background: rgb(10 10 10 / 0.96);
     color: white;
+    /* A finger on the enlarged view does not scroll the page behind it. */
+    touch-action: none;
+    overscroll-behavior: contain;
+  }
+  .lightbox:focus {
+    outline: none;
+  }
+  .lightbox-button:focus-visible {
+    outline: 2px solid white;
+    outline-offset: -2px;
   }
   .lightbox::backdrop {
     background: rgb(10 10 10 / 0.96);
   }
+  /* The row of slides. It scrolls sideways and stops on each slide, so a
+     swipe moves the pictures with the finger. */
   .lightbox-stage {
     position: absolute;
     inset: 3.5rem 0;
     display: flex;
-    overflow: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
     overscroll-behavior: contain;
+    scrollbar-width: none;
+    touch-action: pan-x;
+  }
+  .lightbox-stage::-webkit-scrollbar {
+    display: none;
   }
   @media (min-width: 768px) {
     .lightbox-stage {
       inset: 3.5rem 4.5rem;
     }
   }
+  .lightbox-slide {
+    flex: 0 0 100%;
+    height: 100%;
+    display: flex;
+    overflow: hidden;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
   /* The floor plans are drawings on a transparent background. */
-  .lightbox-stage img {
+  .lightbox-slide img {
     margin: auto;
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
     background: white;
   }
-  .lightbox-stage.can-zoom img {
+  .lightbox-slide.can-zoom img {
     cursor: zoom-in;
   }
-  .lightbox-stage.is-zoomed img {
+  /* Zoomed in, the picture is dragged around inside its own slide, and the
+     row stays where it is. */
+  .lightbox-slide.is-zoomed {
+    overflow: auto;
+    overscroll-behavior: contain;
+    touch-action: pan-x pan-y;
+  }
+  .lightbox-slide.is-zoomed img {
     max-width: 260vw;
     max-height: none;
     cursor: zoom-out;
+  }
+  .lightbox-stage.is-locked {
+    overflow-x: hidden;
   }
   .lightbox-count {
     position: absolute;
@@ -116,7 +160,7 @@ const { lang } = Astro.props;
     height: 3.5rem;
     display: flex;
     align-items: center;
-    font-size: 0.75rem;
+    font-size: var(--text-xs);
     letter-spacing: 0.15em;
     font-variant-numeric: tabular-nums;
     color: rgb(255 255 255 / 0.7);
@@ -171,43 +215,76 @@ const { lang } = Astro.props;
 <script>
   const dialog = document.querySelector<HTMLDialogElement>("[data-lightbox]");
   const stage = dialog?.querySelector<HTMLElement>("[data-lightbox-stage]");
-  const image = dialog?.querySelector<HTMLImageElement>(
-    "[data-lightbox-image]",
-  );
   const count = dialog?.querySelector<HTMLElement>("[data-lightbox-count]");
   const previous = dialog?.querySelector<HTMLElement>("[data-lightbox-prev]");
   const next = dialog?.querySelector<HTMLElement>("[data-lightbox-next]");
 
-  if (dialog && stage && image) {
-    let items: HTMLElement[] = [];
+  if (dialog && stage) {
+    let slides: HTMLElement[] = [];
     let index = 0;
+    // The slide an arrow or key is on its way to, until the row gets there.
+    let heading: number | null = null;
+    const calm = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     // Zooming only makes sense when the file has more detail than is shown.
-    const updateZoom = () => {
-      stage.classList.remove("is-zoomed");
-      stage.classList.toggle(
+    const updateZoom = (slide: HTMLElement) => {
+      const image = slide.querySelector("img");
+      if (!image || slide.classList.contains("is-zoomed")) return;
+      slide.classList.toggle(
         "can-zoom",
         image.naturalWidth > image.clientWidth * 1.15,
       );
     };
-
-    const show = (to: number) => {
-      index = (to + items.length) % items.length;
-      const item = items[index];
-      stage.classList.remove("is-zoomed", "can-zoom");
-      image.src = item.dataset.lightboxSrc ?? "";
-      image.alt = item.dataset.lightboxAlt ?? "";
-      if (count) {
-        count.textContent =
-          items.length > 1 ? `${index + 1} / ${items.length}` : "";
-      }
-      previous?.toggleAttribute("hidden", items.length < 2);
-      next?.toggleAttribute("hidden", items.length < 2);
+    const zoomOut = () => {
+      slides.forEach((slide) => slide.classList.remove("is-zoomed"));
+      stage.classList.remove("is-locked");
     };
 
-    image.addEventListener("load", updateZoom);
+    const updateCount = () => {
+      if (count) {
+        count.textContent =
+          slides.length > 1 ? `${index + 1} / ${slides.length}` : "";
+      }
+    };
+
+    // Moves to a slide. Going round from the last picture to the first (or
+    // back) jumps, so the whole row does not fly past.
+    const show = (to: number, animate = true) => {
+      const target = (to + slides.length) % slides.length;
+      const wraps = Math.abs(target - index) > 1;
+      zoomOut();
+      index = target;
+      heading = target;
+      stage.scrollTo({
+        left: index * stage.clientWidth,
+        behavior: animate && !wraps && !calm.matches ? "smooth" : "instant",
+      });
+      updateCount();
+    };
+
+    // A swipe scrolls the row by itself; this keeps the counter in step.
+    stage.addEventListener(
+      "scroll",
+      () => {
+        const at = Math.round(stage.scrollLeft / stage.clientWidth);
+        // While the row is sliding to where an arrow sent it, the slides it
+        // passes do not count: the counter already shows the destination.
+        if (heading !== null) {
+          if (at === heading) heading = null;
+          return;
+        }
+        if (at === index || at < 0 || at >= slides.length) return;
+        index = at;
+        zoomOut();
+        updateCount();
+      },
+      { passive: true },
+    );
+
     window.addEventListener("resize", () => {
-      if (dialog.open && !stage.classList.contains("is-zoomed")) updateZoom();
+      if (!dialog.open) return;
+      stage.scrollTo({ left: index * stage.clientWidth, behavior: "instant" });
+      slides.forEach(updateZoom);
     });
 
     document.addEventListener("click", (event) => {
@@ -216,51 +293,135 @@ const { lang } = Astro.props;
       );
       if (!trigger) return;
       const group = trigger.dataset.lightboxGroup;
-      items = group
+      const items = group
         ? [
             ...document.querySelectorAll<HTMLElement>(
               `[data-lightbox-group="${group}"]`,
             ),
           ]
         : [trigger];
-      show(items.indexOf(trigger));
+      const start = items.indexOf(trigger);
+      slides = items.map((item, i) => {
+        const slide = document.createElement("div");
+        slide.className = "lightbox-slide";
+        const image = document.createElement("img");
+        image.alt = item.dataset.lightboxAlt ?? "";
+        // The picture asked for and its neighbours load at once; the rest
+        // when they come near.
+        image.loading = Math.abs(i - start) <= 1 ? "eager" : "lazy";
+        image.addEventListener("load", () => updateZoom(slide));
+        image.src = item.dataset.lightboxSrc ?? "";
+        slide.append(image);
+        return slide;
+      });
+      stage.replaceChildren(...slides);
+      previous?.toggleAttribute("hidden", slides.length < 2);
+      next?.toggleAttribute("hidden", slides.length < 2);
       dialog.showModal();
+      index = start;
+      show(start, false);
+      // The browser would put the focus on the close button and draw its
+      // focus ring around it, even for someone who opened the view with a
+      // finger. The focus goes to the view itself instead; Tab still reaches
+      // the buttons, and the ring shows there for keyboard users.
+      dialog.focus();
+      // The strip that colours the iPhone's top bar (see Header.astro). The
+      // enlarged view sits above the page's own strip, so it carries one of
+      // its own, added each time it opens: Safari reads a new element more
+      // reliably than one it has already seen.
+      const tint = document.createElement("div");
+      tint.className = "browser-bar-tint";
+      tint.style.setProperty("--tint", "#0a0a0a");
+      tint.setAttribute("aria-hidden", "true");
+      dialog.append(tint);
       document.documentElement.style.overflow = "hidden";
       document.dispatchEvent(new CustomEvent("lightbox:open"));
     });
 
-    dialog.addEventListener("close", () => {
+    // Tidying up is done straight away when the view is closed from its own
+    // controls, and again on the browser's "close" event, which also covers
+    // Esc but can arrive a moment late: by then the view may have been
+    // opened again, and must be left alone.
+    const tidy = () => {
+      if (dialog.open) return;
+      dialog.querySelector(".browser-bar-tint")?.remove();
       document.documentElement.style.overflow = "";
-      image.removeAttribute("src");
-    });
+      stage.replaceChildren();
+      stage.classList.remove("is-locked");
+      slides = [];
+      heading = null;
+      document.dispatchEvent(new CustomEvent("lightbox:close"));
+    };
+    const closeView = () => {
+      dialog.close();
+      tidy();
+    };
+    dialog.addEventListener("close", tidy);
 
     dialog
       .querySelector("[data-lightbox-close]")
-      ?.addEventListener("click", () => dialog.close());
+      ?.addEventListener("click", closeView);
     previous?.addEventListener("click", () => show(index - 1));
     next?.addEventListener("click", () => show(index + 1));
 
     // A click on the picture zooms; a click on the dark area around it closes.
     stage.addEventListener("click", (event) => {
-      if (event.target !== image) {
-        dialog.close();
+      const image = event.target as HTMLElement;
+      const slide = image.closest<HTMLElement>(".lightbox-slide");
+      if (!(image instanceof HTMLImageElement) || !slide) {
+        closeView();
         return;
       }
-      if (stage.classList.contains("is-zoomed")) {
-        stage.classList.remove("is-zoomed");
-      } else if (stage.classList.contains("can-zoom")) {
+      if (slide.classList.contains("is-zoomed")) {
+        zoomOut();
+      } else if (slide.classList.contains("can-zoom")) {
         // Keep the point that was clicked under the finger.
         const box = image.getBoundingClientRect();
         const x = (event.clientX - box.left) / box.width;
         const y = (event.clientY - box.top) / box.height;
-        stage.classList.add("is-zoomed");
-        stage.scrollLeft = x * image.offsetWidth - stage.clientWidth / 2;
-        stage.scrollTop = y * image.offsetHeight - stage.clientHeight / 2;
+        slide.classList.add("is-zoomed");
+        stage.classList.add("is-locked");
+        slide.scrollLeft = x * image.offsetWidth - slide.clientWidth / 2;
+        slide.scrollTop = y * image.offsetHeight - slide.clientHeight / 2;
       }
     });
 
+    // On an iPhone a vertical drag on the enlarged view still tugged the
+    // whole screen up or down and let it spring back, even with scrolling
+    // turned off in the styles. There is nothing to scroll vertically here
+    // (except a zoomed picture, inside its own slide), so a drag that starts
+    // out vertical is cancelled. Sideways drags are left to the row.
+    let dragFrom: { x: number; y: number } | null = null;
+    let dragIsVertical: boolean | null = null;
+    dialog.addEventListener(
+      "touchstart",
+      (event) => {
+        dragFrom = {
+          x: event.touches[0].clientX,
+          y: event.touches[0].clientY,
+        };
+        dragIsVertical = null;
+      },
+      { passive: true },
+    );
+    dialog.addEventListener(
+      "touchmove",
+      (event) => {
+        if (!dragFrom || event.touches.length > 1) return;
+        if ((event.target as HTMLElement).closest(".is-zoomed")) return;
+        if (dragIsVertical === null) {
+          const dx = Math.abs(event.touches[0].clientX - dragFrom.x);
+          const dy = Math.abs(event.touches[0].clientY - dragFrom.y);
+          if (dx < 4 && dy < 4) return;
+          dragIsVertical = dy > dx;
+        }
+        if (dragIsVertical && event.cancelable) event.preventDefault();
+      },
+      { passive: false },
+    );
+
     dialog.addEventListener("keydown", (event) => {
-      if (items.length < 2) return;
+      if (slides.length < 2) return;
       if (event.key === "ArrowLeft") show(index - 1);
       if (event.key === "ArrowRight") show(index + 1);
     });

@@ -130,7 +130,7 @@ const altOf = (plan: Props["plans"][number]) =>
                 data-plan-room={room.number}
                 data-plan-index={i}
               >
-                <span class="plan-number w-5 h-5 shrink-0 rounded-full bg-base-content text-base-100 text-[10px] font-semibold tabular-nums flex items-center justify-center">
+                <span class="plan-number w-5 h-5 shrink-0 rounded-full bg-base-content text-base-100 text-2xs font-semibold tabular-nums flex items-center justify-center">
                   {room.number}
                 </span>
                 <dt class="text-body-sm flex-1">{room.label}</dt>
@@ -164,7 +164,7 @@ const altOf = (plan: Props["plans"][number]) =>
   }
 
   .plan-tab {
-    font-size: 0.75rem;
+    font-size: var(--text-xs);
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.15em;

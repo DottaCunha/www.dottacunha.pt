@@ -28,6 +28,6 @@ fields:
     required: true
     placeholder: Tell us about your project...
     rows: 3
-submit_label: Send Inquiry
+submit_label: Send message
 success_message: Thank you! We'll be in touch soon
 ---

@@ -1,0 +1,76 @@
+---
+import Icon, { type IconName } from "./Icon.astro";
+
+/**
+ * The row of key figures at the bottom of the project and unit page headers.
+ * From tablets up: each figure with its icon and label underneath. On phones:
+ * one row, the first and last figure flush with the edges, each with just its
+ * icon (the label stays available to screen readers).
+ *
+ * The page decides how many columns there are and where the row sits, through
+ * `class` and each figure's own `class`; everything else is shared so that
+ * the two headers cannot drift apart.
+ */
+interface Props {
+  facts: readonly {
+    icon: IconName;
+    label: string;
+    value: string;
+    /** Shorter value for phones, where the figures share one row. */
+    short?: string;
+    /** Column span of this figure, where the row is a grid. */
+    class?: string;
+  }[];
+  /** "onPhoto" for the header with a photograph behind it (white text). */
+  tone?: "default" | "onPhoto";
+  class?: string;
+}
+
+const { facts, tone = "default", class: className } = Astro.props;
+const onPhoto = tone === "onPhoto";
+---
+
+<dl
+  class:list={[
+    "flex justify-between sm:grid border-t mt-7 sm:mt-10 md:mt-12 pt-5 sm:pt-6",
+    onPhoto ? "border-primary-content/30" : "border-base-300",
+    className,
+  ]}
+>
+  {
+    facts.map((fact) => (
+      // The label comes first for screen readers; on screen the value
+      // stays on top.
+      <div class:list={["flex flex-col-reverse", fact.class]}>
+        <dt
+          class:list={[
+            "text-meta flex items-center gap-2 mt-2 whitespace-nowrap max-sm:sr-only",
+            onPhoto && "text-primary-content/70",
+          ]}
+        >
+          <Icon name={fact.icon} class="w-4 h-4 shrink-0" />
+          {fact.label}
+        </dt>
+        <dd
+          class:list={[
+            "text-stat text-lg sm:text-2xl md:text-3xl whitespace-nowrap flex items-center gap-2",
+            onPhoto && "text-primary-content",
+          ]}
+        >
+          <Icon
+            name={fact.icon}
+            class={`w-4 h-4 shrink-0 sm:hidden ${onPhoto ? "text-primary-content/70" : "text-secondary"}`}
+          />
+          {fact.short ? (
+            <>
+              <span class="sm:hidden">{fact.short}</span>
+              <span class="max-sm:hidden">{fact.value}</span>
+            </>
+          ) : (
+            fact.value
+          )}
+        </dd>
+      </div>
+    ))
+  }
+</dl>

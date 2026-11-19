@@ -1,0 +1,27 @@
+---
+/**
+ * A unit's highlights as a small table: a ruled heading and one line per
+ * highlight. The unit page shows it beside the title on tablets and
+ * computers, and in a section of its own under the header on phones.
+ */
+interface Props {
+  heading: string;
+  features: string[];
+  class?: string;
+}
+
+const { heading, features, class: className } = Astro.props;
+---
+
+<div class={className}>
+  <h2 class="text-meta text-base-content pb-4 border-b border-base-content">
+    {heading}
+  </h2>
+  <ul>
+    {
+      features.map((feature) => (
+        <li class="text-body py-3 border-b border-base-300">{feature}</li>
+      ))
+    }
+  </ul>
+</div>
