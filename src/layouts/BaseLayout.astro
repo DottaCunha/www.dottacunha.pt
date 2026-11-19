@@ -5,22 +5,26 @@ import CookieConsent from "../components/CookieConsent.astro";
 import "../styles/global.css";
 import type { Lang } from "../i18n/translations";
 import { Font } from "astro:assets";
+import { t } from "../i18n/utils";
 
 interface Props {
   title: string;
   description?: string;
   ogImage?: string;
   darkHeader?: boolean;
+  /** Legal note shown in the footer of this page. */
+  footerNote?: string;
   lang: Lang;
 }
 
 const {
   title,
-  description = "Dotta & Cunha — Real estate development",
   ogImage = "/logo_og.png",
   darkHeader = false,
   lang = "pt",
 } = Astro.props;
+const description = Astro.props.description || t("site.description", lang);
+const { footerNote } = Astro.props;
 
 const site = "https://dottacunha.pt";
 const canonicalURL = new URL(Astro.url.pathname, site).href;
@@ -87,11 +91,10 @@ const fullTitle = `Dotta & Cunha | ${title}`;
         legalName: "Dotta & Cunha, Lda",
         url: site,
         logo: `${site}/logo.svg`,
-        description:
-          "Residential real estate development in Portugal. From concept to completion.",
+        description: t("site.description", lang),
         address: {
           "@type": "PostalAddress",
-          addressLocality: "Lisbon",
+          addressLocality: lang === "pt" ? "Lisboa" : "Lisbon",
           addressCountry: "PT",
         },
         contactPoint: {
@@ -107,7 +110,7 @@ const fullTitle = `Dotta & Cunha | ${title}`;
     <main class="flex-1">
       <slot />
     </main>
-    <Footer lang={lang} />
+    <Footer lang={lang} note={footerNote} />
     <CookieConsent lang={lang} />
     <script is:inline define:vars={{ lang }}>
       try {

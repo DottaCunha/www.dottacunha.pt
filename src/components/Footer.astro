@@ -6,10 +6,13 @@ import { TRACKING_ACTIVE } from "../lib/tracking";
 
 interface Props {
   lang: Lang;
+  /** Legal note for the page, shown with the copyright line. */
+  note?: string;
 }
 
-const { lang } = Astro.props;
+const { lang, note } = Astro.props;
 const currentYear = new Date().getFullYear();
+import { PHONE_DISPLAY, PHONE_HREF } from "../lib/contact";
 ---
 
 <div class="bg-neutral text-neutral-content">
@@ -72,6 +75,7 @@ const currentYear = new Date().getFullYear();
       </nav>
       <nav>
         <h4 class="footer-title text-info">{t("footer.contact", lang)}</h4>
+        <a class="link link-hover" href={PHONE_HREF}>{PHONE_DISPLAY}</a>
         <a
           class="link link-hover"
           href="mailto:hello@dottacunha.pt"
@@ -109,6 +113,7 @@ const currentYear = new Date().getFullYear();
         <p class="text-xxs text-info">
           &copy; {currentYear} Dotta & Cunha. {t("footer.rights", lang)}
         </p>
+        {note && <p class="text-xxs text-info">{note}</p>}
       </aside>
       <nav class="flex gap-8">
         <a

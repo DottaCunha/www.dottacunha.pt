@@ -1,0 +1,111 @@
+---
+import type { Lang } from "../i18n/translations";
+import { t } from "../i18n/utils";
+import PublicPicture from "./PublicPicture.astro";
+
+interface Props {
+  lang: Lang;
+  photos: string[];
+  /** Used for the alt text of each photo, followed by its number. */
+  alt: string;
+}
+
+const { lang, photos, alt } = Astro.props;
+---
+
+<div class="relative" data-photo-strip>
+  <div
+    class="photo-strip-track flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth"
+    data-photo-track
+  >
+    {
+      photos.map((photo, i) => (
+        <div class="snap-start shrink-0 h-[60vh] min-h-[320px] max-h-[640px] bg-base-300">
+          <PublicPicture
+            src={photo}
+            alt={`${alt} (${i + 1})`}
+            formats={["avif", "webp"]}
+            widths={[400, 800, 1200, 1600]}
+            sizes="(max-width: 768px) 85vw, 640px"
+            loading={i < 2 ? "eager" : "lazy"}
+            pictureAttributes={{ class: "block h-full" }}
+            class="h-full w-auto max-w-none"
+          />
+        </div>
+      ))
+    }
+  </div>
+
+  {
+    photos.length > 1 && (
+      <div class="flex justify-end gap-2 mt-4">
+        <button
+          type="button"
+          class="w-10 h-10 border border-base-300 hover:bg-base-200 flex items-center justify-center transition-colors"
+          aria-label={t("carousel.previous", lang)}
+          data-photo-prev
+        >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </button>
+        <button
+          type="button"
+          class="w-10 h-10 border border-base-300 hover:bg-base-200 flex items-center justify-center transition-colors"
+          aria-label={t("carousel.next", lang)}
+          data-photo-next
+        >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </button>
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .photo-strip-track {
+    scrollbar-width: none;
+  }
+  .photo-strip-track::-webkit-scrollbar {
+    display: none;
+  }
+</style>
+
+<script>
+  document
+    .querySelectorAll<HTMLElement>("[data-photo-strip]")
+    .forEach((strip) => {
+      const track = strip.querySelector<HTMLElement>("[data-photo-track]");
+      if (!track) return;
+      const step = (direction: number) =>
+        track.scrollBy({ left: direction * track.clientWidth * 0.8 });
+      strip
+        .querySelector("[data-photo-prev]")
+        ?.addEventListener("click", () => step(-1));
+      strip
+        .querySelector("[data-photo-next]")
+        ?.addEventListener("click", () => step(1));
+    });
+</script>

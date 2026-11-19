@@ -3,7 +3,7 @@
   "type": "module",
   "version": "1.0.0",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "astro dev --force",
     "build": "astro build",
     "preview": "astro preview",
     "format": "prettier --write .",
@@ -16,6 +16,7 @@
     "@tailwindcss/vite": "^4.2.4",
     "astro": "^6.1.9",
     "daisyui": "^5.5.19",
+    "maplibre-gl": "^6.19.0",
     "tailwindcss": "^4.2.4"
   },
   "overrides": {

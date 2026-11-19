@@ -1,0 +1,108 @@
+---
+import type { Lang } from "../i18n/translations";
+import { t, localizedPath } from "../i18n/utils";
+import { unitLabel, formatArea } from "../lib/projects";
+import PublicPicture from "./PublicPicture.astro";
+
+interface Props {
+  lang: Lang;
+  /** Project slug, for the link to the unit page. */
+  slug: string;
+  projectTitle: string;
+  unit: {
+    id: string;
+    letter?: string;
+    typology: string;
+    area: number;
+    floorLabel?: string;
+    floor: number;
+    highlight?: string;
+    photos?: string[];
+  };
+}
+
+const { lang, slug, projectTitle, unit } = Astro.props;
+const photo = unit.photos?.[0];
+const area = `${formatArea(unit.area, lang)} m²`;
+const floor = unit.floorLabel ?? String(unit.floor);
+const name = unit.letter
+  ? `${t("unitDetail.apartment", lang)} ${unit.letter}`
+  : undefined;
+---
+
+{/* Below 1024px: a row with a small photo on the left and the text beside
+    it. From there up: a card with the photo on top and the text in two
+    columns (what it is on the left, the numbers on the right). */}
+<a
+  href={localizedPath(`/projects/${slug}/${unit.id}`, lang)}
+  class="group flex items-center gap-4 py-4 border-b border-base-300 lg:block lg:py-0 lg:border-0"
+>
+  <div
+    class="relative overflow-hidden bg-base-300 w-24 sm:w-32 shrink-0 aspect-[3/4] lg:w-auto lg:mb-5"
+  >
+    {
+      photo && (
+        <PublicPicture
+          src={photo}
+          alt={`${unitLabel(unit)}, ${projectTitle}`}
+          formats={["avif", "webp"]}
+          widths={[200, 400, 800, 1200]}
+          sizes="(max-width: 1023px) 128px, 33vw"
+          loading="lazy"
+          class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700"
+        />
+      )
+    }
+  </div>
+
+  <div class="flex-1 min-w-0">
+    <div class="flex items-center justify-between gap-4 mb-1 lg:mb-2">
+      <p class="text-meta">{name}</p>
+      <svg
+        class="w-4 h-4 shrink-0 -mr-0.5 text-secondary max-lg:hidden group-hover:translate-x-1 transition-transform"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1.5"
+          d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+      </svg>
+    </div>
+    <div class="lg:flex lg:items-baseline lg:justify-between lg:gap-4">
+      <h3 class="heading-card group-hover:text-dark-600 transition-colors">
+        {unit.typology}
+      </h3>
+      <span class="text-stat text-md whitespace-nowrap max-lg:hidden">
+        {area}
+      </span>
+    </div>
+    <p class="text-body-sm text-base-content mt-1 lg:hidden">
+      {`${area} · ${floor}`}
+    </p>
+    <div class="lg:flex lg:items-baseline lg:justify-between lg:gap-3 lg:mt-1">
+      <p class="text-body-sm text-dark-600">{unit.highlight}</p>
+      <p class="text-body-sm text-dark-600 whitespace-nowrap max-lg:hidden">
+        {floor}
+      </p>
+    </div>
+  </div>
+
+  {/* Below 1024px the arrow sits at the end of the row, centred. */}
+  <svg
+    class="w-4 h-4 shrink-0 text-secondary lg:hidden"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="1.5"
+      d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+  </svg>
+</a>

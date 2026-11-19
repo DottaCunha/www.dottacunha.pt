@@ -3,7 +3,7 @@ title: Privacy Policy
 slug: /privacy
 ---
 
-_Last updated: 17 November 2026_
+_Last updated: 19 November 2026_
 
 This Privacy Policy explains how Dotta & Cunha, Lda handles personal data collected through this website, **dottacunha.pt**. We are committed to protecting your privacy and processing your data lawfully, fairly and transparently, in accordance with the EU General Data Protection Regulation (GDPR) and Portuguese data protection law.
 
@@ -73,6 +73,7 @@ We do **not** sell your personal data, and the inquiries you send us are handled
 
 - **Netlify** — website hosting and contact form processing. Form submissions are transmitted to and stored by Netlify on our behalf.
 - **Cloudflare** — privacy-first, cookieless website analytics.
+- **OpenFreeMap** — interactive map on project pages. It is loaded when the location section comes near the screen. At that point your browser requests the map images directly from OpenFreeMap's servers, which receive your IP address, as any server you connect to does. We send them no other data and the map uses no cookies.
 - **Google** (Google Ireland Limited) — website usage statistics through Google Analytics 4, only if you have given your consent.
 
 If you allow advertising cookies, the information collected by the Meta Pixel is transmitted to **Meta Platforms Ireland Limited**. For the collection and transmission of that information, Dotta & Cunha, Lda and Meta Platforms Ireland Limited act as joint controllers; subsequent processing is Meta's responsibility, under its Privacy Policy. You can exercise your rights regarding that data with Meta or with us.

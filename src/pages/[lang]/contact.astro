@@ -4,6 +4,7 @@ import NetlifyForm from "../../components/NetlifyForm.astro";
 import type { Lang } from "../../i18n/translations";
 import { getI18nPaths, t } from "../../i18n/utils";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { PHONE_DISPLAY, PHONE_HREF } from "../../lib/contact";
 
 export function getStaticPaths() {
   return getI18nPaths();
@@ -96,7 +97,6 @@ const successMsg =
                 id="phone"
                 name="phone"
                 class="input w-full"
-                placeholder="+351 XXX XXX XXX"
               />
             </div>
 
@@ -185,10 +185,16 @@ const successMsg =
                     >hello@dottacunha.pt</a
                   >
                 </div>
-                <!-- <div>
-                  <div class="text-body-sm font-medium text-base-content mb-1">{t('contactPage.phone', lang)}</div>
-                  <a href="tel:+351000000000" class="text-body-sm hover:text-base-content transition-colors">+351 XXX XXX XXX</a>
-                </div> -->
+                <div>
+                  <div class="text-body-sm font-medium text-base-content mb-1">
+                    {t("contactPage.phone", lang)}
+                  </div>
+                  <a
+                    href={PHONE_HREF}
+                    class="text-body-sm hover:text-base-content transition-colors"
+                    >{PHONE_DISPLAY}</a
+                  >
+                </div>
               </div>
             </div>
 
@@ -242,14 +248,6 @@ const successMsg =
           </div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="bg-base-200">
-    <div class="h-72 flex items-center justify-center">
-      <p class="text-meta text-dark-300">
-        {t("contactPage.mapPlaceholder", lang)}
-      </p>
     </div>
   </section>
 </BaseLayout>

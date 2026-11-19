@@ -31,7 +31,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "cta.secondary": "Browse Projects",
 
     // Projects page
-    "projectsPage.inquire": "Inquire",
+    "projectsPage.inquire": "View project",
     "projectsPage.area": "Area",
     "projectsPage.year": "Year",
     "projectsPage.ctaHeading": "Interested?",
@@ -40,28 +40,28 @@ export const translations: Record<Lang, Record<string, string>> = {
 
     // Project detail page
     "projectDetail.back": "All Projects",
-    "projectDetail.units": "Available Units",
+    "projectDetail.units": "Units",
     "projectDetail.typology": "Typology",
     "projectDetail.area": "Area",
     "projectDetail.price": "Price",
     "projectDetail.status": "Status",
     "projectDetail.totalUnits": "Units",
-    "projectDetail.inquire": "Inquire About This Project",
+    "projectDetail.inquire": "Request information",
     "projectDetail.noUnits": "Unit information coming soon.",
     "unitStatus.available": "Available",
     "unitStatus.reserved": "Reserved",
     "unitStatus.sold": "Sold",
 
     // Unit detail page
-    "unitDetail.back": "Back to Project",
+    "unitDetail.back": "Back to the project",
     "unitDetail.bedrooms": "Bedrooms",
     "unitDetail.bathrooms": "Bathrooms",
     "unitDetail.floor": "Floor",
     "unitDetail.orientation": "Orientation",
-    "unitDetail.features": "Features",
+    "unitDetail.features": "Highlights",
     "unitDetail.floorPlan": "Floor Plan",
     "unitDetail.gallery": "Gallery",
-    "unitDetail.inquire": "Inquire About This Unit",
+    "unitDetail.inquire": "Request information",
 
     // Contact page
     "contactPage.label": "Get in Touch",
@@ -91,7 +91,6 @@ export const translations: Record<Lang, Record<string, string>> = {
     "contactPage.byAppointment": "By appointment",
     "contactPage.closed": "Closed",
     "contactPage.followLabel": "Follow",
-    "contactPage.mapPlaceholder": "Map — Add Google Maps embed here",
 
     // Footer
     "footer.description": "Homes for better living.",
@@ -108,6 +107,47 @@ export const translations: Record<Lang, Record<string, string>> = {
     "footer.privacy": "Privacy Policy",
     "footer.terms": "Terms of Service",
     "footer.cookies": "Cookie preferences",
+
+    // Projects: extra labels
+    "site.description":
+      "Dotta & Cunha: residential real estate development in Portugal.",
+    "map.recenter": "Recentre the map",
+    "projectDetail.disclaimer":
+      "Non-binding information, subject to change. Illustrative images and plans.",
+    "travel.walk": "on foot",
+    "travel.transit": "by public transport",
+    "travel.car": "by car",
+    "projectType.Apartments": "Apartments",
+    "unitDetail.apartment": "Unit",
+    "unitDetail.energy": "Energy rating",
+    "unitDetail.plansHeading": "Floor plan and areas",
+    "unitDetail.areasNote":
+      "Areas are approximate and for information only. Furniture is illustrative, follows the interior design project and is not included.",
+    "unitDetail.others": "Other units",
+    "unitDetail.projectLink": "Finishes and location",
+    "projectType.Villa": "Villa",
+    "projectType.Commercial": "Commercial",
+    "projectDetail.typologies": "Typologies",
+    "projectDetail.completion": "Completion",
+    "projectDetail.brochure": "Download brochure",
+    "unitDetail.grossArea": "Gross built area",
+    "unitDetail.grossAreaShort": "Gross area",
+    "carousel.previous": "Previous photo",
+    "carousel.next": "Next photo",
+
+    // Project inquiry form
+    "inquiry.label": "More information",
+    "inquiry.heading": "Contact",
+    "inquiry.body":
+      "Leave us your contact details and we'll get back to you soon.",
+    "inquiry.name": "Name",
+    "inquiry.email": "Email",
+    "inquiry.phone": "Phone",
+    "inquiry.optional": "(optional)",
+    "inquiry.unit": "Unit of interest",
+    "inquiry.message": "Message",
+    "inquiry.submit": "Send request",
+    "inquiry.success": "We have received your request. Thank you.",
 
     // Forms
     "form.privacyNote":
@@ -153,7 +193,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "cta.secondary": "Ver Projetos",
 
     // Projects page
-    "projectsPage.inquire": "Saber Mais",
+    "projectsPage.inquire": "Ver projeto",
     "projectsPage.area": "Área",
     "projectsPage.year": "Ano",
     "projectsPage.ctaHeading": "Interessado?",
@@ -162,28 +202,28 @@ export const translations: Record<Lang, Record<string, string>> = {
 
     // Project detail page
     "projectDetail.back": "Todos os Projetos",
-    "projectDetail.units": "Frações Disponíveis",
+    "projectDetail.units": "Unidades",
     "projectDetail.typology": "Tipologia",
     "projectDetail.area": "Área",
     "projectDetail.price": "Preço",
     "projectDetail.status": "Estado",
-    "projectDetail.totalUnits": "Frações",
-    "projectDetail.inquire": "Saber Mais Sobre Este Projeto",
-    "projectDetail.noUnits": "Informação de frações brevemente disponível.",
+    "projectDetail.totalUnits": "Unidades",
+    "projectDetail.inquire": "Pedir informações",
+    "projectDetail.noUnits": "Informação de unidades brevemente disponível.",
     "unitStatus.available": "Disponível",
     "unitStatus.reserved": "Reservado",
     "unitStatus.sold": "Vendido",
 
     // Unit detail page
-    "unitDetail.back": "Voltar ao Projeto",
+    "unitDetail.back": "Voltar ao projeto",
     "unitDetail.bedrooms": "Quartos",
     "unitDetail.bathrooms": "Casas de Banho",
-    "unitDetail.floor": "Andar",
+    "unitDetail.floor": "Piso",
     "unitDetail.orientation": "Orientação",
-    "unitDetail.features": "Características",
+    "unitDetail.features": "Destaques",
     "unitDetail.floorPlan": "Planta",
     "unitDetail.gallery": "Galeria",
-    "unitDetail.inquire": "Saber Mais Sobre Esta Fração",
+    "unitDetail.inquire": "Pedir informações",
 
     // Contact page
     "contactPage.label": "Fale Connosco",
@@ -213,7 +253,6 @@ export const translations: Record<Lang, Record<string, string>> = {
     "contactPage.byAppointment": "Com marcação",
     "contactPage.closed": "Encerrado",
     "contactPage.followLabel": "Siga-nos",
-    "contactPage.mapPlaceholder": "Mapa — Adicione o Google Maps aqui",
 
     // Footer
     "footer.description": "Homes for better living.",
@@ -230,6 +269,47 @@ export const translations: Record<Lang, Record<string, string>> = {
     "footer.privacy": "Política de Privacidade",
     "footer.terms": "Termos de Serviço",
     "footer.cookies": "Preferências de cookies",
+
+    // Projects: extra labels
+    "site.description":
+      "Dotta & Cunha: promoção imobiliária residencial em Portugal.",
+    "map.recenter": "Recentrar o mapa",
+    "projectDetail.disclaimer":
+      "Informação não vinculativa, sujeita a alterações. Imagens e plantas ilustrativas.",
+    "travel.walk": "a pé",
+    "travel.transit": "de transportes",
+    "travel.car": "de carro",
+    "projectType.Apartments": "Apartamentos",
+    "unitDetail.apartment": "Apartamento",
+    "unitDetail.energy": "Classe energética",
+    "unitDetail.plansHeading": "Planta e áreas",
+    "unitDetail.areasNote":
+      "As áreas são aproximadas e meramente indicativas. O mobiliário é ilustrativo, segue o projeto de interiores e não está incluído.",
+    "unitDetail.others": "Outras unidades",
+    "unitDetail.projectLink": "Acabamentos e localização",
+    "projectType.Villa": "Moradia",
+    "projectType.Commercial": "Comercial",
+    "projectDetail.typologies": "Tipologias",
+    "projectDetail.completion": "Conclusão",
+    "projectDetail.brochure": "Descarregar brochura",
+    "unitDetail.grossArea": "Área bruta de construção",
+    "unitDetail.grossAreaShort": "Área bruta",
+    "carousel.previous": "Fotografia anterior",
+    "carousel.next": "Fotografia seguinte",
+
+    // Project inquiry form
+    "inquiry.label": "Mais informações",
+    "inquiry.heading": "Contacto",
+    "inquiry.body":
+      "Deixe-nos o seu contacto e respondemos em breve.",
+    "inquiry.name": "Nome",
+    "inquiry.email": "Email",
+    "inquiry.phone": "Telefone",
+    "inquiry.optional": "(opcional)",
+    "inquiry.unit": "Unidade de interesse",
+    "inquiry.message": "Mensagem",
+    "inquiry.submit": "Enviar pedido",
+    "inquiry.success": "Recebemos o seu pedido. Obrigado.",
 
     // Forms
     "form.privacyNote":

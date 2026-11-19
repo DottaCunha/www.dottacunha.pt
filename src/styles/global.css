@@ -189,7 +189,7 @@
   }
 
   .text-meta {
-    @apply text-2xs text-secondary uppercase tracking-label;
+    @apply text-xxs lg:text-2xs text-secondary uppercase tracking-label;
   }
 
   .text-index {

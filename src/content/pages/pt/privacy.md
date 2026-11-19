@@ -3,7 +3,7 @@ title: Política de Privacidade
 slug: /privacy
 ---
 
-_Última atualização: 17 de novembro de 2026_
+_Última atualização: 19 de novembro de 2026_
 
 A presente Política de Privacidade explica como a Dotta & Cunha, Lda trata os dados pessoais recolhidos através deste website, **dottacunha.pt**. Comprometemo-nos a proteger a sua privacidade e a tratar os seus dados de forma lícita, leal e transparente, em conformidade com o Regulamento Geral sobre a Proteção de Dados (RGPD) e a legislação portuguesa de proteção de dados.
 
@@ -73,6 +73,7 @@ Não tomamos decisões exclusivamente automatizadas, incluindo a definição de 
 
 - **Netlify** — alojamento do website e processamento do formulário de contacto. As submissões de formulários são transmitidas e armazenadas pela Netlify em nosso nome.
 - **Cloudflare** — estatísticas do website orientadas para a privacidade e sem cookies.
+- **OpenFreeMap** — mapa interativo nas páginas de projeto. É carregado quando a secção de localização se aproxima do ecrã. Nesse momento, o seu navegador pede as imagens do mapa diretamente aos servidores do OpenFreeMap, que recebem o seu endereço IP, como acontece com qualquer servidor a que se liga. Não lhes enviamos mais nenhum dado e o mapa não utiliza cookies.
 - **Google** (Google Ireland Limited) — estatísticas de utilização do website através do Google Analytics 4, apenas se tiver dado o seu consentimento.
 
 Se autorizar os cookies de publicidade, a informação recolhida pelo Meta Pixel é transmitida à **Meta Platforms Ireland Limited**. Na recolha e transmissão dessa informação, a Dotta & Cunha, Lda e a Meta Platforms Ireland Limited atuam como responsáveis conjuntas pelo tratamento; o tratamento posterior é da responsabilidade da Meta, nos termos da sua Política de Privacidade. Pode exercer os seus direitos relativamente a esses dados junto da Meta ou junto de nós.

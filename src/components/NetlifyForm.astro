@@ -45,12 +45,21 @@ const { lang } = Astro.params as { lang: Lang };
     <slot />
 
     <!-- Privacy information at the point of collection -->
-    <p class="text-xs opacity-70">
+    <p
+      class:list={[
+        "text-xs opacity-70",
+        // Sits close to the last field when the button comes after it.
+        Astro.slots.has("actions") && "-mt-3",
+      ]}
+    >
       {t("form.privacyNote", lang)}{" "}
       <a class="underline" href={localizedPath("/privacy", lang)}>
         {t("footer.privacy", lang)}
       </a>
     </p>
+
+    <!-- Optional: the submit button, when it should come after the note -->
+    <slot name="actions" />
   </form>
 
   <!-- Error state (hidden by default) -->

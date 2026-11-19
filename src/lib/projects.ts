@@ -33,3 +33,17 @@ export function getStatusLabel(
   };
   return map[status] ?? status;
 }
+
+
+/** "B · T2" when the unit has a letter, otherwise just the typology. */
+export function unitLabel(unit: { letter?: string; typology: string }) {
+  return unit.letter ? `${unit.letter} · ${unit.typology}` : unit.typology;
+}
+
+/** Areas with two decimals in the page's locale: 59.3 -> "59,30" in pt. */
+export function formatArea(area: number, lang: Lang) {
+  return area.toLocaleString(lang === "pt" ? "pt-PT" : "en-GB", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}

@@ -1,0 +1,506 @@
+---
+// The location map. It starts as the drawn map from the brochure, with a
+// hotspot over each numbered marker so the list beside it can highlight
+// them. When the section comes near the screen it is swapped for a real map
+// (MapLibre + OpenFreeMap) with the same markers and distance rings, plus
+// the metro lines and stations and the outline of the project's parish.
+// The drawing stays as the fallback.
+import type { Lang } from "../i18n/translations";
+import { t } from "../i18n/utils";
+import PublicPicture from "./PublicPicture.astro";
+import Icon, { type IconName } from "./Icon.astro";
+
+interface Props {
+  lang: Lang;
+  image: string;
+  alt: string;
+  /** Project name, shown next to its marker on the real map. */
+  title: string;
+  map: {
+    lat: number;
+    lng: number;
+    west: number;
+    south: number;
+    east: number;
+    north: number;
+  };
+  /** Places to mark. `id` links a marker to its row in the list. */
+  points: {
+    id: string;
+    index?: string;
+    icon?: IconName;
+    label: string;
+    lat: number;
+    lng: number;
+  }[];
+}
+
+const { lang, image, alt, title, map, points } = Astro.props;
+
+// Position of a point over the drawn map, in percent of its width and height.
+const position = (lat: number, lng: number) =>
+  `left: ${(((lng - map.west) / (map.east - map.west)) * 100).toFixed(2)}%; top: ${(((map.north - lat) / (map.north - map.south)) * 100).toFixed(2)}%;`;
+// Only the numbered places are drawn on the brochure map.
+const drawn = points.filter((point) => point.index);
+const icons = [...new Set(points.flatMap((point) => point.icon ?? []))];
+
+const config = JSON.stringify({
+  title,
+  map,
+  points,
+  recenter: t("map.recenter", lang),
+});
+---
+
+<div
+  class="location-map relative bg-base-300 max-sm:aspect-square lg:h-full lg:min-h-[26rem]"
+  data-location-map
+  data-config={config}
+>
+  <div class="max-sm:absolute max-sm:inset-0 lg:absolute lg:inset-0" data-map-static>
+    <PublicPicture
+      src={image}
+      alt={alt}
+      formats={["avif", "webp"]}
+      widths={[400, 800, 1200, 1600]}
+      sizes="(max-width: 1024px) 100vw, 58vw"
+      loading="lazy"
+      pictureAttributes={{ class: "block max-sm:h-full lg:h-full" }}
+      class="block w-full h-auto max-sm:h-full max-sm:object-cover lg:h-full lg:object-cover"
+    />
+    {
+      drawn.map((point) => (
+        <span
+          class="location-hotspot lg:hidden max-sm:hidden"
+          style={position(point.lat, point.lng)}
+          data-marker={point.id}
+          title={point.label}
+        />
+      ))
+    }
+  </div>
+
+  {/* MapLibre makes its container position: relative, so the absolute
+      frame has to be a wrapper around it. */}
+  <div class="absolute inset-0 hidden" data-map-frame>
+    <div class="w-full h-full" data-map-canvas></div>
+  </div>
+
+  {/* Icons the script clones into markers and controls. */}
+  {
+    icons.map((icon) => (
+      <template data-map-icon={icon}>
+        <Icon name={icon} class="w-3.5 h-3.5" />
+      </template>
+    ))
+  }
+  <template data-map-icon="recenter">
+    <Icon name="recenter" class="w-5 h-5" />
+  </template>
+</div>
+
+<style is:global>
+  /* Hotspot over a marker of the drawn map: invisible until highlighted. */
+  .location-hotspot {
+    position: absolute;
+    width: 3.2%;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    border-radius: 9999px;
+    cursor: pointer;
+  }
+  .location-hotspot.is-active {
+    outline: 3px solid #2b5564;
+    outline-offset: 3px;
+    background: rgb(43 85 100 / 0.2);
+  }
+
+  /* Markers of the real map, drawn like the ones on the brochure map. */
+  .location-marker {
+    width: 18px;
+    height: 18px;
+    border-radius: 9999px;
+    background: #0a0a0a;
+    color: #fff;
+    font-size: 9px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 0 0 1.5px #fff;
+  }
+  .location-marker.has-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+  }
+  .location-marker.is-active {
+    background: #2b5564;
+    box-shadow:
+      0 0 0 1.5px #fff,
+      0 0 0 6px rgb(43 85 100 / 0.35);
+  }
+  .location-station {
+    width: 11px;
+    height: 11px;
+    border-radius: 2px;
+    background: #0a0a0a;
+    color: #fff;
+    font-size: 7px;
+    font-weight: 700;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0 1px #fff;
+  }
+  .location-home {
+    width: 14px;
+    height: 14px;
+    border-radius: 9999px;
+    background: #2b5564;
+    box-shadow:
+      0 0 0 3px #fff,
+      0 0 0 5px #2b5564;
+  }
+  .location-home-label,
+  .location-ring-label {
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-transform: uppercase;
+    white-space: nowrap;
+    text-shadow:
+      0 0 3px #fff,
+      0 0 3px #fff,
+      0 0 3px #fff;
+    pointer-events: none;
+  }
+  .location-home-label {
+    font-size: 12px;
+    color: #0a0a0a;
+  }
+  .location-ring-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: #2b5564;
+  }
+  .location-recenter {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+  }
+
+  /* Row of the list that matches the highlighted marker. */
+  [data-point].is-active {
+    background: rgb(43 85 100 / 0.08);
+  }
+</style>
+
+<script>
+  type Config = {
+    title: string;
+    recenter: string;
+    map: { lat: number; lng: number };
+    points: {
+      id: string;
+      index?: string;
+      icon?: string;
+      label: string;
+      lat: number;
+      lng: number;
+    }[];
+  };
+
+  const ACCENT = "#2b5564";
+  const RINGS = [500, 1000, 1500]; // metres
+
+  document
+    .querySelectorAll<HTMLElement>("[data-location-map]")
+    .forEach((root) => {
+      const config = JSON.parse(root.dataset.config ?? "{}") as Config;
+      // The list of places sits next to the map, in the same section.
+      const scope = root.closest("section") ?? document;
+
+      const highlight = (id: string | null) => {
+        scope
+          .querySelectorAll<HTMLElement>("[data-marker], [data-point]")
+          .forEach((el) => {
+            const own = el.dataset.marker ?? el.dataset.point;
+            el.classList.toggle("is-active", id !== null && own === id);
+          });
+      };
+
+      // List rows and markers highlight each other, on hover and on touch.
+      const bind = (el: HTMLElement, id: string) => {
+        el.addEventListener("mouseenter", () => highlight(id));
+        el.addEventListener("mouseleave", () => highlight(null));
+        el.addEventListener("click", () => highlight(id));
+      };
+      scope
+        .querySelectorAll<HTMLElement>("[data-point]")
+        .forEach((row) => bind(row, row.dataset.point ?? ""));
+      root
+        .querySelectorAll<HTMLElement>("[data-marker]")
+        .forEach((spot) => bind(spot, spot.dataset.marker ?? ""));
+
+      const icon = (name: string) =>
+        root.querySelector<HTMLTemplateElement>(
+          `template[data-map-icon="${name}"]`,
+        )?.innerHTML ?? "";
+
+      const frame = root.querySelector<HTMLElement>("[data-map-frame]");
+      const canvas = root.querySelector<HTMLElement>("[data-map-canvas]");
+      if (!frame || !canvas) return;
+
+      const start = async () => {
+        const [
+          { Map, Marker, NavigationControl, setWorkerUrl },
+          worker,
+          { metroLines, metroStations, parishes },
+          styles,
+        ] = await Promise.all([
+          import("maplibre-gl"),
+          import("maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url"),
+          import("../data/lisbon"),
+          // The stylesheet is loaded by its address. Importing the CSS file
+          // itself works in development, but the production build drops the
+          // chunk and the whole map fails with a 404.
+          import("maplibre-gl/dist/maplibre-gl.css?url"),
+        ]);
+        setWorkerUrl(worker.default);
+        await new Promise<void>((done) => {
+          const link = document.createElement("link");
+          link.rel = "stylesheet";
+          link.href = styles.default;
+          link.onload = () => done();
+          link.onerror = () => done();
+          document.head.append(link);
+        });
+
+        frame.classList.remove("hidden");
+        const { map: m, points, title } = config;
+        const metresPerDegLat = 111320;
+        const metresPerDegLng = 111320 * Math.cos((m.lat * Math.PI) / 180);
+
+        // Start framed on the rings around the project: the first kilometre
+        // on a phone, all three rings on larger screens.
+        const narrow = window.matchMedia("(max-width: 639px)").matches;
+        const reach = narrow ? 1100 : 1650;
+        const home: [[number, number], [number, number]] = [
+          [m.lng - reach / metresPerDegLng, m.lat - reach / metresPerDegLat],
+          [m.lng + reach / metresPerDegLng, m.lat + reach / metresPerDegLat],
+        ];
+
+        const map = new Map({
+          container: canvas,
+          style: "https://tiles.openfreemap.org/styles/positron",
+          bounds: home,
+          minZoom: 11,
+          maxZoom: 17,
+          dragRotate: false,
+          pitchWithRotate: false,
+          // The page keeps scrolling normally; zooming needs Ctrl or two fingers.
+          cooperativeGestures: true,
+          attributionControl: { compact: true },
+        });
+        map.addControl(
+          new NavigationControl({ showCompass: false }),
+          "top-right",
+        );
+
+        // "Recentre" button, built like the zoom buttons above it.
+        const recenter = document.createElement("div");
+        recenter.className = "maplibregl-ctrl maplibregl-ctrl-group";
+        const recenterButton = document.createElement("button");
+        recenterButton.type = "button";
+        recenterButton.className = "location-recenter";
+        recenterButton.title = config.recenter;
+        recenterButton.setAttribute("aria-label", config.recenter);
+        recenterButton.innerHTML = icon("recenter");
+        recenterButton.addEventListener("click", () => map.fitBounds(home));
+        recenter.append(recenterButton);
+        map.addControl(
+          { onAdd: () => recenter, onRemove: () => recenter.remove() },
+          "top-right",
+        );
+
+        const ring = (radius: number) =>
+          Array.from({ length: 97 }, (_, i) => {
+            const angle = (i / 96) * 2 * Math.PI;
+            return [
+              m.lng + (radius * Math.sin(angle)) / metresPerDegLng,
+              m.lat + (radius * Math.cos(angle)) / metresPerDegLat,
+            ];
+          });
+
+        // The parish that contains the project (ray casting).
+        const parish = parishes.find(({ ring: outline }) => {
+          let inside = false;
+          for (let i = 0; i < outline.length - 1; i++) {
+            const [x1, y1] = outline[i];
+            const [x2, y2] = outline[i + 1];
+            if (
+              y1 > m.lat !== y2 > m.lat &&
+              m.lng < ((x2 - x1) * (m.lat - y1)) / (y2 - y1) + x1
+            )
+              inside = !inside;
+          }
+          return inside;
+        });
+
+        // The box can change size after the map starts (fonts, the list
+        // beside it, a rotated phone): keep the map and its frame in step.
+        // Until the visitor moves the map, it also stays framed on the rings.
+        let moved = false;
+        map.on("movestart", (event) => {
+          if ("originalEvent" in event && event.originalEvent) moved = true;
+        });
+        new ResizeObserver(() => {
+          map.resize();
+          if (!moved) map.fitBounds(home, { animate: false });
+        }).observe(canvas);
+
+        map.on("load", () => {
+
+          if (parish) {
+            map.addSource("parish", {
+              type: "geojson",
+              data: {
+                type: "Feature",
+                properties: {},
+                geometry: { type: "Polygon", coordinates: [parish.ring] },
+              },
+            });
+            map.addLayer({
+              id: "parish-fill",
+              type: "fill",
+              source: "parish",
+              paint: { "fill-color": ACCENT, "fill-opacity": 0.06 },
+            });
+            map.addLayer({
+              id: "parish-line",
+              type: "line",
+              source: "parish",
+              paint: {
+                "line-color": ACCENT,
+                "line-width": 1.5,
+                "line-dasharray": [3, 2],
+              },
+            });
+          }
+
+          map.addSource("metro", {
+            type: "geojson",
+            data: {
+              type: "FeatureCollection",
+              features: metroLines.map((line) => ({
+                type: "Feature",
+                properties: { colour: line.colour },
+                geometry: {
+                  type: "MultiLineString",
+                  coordinates: line.segments,
+                },
+              })),
+            },
+          });
+          map.addLayer({
+            id: "metro",
+            type: "line",
+            source: "metro",
+            layout: { "line-cap": "round", "line-join": "round" },
+            paint: { "line-color": ["get", "colour"], "line-width": 2.5 },
+          });
+
+          map.addSource("rings", {
+            type: "geojson",
+            data: {
+              type: "FeatureCollection",
+              features: RINGS.map((radius) => ({
+                type: "Feature",
+                properties: {},
+                geometry: { type: "LineString", coordinates: ring(radius) },
+              })),
+            },
+          });
+          map.addLayer({
+            id: "rings",
+            type: "line",
+            source: "rings",
+            paint: { "line-color": ACCENT, "line-width": 1.5 },
+          });
+
+          metroStations.forEach(([name, lng, lat]) => {
+            const el = document.createElement("div");
+            el.className = "location-station";
+            el.textContent = "M";
+            el.title = name;
+            new Marker({ element: el }).setLngLat([lng, lat]).addTo(map);
+          });
+
+          // Ring labels sit just above the line, at the bottom of each ring.
+          RINGS.forEach((radius) => {
+            const label = document.createElement("div");
+            label.className = "location-ring-label";
+            label.textContent =
+              radius < 1000
+                ? `${radius} m`
+                : `${(radius / 1000).toLocaleString(document.documentElement.lang)} km`;
+            new Marker({ element: label, anchor: "bottom", offset: [0, -3] })
+              .setLngLat([m.lng, m.lat - radius / metresPerDegLat])
+              .addTo(map);
+          });
+
+          const dot = document.createElement("div");
+          dot.className = "location-home";
+          new Marker({ element: dot }).setLngLat([m.lng, m.lat]).addTo(map);
+          const homeLabel = document.createElement("div");
+          homeLabel.className = "location-home-label";
+          homeLabel.textContent = title;
+          new Marker({ element: homeLabel, anchor: "top", offset: [0, 14] })
+            .setLngLat([m.lng, m.lat])
+            .addTo(map);
+
+          points.forEach((point) => {
+            const el = document.createElement("div");
+            el.className = "location-marker";
+            el.dataset.marker = point.id;
+            el.title = point.label;
+            if (point.icon) {
+              el.classList.add("has-icon");
+              el.innerHTML = icon(point.icon);
+            } else {
+              el.textContent = point.index ?? "";
+            }
+            bind(el, point.id);
+            new Marker({ element: el })
+              .setLngLat([point.lng, point.lat])
+              .addTo(map);
+          });
+
+          // On a small map the credits start folded behind their "i" button.
+          if (narrow) {
+            const credits = root.querySelector(".maplibregl-ctrl-attrib");
+            credits?.classList.remove("maplibregl-compact-show");
+            credits?.removeAttribute("open");
+          }
+
+          // The real map is ready: the drawing steps aside.
+          root.querySelector("[data-map-static]")?.classList.add("invisible");
+        });
+      };
+
+      // Load the map library only when the section is about to be seen.
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((entry) => entry.isIntersecting)) {
+            observer.disconnect();
+            start();
+          }
+        },
+        { rootMargin: "600px" },
+      );
+      observer.observe(root);
+    });
+</script>
