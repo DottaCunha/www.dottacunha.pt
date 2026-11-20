@@ -1,4 +1,5 @@
 ---
+import BrochureLabel from "../../../../components/BrochureLabel.astro";
 import { opticalStart } from "../../../../lib/optical";
 import BaseLayout from "../../../../layouts/BaseLayout.astro";
 import { t, localizedPath } from "../../../../i18n/utils";
@@ -246,11 +247,12 @@ const facts = [
               </p>
             )
           }
-          {/* On phones the two buttons share a row. */}
-          <div class="grid grid-cols-[1fr_auto] sm:flex sm:flex-row gap-3 mt-6 sm:mt-8">
+          {/* On phones the two buttons share a row, sized as on the project
+              page. */}
+          <div class="grid grid-cols-[minmax(max-content,1fr)_auto] max-[360px]:grid-cols-[1fr_min-content] sm:flex sm:flex-row gap-3 mt-6 sm:mt-8">
             <a
               href="#contacto"
-              class="btn btn-lg btn-primary text-mid max-sm:px-3"
+              class="btn btn-lg btn-primary text-mid min-[360px]:max-sm:px-3 max-[360px]:px-2 max-[360px]:text-xs"
             >
               {t("unitDetail.inquire", lang)}
             </a>
@@ -260,9 +262,10 @@ const facts = [
                   href={d.brochure}
                   target="_blank"
                   rel="noopener"
-                  class="btn btn-lg btn-outline text-mid"
+                  aria-label={t("projectDetail.brochure", lang)}
+                  class="btn btn-lg btn-outline text-mid min-[360px]:max-sm:px-3 max-[360px]:px-2 max-[360px]:text-xs"
                 >
-                  {t("projectDetail.brochure", lang)}
+                  <BrochureLabel lang={lang} />
                 </a>
               )
             }

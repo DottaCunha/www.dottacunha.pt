@@ -69,7 +69,7 @@ sections:
       - index: "1"
         lat: 38.736513
         lng: -9.124065
-        label: "Mercado da Picheleira (local market)"
+        label: "Picheleira Market"
         times:
           - mode: walk
             value: "1 min"
@@ -77,7 +77,7 @@ sections:
       - index: "2"
         lat: 38.735159
         lng: -9.120644
-        label: "EB Eng. Duarte Pacheco (primary school)"
+        label: "D. Pacheco Primary School"
         times:
           - mode: walk
             value: "2 min"
@@ -85,7 +85,7 @@ sections:
       - index: "3"
         lat: 38.736489
         lng: -9.127022
-        label: "Escola Artística António Arroio (arts secondary school)"
+        label: "António Arroio Arts School"
         times:
           - mode: walk
             value: "4 min"
@@ -93,7 +93,7 @@ sections:
       - index: "4"
         lat: 38.739857
         lng: -9.121681
-        label: "EB das Olaias (primary school)"
+        label: "Olaias Primary School"
         times:
           - mode: walk
             value: "6 min"
@@ -117,7 +117,7 @@ sections:
       - index: "7"
         lat: 38.736657
         lng: -9.131388
-        label: "Centro de Saúde da Alameda (health centre)"
+        label: "Alameda Health Centre"
         times:
           - mode: walk
             value: "9 min"
@@ -133,7 +133,7 @@ sections:
       - index: "9"
         lat: 38.742722
         lng: -9.129035
-        label: "Piscina do Casal Vistoso (swimming pool)"
+        label: "Casal Vistoso Pool"
         times:
           - mode: walk
             value: "10 min"

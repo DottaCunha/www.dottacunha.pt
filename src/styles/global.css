@@ -289,9 +289,15 @@
   .hero-detail-back {
     @apply inline-flex items-center gap-2 transition-colors py-2 -mt-2 mb-5 sm:mb-8;
   }
-  /* Size of the title (used with .heading-hero). */
+  /* Size of the title (used with .heading-hero). On phones narrower than
+     about 400px it shrinks with the screen, so that "Carrascal 168", the
+     longest title, stays on one line: at full size it needs 343px, and the
+     0.138 is that size over that width, with a little to spare. */
   .hero-detail-title {
     @apply text-5xl md:text-6xl xl:text-7xl mb-5;
+    @media (max-width: 767px) {
+      font-size: min(3rem, calc((100vw - 3rem) * 0.138));
+    }
   }
 
   /* The eyebrow over a page header's title: smaller on phones, where the

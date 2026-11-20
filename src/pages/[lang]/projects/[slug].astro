@@ -1,4 +1,5 @@
 ---
+import BrochureLabel from "../../../components/BrochureLabel.astro";
 import { opticalStart } from "../../../lib/optical";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { t, localizedPath } from "../../../i18n/utils";
@@ -224,11 +225,15 @@ const facts = [
         </div>
 
         {/* On phones the two buttons share a row, so the whole header fits
-            on the first screen. */}
-        <div class="lg:col-span-5 grid grid-cols-[1fr_auto] sm:flex sm:flex-col gap-3">
+            on the first screen. The main button always gets room for its
+            label on one line; the brochure button takes what is left, and
+            shortens its own label when that is too little (BrochureLabel).
+            Below 360px not even that fits, so there the buttons use the
+            next text size down and less padding. */}
+        <div class="lg:col-span-5 grid grid-cols-[minmax(max-content,1fr)_auto] max-[360px]:grid-cols-[1fr_min-content] sm:flex sm:flex-col gap-3">
           <a
             href="#contacto"
-            class="btn btn-lg btn-inverted w-full text-mid max-sm:px-3"
+            class="btn btn-lg btn-inverted w-full text-mid min-[360px]:max-sm:px-3 max-[360px]:px-2 max-[360px]:text-xs"
           >
             {t("projectDetail.inquire", lang)}
           </a>
@@ -238,9 +243,10 @@ const facts = [
                 href={d.brochure}
                 target="_blank"
                 rel="noopener"
-                class="btn btn-lg btn-outline btn-light w-full text-mid bg-primary/30 hover:bg-base-100"
+                aria-label={t("projectDetail.brochure", lang)}
+                class="btn btn-lg btn-outline btn-light w-full text-mid min-[360px]:max-sm:px-3 max-[360px]:px-2 max-[360px]:text-xs bg-primary/30 hover:bg-base-100"
               >
-                {t("projectDetail.brochure", lang)}
+                <BrochureLabel lang={lang} />
               </a>
             )
           }

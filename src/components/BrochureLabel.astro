@@ -1,0 +1,28 @@
+---
+/**
+ * The brochure button's label: "View brochure", or just "Brochure" when the
+ * button has no room for both words (on phones it shares a row with the
+ * main button, which keeps its full label).
+ *
+ * No screen widths are involved, so it holds for any language and font: the
+ * words are laid out right to left on a line that may wrap, and only the
+ * first line shows. "Brochure" is placed first, so the verb is the word that
+ * drops to the hidden line when the two do not fit. The link's aria-label
+ * carries the full label for screen readers.
+ */
+import { t } from "../i18n/utils";
+import type { Lang } from "../i18n/translations";
+
+export interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<span
+  class="flex flex-row-reverse flex-wrap justify-center h-[1lh] overflow-hidden"
+  aria-hidden="true"
+>
+  <span>{t("projectDetail.brochureShort", lang)}</span>
+  <span class="mr-[0.3em]">{t("projectDetail.brochureVerb", lang)}</span>
+</span>
