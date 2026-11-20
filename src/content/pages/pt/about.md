@@ -10,14 +10,14 @@ blocks:
     image: /images/architecture-05.jpg
   - type: section
     variant: simple
-    label: Quem Somos
-    heading: Promoção imobiliária com raízes na qualidade
+    label: Quem somos
+    heading: Promoção imobiliária assente na qualidade
     body: |-
-      A Dotta & Cunha foi fundada com uma convicção simples: as casas devem ser construídas com o mesmo cuidado e intenção de qualquer obra de arquitetura. Não construímos para preencher mercados — construímos porque acreditamos nos espaços que criamos.
+      A Dotta & Cunha foi fundada com uma convicção simples: as casas devem ser construídas com o mesmo cuidado e intenção de qualquer obra de arquitetura. Construímos porque acreditamos nos espaços que criamos.
 
-      Sediados em Lisboa, a nossa equipa reúne décadas de experiência em construção, arquitetura, engenharia e investimento imobiliário. Trabalhamos em todo o ciclo de desenvolvimento — desde a identificação de oportunidades e aquisição de terrenos, passando pelo design e construção, até ao marketing e entrega final.
+      Com sede em Lisboa, reunimos em cada projeto experiência em arquitetura, engenharia, construção e investimento imobiliário. Trabalhamos em todo o ciclo da promoção: da identificação de oportunidades e da aquisição de terrenos, passando pelo projeto e pela construção, até à comercialização e à entrega final.
 
-      O que nos distingue não é apenas o que construímos, mas como construímos. Cada decisão é guiada pelo compromisso com materiais de qualidade, design pensado e respeito pelas comunidades onde trabalhamos.
+      O que nos distingue é a forma como construímos. Cada decisão é guiada pelo compromisso com materiais de qualidade, um design pensado e o respeito pelos lugares onde trabalhamos.
   - type: images
     images:
       - /images/architecture-03.jpg
@@ -29,17 +29,17 @@ blocks:
     heading: O que nos move
     items:
       - heading: Qualidade
-        body: Nunca comprometemos materiais, artesanato ou atenção ao detalhe. Cada casa que entregamos é construída para durar.
+        body: Não abdicamos de bons materiais, de uma execução cuidada nem da atenção ao detalhe. Construímos para durar.
       - heading: Integridade
-        body: Transparência em cada relação — com clientes, parceiros e comunidades. Fazemos o que dizemos.
+        body: Transparência em cada relação, com clientes e com parceiros.
       - heading: Design
         body: Bom design não é decoração. É como um espaço nos faz sentir, como a luz entra numa divisão, como uma casa serve a vida.
       - heading: Sustentabilidade
         body: Construímos para o futuro. Eficiência energética, materiais responsáveis e respeito pelo ambiente guiam cada decisão.
   - type: cta
     variant: secondary
-    heading: Trabalhe connosco
-    body: Estamos sempre interessados em novos projetos, parcerias e conversas.
+    heading: Vamos conversar
+    body: Procura casa, tem um imóvel ou um terreno, ou quer investir? Estamos sempre interessados em novos projetos e parcerias.
     cta_primary:
       label: Fale connosco
       href: /contact

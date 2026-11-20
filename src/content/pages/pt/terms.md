@@ -35,7 +35,7 @@ O utilizador pode visualizar este conteúdo para uso pessoal e não comercial. N
 
 ## Informação sobre projetos e imóveis
 
-Este website apresenta informação sobre os projetos de promoção imobiliária da Dotta & Cunha e sobre as frações que os integram.
+Este website apresenta informação sobre os projetos de promoção imobiliária da Dotta & Cunha e sobre as unidades que os integram.
 
 Essa informação — incluindo descrições, imagens, simulações, plantas, áreas, tipologias, número de divisões, orientação, anos de conclusão e estado dos projetos — é disponibilizada **apenas para fins de informação geral**. Tem caráter indicativo, pode ser atualizada ou alterada a qualquer momento e sem aviso prévio, e **não constitui uma proposta contratual, um compromisso vinculativo nem uma garantia** de disponibilidade, preço, características ou prazos de entrega.
 

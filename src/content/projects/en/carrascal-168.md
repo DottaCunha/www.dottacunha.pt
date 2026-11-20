@@ -44,11 +44,14 @@ sections:
         image: /images/uploads/carrascal-168/material-roupeiros.jpg
     listHeading: Comfort
     list:
-      - "External thermal insulation"
-      - "Security door"
-      - "Double glazing, thermally broken frames"
+      - "Fitted kitchen"
       - "Air conditioning pre-installation"
-      - "Electric water heating"
+      - "Heat pump for hot water"
+      - "External thermal insulation"
+      - "Double glazing, thermally broken frames"
+      - "Recessed LED lighting"
+      - "Security door"
+      - "Video intercom"
   - key: localizacao
     label: "Beato, Lisbon"
     body: "Calçada do Carrascal 168, 1900-134 Lisbon"

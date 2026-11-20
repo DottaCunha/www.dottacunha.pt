@@ -1,28 +1,28 @@
 ---
-title: Quick Inquiry
+title: Envie uma mensagem
 slug: inquiry
 fields:
   - type: text
     name: name
     required: true
-    placeholder: Seu Nome
+    placeholder: Nome
   - type: email
     name: email
     required: true
-    placeholder: Endereço de Email
+    placeholder: Email
   - type: select
     name: interests
     required: true
     placeholder: Estou interessado em...
     options:
       - value: buying
-        label: Buying a property
+        label: Comprar casa
       - value: investing
-        label: Investment opportunities
+        label: Oportunidades de investimento
       - value: development
-        label: Development partnership
+        label: Parceria num projeto
       - value: other
-        label: Something else
+        label: Outro assunto
   - type: textarea
     name: message
     required: true

@@ -74,7 +74,6 @@ export const translations: Record<Lang, Record<string, string>> = {
     "contactPage.topicBuying": "I'm interested in buying",
     "contactPage.topicInvesting": "Investment opportunity",
     "contactPage.topicPartnership": "Development partnership",
-    "contactPage.topicCareers": "Careers",
     "contactPage.topicGeneral": "General inquiry",
     "contactPage.message": "Message",
     "contactPage.submit": "Send message",
@@ -175,7 +174,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "nav.projects": "Projetos",
     "nav.services": "Serviços",
     "nav.contact": "Contacto",
-    "nav.cta": "Fale Connosco",
+    "nav.cta": "Fale connosco",
 
     // Projects (shared keys used across pages)
     "projects.units": "unidades",
@@ -183,12 +182,12 @@ export const translations: Record<Lang, Record<string, string>> = {
 
     // Project statuses
     "status.completed": "Concluído",
-    "status.underConstruction": "Em Construção",
+    "status.underConstruction": "Em construção",
     "status.comingSoon": "Brevemente",
 
     // CTA (shared keys used on about + projects pages)
-    "cta.primary": "Fale Connosco",
-    "cta.secondary": "Ver Projetos",
+    "cta.primary": "Fale connosco",
+    "cta.secondary": "Ver projetos",
 
     // Projects page
     "projectsPage.inquire": "Ver projeto",
@@ -199,7 +198,7 @@ export const translations: Record<Lang, Record<string, string>> = {
       "Contacte-nos para saber sobre disponibilidade, preços e projetos futuros.",
 
     // Project detail page
-    "projectDetail.back": "Todos os Projetos",
+    "projectDetail.back": "Todos os projetos",
     "projectDetail.units": "Unidades",
     "projectDetail.typology": "Tipologia",
     "projectDetail.area": "Área",
@@ -224,7 +223,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "unitDetail.inquire": "Pedir informações",
 
     // Contact page
-    "contactPage.label": "Fale Connosco",
+    "contactPage.label": "Fale connosco",
     "contactPage.heading": "Contacto",
     "contactPage.email": "Email",
     "contactPage.phone": "Telefone",
@@ -233,23 +232,22 @@ export const translations: Record<Lang, Record<string, string>> = {
     "contactPage.selectTopic": "Selecione um tópico...",
     "contactPage.topicBuying": "Estou interessado em comprar",
     "contactPage.topicInvesting": "Oportunidade de investimento",
-    "contactPage.topicPartnership": "Parceria de desenvolvimento",
-    "contactPage.topicCareers": "Carreiras",
-    "contactPage.topicGeneral": "Inquérito geral",
+    "contactPage.topicPartnership": "Parceria num projeto",
+    "contactPage.topicGeneral": "Outro assunto",
     "contactPage.message": "Mensagem",
     "contactPage.submit": "Enviar mensagem",
 
     // Footer
     "footer.description": "Homes for better living.",
-    "footer.startConversation": "Fale Connosco",
+    "footer.startConversation": "Fale connosco",
     "footer.navigation": "Navegação",
     "footer.services": "Serviços",
     "footer.contact": "Contacto",
-    "footer.social": "Redes Sociais",
+    "footer.social": "Redes sociais",
     "footer.development": "Promoção",
     "footer.architecture": "Arquitetura",
-    "footer.projectManagement": "Gestão de Projeto",
-    "footer.investmentAdvisory": "Consultoria de Investimento",
+    "footer.projectManagement": "Gestão de projeto",
+    "footer.investmentAdvisory": "Consultoria de investimento",
     "footer.rights": "Todos os direitos reservados.",
     "footer.privacy": "Política de Privacidade",
     "footer.terms": "Termos de Serviço",

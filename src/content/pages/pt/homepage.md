@@ -4,49 +4,49 @@ slug: /
 blocks:
   - type: hero
     variant: full
-    label: Promoção Imobiliária
+    label: Promoção imobiliária
     heading: Construir com intenção
-    body: Desenvolvemos imóveis residenciais nas localizações mais desejadas de Portugal. Arquitetura de qualidade, design pensado.
+    body: Promovemos imóveis residenciais em Portugal. Arquitetura de qualidade, design pensado.
     image: /images/architecture-02.jpg
     cta_primary:
-      label: Ver Projetos
+      label: Ver projetos
       href: /projects
     cta_secondary:
       label: Saber mais
       href: /about
   - type: section
     variant: full
-    label: Sobre Nós
-    heading: Raízes na qualidade
+    label: Sobre nós
+    heading: A qualidade como princípio
     body: |-
       A Dotta & Cunha é uma empresa de promoção imobiliária residencial sediada em Lisboa. Unimos arquitetura, engenharia e gestão de projetos para criar casas que resistem ao tempo.
-      Fundada com o compromisso de qualidade e sustentabilidade, focamo-nos em designs cuidadosamente selecionados que serve as pessoas que lá vivem.
+      Fundada com um compromisso de qualidade e sustentabilidade, focamo-nos num design cuidado, que serve quem lá vive.
     images:
       - /images/architecture-05.jpg
       - /images/architecture-03.jpg
     cta:
-      label: Sobre Nós
+      label: Sobre nós
       href: /about
   - type: projects
     variant: featured
-    label: Portfolio
-    heading: Projetos Selecionados
+    label: Portfólio
+    heading: Os nossos projetos
   - type: list
     variant: list
     label: Serviços
     heading: O que fazemos
-    body: Promoção imobiliária de ponta a ponta — da aquisição de terreno e design à construção e entrega.
+    body: Promoção imobiliária de ponta a ponta, da aquisição do terreno e do projeto à construção e à entrega.
     items:
       - heading: Promoção
-        body: Desenvolvimento imobiliário completo, do terreno à chave.
+        body: Promoção imobiliária completa, do terreno à chave.
         key: development
       - heading: Arquitetura
         body: Design que equilibra forma, função e emoção.
         key: architecture
-      - heading: Gestão de Projeto
+      - heading: Gestão de projeto
         body: Supervisão rigorosa de prazos, orçamentos e qualidade.
         key: projectManagement
-      - heading: Consultoria de Investimento
+      - heading: Consultoria de investimento
         body: Análise de mercado e orientação estratégica para investidores.
         key: investment
     
@@ -54,12 +54,12 @@ blocks:
     variant: primary
     label: Contacto
     heading: Vamos construir algo juntos
-    body: Seja à procura da sua próxima casa ou a explorar uma oportunidade de investimento — gostaríamos de o ouvir.
+    body: Quer procure casa, tenha um imóvel ou um terreno, ou queira investir, gostávamos de o ouvir.
     image: /images/architecture-02.jpg
     cta_primary:
-      label: Fale Connosco
+      label: Fale connosco
       href: /contact
     cta_secondary:
-      label: Ver Projetos
+      label: Ver projetos
       href: /projects
 ---

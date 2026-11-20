@@ -5,7 +5,7 @@ blocks:
   - type: hero
     variant: half
     label: Projetos
-    heading: O Nosso Portfólio
+    heading: Os nossos projetos
     body: ''
     image: /images/architecture-05.jpg
   - type: projects

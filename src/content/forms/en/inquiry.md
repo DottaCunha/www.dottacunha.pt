@@ -1,5 +1,5 @@
 ---
-title: Quick Inquiry
+title: Send a message
 slug: inquiry
 fields:
   - type: text
@@ -29,5 +29,5 @@ fields:
     placeholder: Tell us about your project...
     rows: 3
 submit_label: Send message
-success_message: Thank you! We'll be in touch soon
+success_message: Thank you! We'll be in touch soon.
 ---

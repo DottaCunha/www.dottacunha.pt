@@ -6,7 +6,7 @@ blocks:
     variant: full
     label: Real Estate Development
     heading: Building with intention
-    body: We develop residential properties in Portugal's most desirable locations. Quality architecture, thoughtful design.
+    body: We develop residential properties in Portugal. Quality architecture, thoughtful design.
     image: /images/architecture-02.jpg
     cta_primary:
       label: View Projects
@@ -17,10 +17,10 @@ blocks:
   - type: section
     variant: full
     label: About
-    heading: Rooted in quality
+    heading: Quality as a principle
     body: |-
       We are a real estate development company based in Lisbon. We bring together architecture, engineering and project management to create homes that stand the test of time.
-      Founded with a commitment to quality and sustainability, we focus on carefully selected designs that serves the people who live there.
+      Founded with a commitment to quality and sustainability, we focus on careful design that serves the people who live there.
     images:
       - /images/architecture-05.jpg
       - /images/architecture-03.jpg
@@ -30,7 +30,7 @@ blocks:
   - type: projects
     variant: featured
     label: Portfolio
-    heading: Selected Projects
+    heading: Our projects
   - type: list
     variant: list
     label: Services
@@ -53,7 +53,7 @@ blocks:
     variant: primary
     label: Contact
     heading: Let's build something together
-    body: Whether you're looking for your next home or exploring a development opportunity — we'd like to hear from you.
+    body: Whether you're looking for a home, own a property or a plot, or want to invest, we'd like to hear from you.
     image: /images/architecture-02.jpg
     cta_primary:
       label: Get in Touch

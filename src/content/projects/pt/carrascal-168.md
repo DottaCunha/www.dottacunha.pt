@@ -44,11 +44,14 @@ sections:
         image: /images/uploads/carrascal-168/material-roupeiros.jpg
     listHeading: Conforto
     list:
-      - "Isolamento térmico pelo exterior"
-      - "Porta de segurança"
-      - "Vidros duplos com corte térmico"
+      - "Cozinha equipada"
       - "Pré-instalação de ar condicionado"
-      - "Águas quentes sanitárias elétricas"
+      - "Bomba de calor para água quente"
+      - "Isolamento térmico pelo exterior"
+      - "Vidros duplos com corte térmico"
+      - "Iluminação LED embutida"
+      - "Porta de segurança"
+      - "Videoporteiro"
   - key: localizacao
     label: "Beato, Lisboa"
     body: "Calçada do Carrascal 168, 1900-134 Lisboa"
