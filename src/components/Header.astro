@@ -2,6 +2,7 @@
 import type { Lang } from "../i18n/translations";
 import { languages } from "../i18n/translations";
 import { t, localizedPath, getAlternateLang } from "../i18n/utils";
+import Icon from "./Icon.astro";
 import Logo from "./Logo.astro";
 
 interface Props {
@@ -66,6 +67,27 @@ const isActive = (match: string) => {
     other browsers have no such bar to colour and would just show the strip.
     It must stay outside the header, whose backdrop blur would hide it from
     Safari. */}
+{/* The strip only helps in Safari itself. Browsers built into apps (Telegram,
+    Instagram...) have no bar for it to colour and would show it as a line
+    across the top. Telegram's browser is the awkward one: it gives Safari's
+    exact name, so it is recognised by the "TelegramWebviewProxy" object it
+    adds to every page. That object may arrive after this runs, so the check
+    is repeated once the page has loaded. Inline, so that the first check
+    runs before the page is drawn. */}
+<script is:inline>
+  (() => {
+    const check = () =>
+      document.documentElement.classList.toggle(
+        "is-safari",
+        typeof navigator.standalone === "boolean" &&
+          !("TelegramWebviewProxy" in window) &&
+          /Version\/[\d.]+.*Safari\//.test(navigator.userAgent) &&
+          !/CriOS|FxiOS|EdgiOS|OPiOS/.test(navigator.userAgent),
+      );
+    check();
+    window.addEventListener("load", check);
+  })();
+</script>
 <div
   id="browser-bar-tint"
   class="browser-bar-tint"
@@ -73,6 +95,19 @@ const isActive = (match: string) => {
   aria-hidden="true"
 >
 </div>
+
+{/* The space above the header in browsers built into apps. Telegram's
+    browser on iPhone floats its see-through address bar over the page: the
+    page scrolls on behind that bar, while anything fixed to the screen (this
+    header included) is kept, and cut off, below it. So scrolled-away content
+    showed between the bar and the header. Nothing fixed can reach that
+    space, but ordinary page content can: this block is part of the page,
+    sits just above the top of the screen, and is carried down by exactly the
+    distance scrolled (a scroll-driven animation, see the styles), so it
+    stays there. It wears the header's own finish, and reads as the header
+    carrying on upwards. In other browsers it is simply off screen. */}
+<div id="header-fill" class="header-fill" aria-hidden="true"></div>
+
 <header
   id="site-header"
   class="navbar fixed top-0 left-0 right-0 z-50 transition-all duration-500"
@@ -80,7 +115,10 @@ const isActive = (match: string) => {
 >
   <div class="container flex items-center justify-between h-20">
     <!-- Logo (navbar-start) -->
-    <div class="navbar-start">
+    {/* Both halves take their own width, not half the bar each: at widths
+        just above 768px the links are wider than half the bar and ran over
+        the logo. */}
+    <div class="navbar-start w-auto shrink-0">
       <a
         href={localizedPath("/", lang)}
         class="flex items-center relative z-10 header-logo transition-colors duration-500"
@@ -91,7 +129,7 @@ const isActive = (match: string) => {
     </div>
 
     <!-- Desktop Nav & CTA (navbar-end) -->
-    <div class="navbar-end hidden md:flex items-center gap-8">
+    <div class="navbar-end w-auto hidden md:flex items-center gap-5 lg:gap-8">
       {
         navLinks.map((link) => (
           <a
@@ -106,11 +144,17 @@ const isActive = (match: string) => {
         ))
       }
 
+      {/* Below 1024px the links need the room, so the button shrinks to a
+          square with a paper plane; its words stay available to screen
+          readers and as a tooltip. It leads straight to the form on the
+          contact page, past that page's header. */}
       <a
-        href={localizedPath("/contact", lang)}
-        class="btn btn-outline btn-sm text-xxs tracking-[0.15em] header-cta"
+        href={`${localizedPath("/contact", lang)}#contacto`}
+        class="btn btn-outline btn-sm text-xxs tracking-[0.15em] header-cta max-lg:btn-square"
+        title={t("nav.cta", lang)}
       >
-        {t("nav.cta", lang)}
+        <Icon name="send" class="w-4 h-4 lg:hidden" />
+        <span class="max-lg:sr-only">{t("nav.cta", lang)}</span>
       </a>
       <!-- Language Switcher -->
       <a
@@ -202,12 +246,63 @@ const isActive = (match: string) => {
     background: linear-gradient(var(--tint), transparent);
     opacity: 0.5;
   }
-  /* -webkit-touch-callout only exists in Safari on iPhone and iPad. */
+  /* -webkit-touch-callout only exists in Safari on iPhone and iPad; the
+     class is set by the script above, in Safari itself only. */
   @supports (-webkit-touch-callout: none) {
     @media (max-width: 767px) {
-      .browser-bar-tint {
+      .is-safari .browser-bar-tint {
         display: block;
       }
+    }
+  }
+
+  /* The fill above the header: it starts just above the top of the page and
+     is moved down by the distance the page has scrolled. That distance is
+     the page's whole scroll range (kept up to date by the script) played
+     against the scroll position. It is moved with "transform", which the
+     browser can keep in step with the scrolling itself; moving it with
+     "top" made it trail behind the finger. */
+  .header-fill {
+    display: none;
+    z-index: 45;
+    pointer-events: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 12rem;
+    translate: 0 -100%;
+    opacity: 0;
+    transition:
+      opacity 500ms,
+      background-color 500ms;
+  }
+  /* The header's two looks: frosted white once the page has scrolled, the
+     menu's black while the menu or the enlarged photo view is open. */
+  .header-fill[data-state="glass"] {
+    opacity: 1;
+    background-color: rgba(255, 255, 255, 0.7);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+  }
+  .header-fill[data-state="dark"] {
+    opacity: 1;
+    background-color: #0a0a0a;
+    transition-duration: 150ms;
+  }
+  @supports (animation-timeline: scroll()) {
+    .header-fill {
+      display: block;
+      animation: header-fill-follow linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+  @keyframes header-fill-follow {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(var(--scroll-range, 0px));
     }
   }
 </style>
@@ -353,6 +448,7 @@ const isActive = (match: string) => {
   const themeColor = document.querySelector<HTMLMetaElement>(
     'meta[name="theme-color"]',
   );
+  const headerFill = document.getElementById("header-fill");
   let barTints = [...document.querySelectorAll<HTMLElement>(".browser-bar-tint")];
   let barColour = barTints[0]?.style.getPropertyValue("--tint").trim();
 
@@ -377,6 +473,18 @@ const isActive = (match: string) => {
       document.querySelector("dialog[open]") !== null ||
       (header.dataset.dark === "true" &&
         !header.classList.contains("is-scrolled"));
+    // The fill above the header (in-app browsers): black with the menu or
+    // the enlarged photo view, frosted once scrolled, absent at the very top.
+    if (headerFill) {
+      const covered =
+        header.classList.contains("menu-open") ||
+        document.querySelector("dialog[open]") !== null;
+      headerFill.dataset.state = covered
+        ? "dark"
+        : header.classList.contains("is-scrolled")
+          ? "glass"
+          : "";
+    }
     const colour = dark ? "#0a0a0a" : "#ffffff";
     if (themeColor) themeColor.content = colour;
     if (barTints.length > 0 && colour !== barColour) {
@@ -392,6 +500,19 @@ const isActive = (match: string) => {
 
   window.addEventListener("scroll", updateHeader, { passive: true });
   updateHeader();
+
+  // How far the page can scroll, for the fill above the header. It changes
+  // with the page's height (pictures loading) and with the screen's (the
+  // browser's bars hiding and showing).
+  const root = document.documentElement;
+  const measureScrollRange = () => {
+    const range = Math.max(0, root.scrollHeight - root.clientHeight);
+    root.style.setProperty("--scroll-range", `${range}px`);
+  };
+  measureScrollRange();
+  new ResizeObserver(measureScrollRange).observe(document.body);
+  window.addEventListener("resize", measureScrollRange);
+  window.visualViewport?.addEventListener("resize", measureScrollRange);
 
   // The enlarged photo view is dark: the bars go dark while it is open and
   // back to the header's colour when it closes.

@@ -113,7 +113,12 @@ const fullTitle = `Dotta & Cunha | ${title}`;
       so pages that open with a photo get a dark one. The content area keeps
       its own white background, so nothing else changes. */}
   <body
-    class:list={["min-h-screen flex flex-col", darkHeader && "bg-primary"]}
+    class:list={[
+      // "relative": the fill above the header (see Header.astro) is laid out
+      // against the whole page.
+      "relative min-h-screen flex flex-col",
+      darkHeader && "bg-primary",
+    ]}
   >
     <Header darkHeader={darkHeader} lang={lang} />
     <main class="flex-1 bg-base-100">
